@@ -3,7 +3,7 @@
  * Licensed using the MIT license
  */
 
-#include "proton_engine_core/proton_application.h"
+#include "protonengine/core/proton_application.h"
 
 namespace ProtonEngine::Core
 {
