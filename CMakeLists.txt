@@ -4,4 +4,6 @@ project(ProtonEngine)
 
 set(CMAKE_CXX_STANDARD 23)
 
+add_subdirectory(third-party)
+
 add_subdirectory(core)
