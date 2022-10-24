@@ -1,0 +1,6 @@
+[submodule "third-party/glfw"]
+	path = third-party/glfw
+	url = https://github.com/glfw/glfw
+[submodule "third-party/fmt"]
+	path = third-party/fmt
+	url = https://github.com/fmtlib/fmt
