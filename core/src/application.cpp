@@ -8,12 +8,18 @@
 namespace ProtonEngine::Core
 {
 
-ProtonEngine::Core::Application::Application()
+ProtonEngine::Core::Application::Application() :
+    m_window(1280, 720, "Test title")
 {
 }
 
 Application::~Application()
 {
+}
+
+const Window & Application::getWindow()
+{
+    return m_window;
 }
 
 }

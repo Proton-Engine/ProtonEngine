@@ -9,9 +9,15 @@
 
 #include <memory>
 
-std::unique_ptr<ProtonEngine::Core::ProtonApplication> getProtonApplication(int argc, char **argv);
+std::unique_ptr<ProtonEngine::Core::Application> getProtonApplication(int argc, char **argv);
 
 int main(int argc, char **argv)
 {
     auto application = getProtonApplication(argc, argv);
+    application->initialize();
+
+    while(true)
+    {
+        
+    }
 }

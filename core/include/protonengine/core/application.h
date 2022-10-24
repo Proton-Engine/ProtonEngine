@@ -5,6 +5,8 @@
 
 #pragma once
 
+#include "window.h"
+
 namespace ProtonEngine::Core
 {
 
@@ -17,6 +19,13 @@ public:
     Application(Application &&) = delete;
     Application &operator=(const Application &) = delete;
     Application &operator=(Application &&) = delete;
+
+    virtual void initialize() = 0;
+
+    const Window & getWindow();
+
+private:
+    Window m_window;
 };
 
 } // namespace ProtonEngine
