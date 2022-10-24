@@ -8,7 +8,7 @@
 #include <cinttypes>
 #include <string_view>
 
-extern struct GLFWwindow;
+struct GLFWwindow;
 
 namespace ProtonEngine::Core
 {
@@ -18,6 +18,8 @@ class Window
 public:
     Window(int32_t width, int32_t height, std::string_view title);
     ~Window();
+
+    void update();
 
 private:
     GLFWwindow * m_windowHandle{};

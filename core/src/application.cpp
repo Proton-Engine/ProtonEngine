@@ -5,8 +5,7 @@
 
 #include "protonengine/core/application.h"
 
-namespace ProtonEngine::Core
-{
+namespace ProtonEngine::Core {
 
 ProtonEngine::Core::Application::Application() :
     m_window(1280, 720, "Test title")
@@ -22,4 +21,9 @@ const Window & Application::getWindow()
     return m_window;
 }
 
+void Application::update()
+{
+    m_window.update();
 }
+
+} // namespace ProtonEngine::Core

@@ -22,6 +22,8 @@ public:
 
     virtual void initialize() = 0;
 
+    void update();
+
     const Window & getWindow();
 
 private:
