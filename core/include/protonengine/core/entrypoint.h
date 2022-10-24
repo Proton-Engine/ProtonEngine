@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "proton_application.h"
+#include "application.h"
 
 #include <memory>
 

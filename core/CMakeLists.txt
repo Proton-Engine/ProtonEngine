@@ -1,6 +1,8 @@
 project(ProtonEngineCore)
 
-add_library(ProtonEngineCore SHARED src/proton_application.cpp)
+add_library(ProtonEngineCore SHARED
+        src/application.cpp
+        src/window.cpp)
 
 target_include_directories(ProtonEngineCore PUBLIC include)
 
