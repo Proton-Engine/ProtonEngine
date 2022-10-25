@@ -8,8 +8,7 @@ target_include_directories(ProtonEngineCore PUBLIC include)
 
 target_link_libraries(ProtonEngineCore PRIVATE
         fmt
-        glfw
-        glad)
+        glfw)
 
 if (APPLE)
     target_link_libraries(ProtonEngineCore PRIVATE "-framework OpenGL")
