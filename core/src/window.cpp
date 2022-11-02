@@ -25,7 +25,7 @@ Window::Window(int32_t width, int32_t height, std::string_view title)
 
     m_windowHandle = glfwCreateWindow(width, height, title.data(), nullptr, nullptr);
     glfwMakeContextCurrent(m_windowHandle);
-
+    
     Renderer::setWindowContext(glfwGetProcAddress);
 }
 
