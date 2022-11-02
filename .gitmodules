@@ -4,6 +4,3 @@
 [submodule "third-party/fmt"]
 	path = third-party/fmt
 	url = https://github.com/fmtlib/fmt
-[submodule "third-party/glew"]
-	path = third-party/glew
-	url = https://github.com/nigels-com/glew
