@@ -6,7 +6,6 @@
 #include "protonengine/core/window.h"
 #include "fmt/core.h"
 
-// #include "OpenGL/gl.h"
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
 #include <cstdlib>
