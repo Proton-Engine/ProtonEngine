@@ -1,6 +1,6 @@
 project(ProtonEngineCore)
 
-add_library(ProtonEngineCore SHARED
+add_library(ProtonEngineCore STATIC
         src/application.cpp
         src/window.cpp)
 
@@ -8,7 +8,9 @@ target_include_directories(ProtonEngineCore PUBLIC include)
 
 target_link_libraries(ProtonEngineCore PRIVATE
         fmt
-        glfw)
+        glfw
+        glad
+        opengl32)
 
 if (APPLE)
     target_link_libraries(ProtonEngineCore PRIVATE "-framework OpenGL")
