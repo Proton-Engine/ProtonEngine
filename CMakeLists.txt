@@ -10,6 +10,7 @@ find_package(OpenGL REQUIRED)
 
 # Engine includes
 add_subdirectory(core)
+add_subdirectory(renderer)
 
 # Example project
 add_subdirectory(sandbox)

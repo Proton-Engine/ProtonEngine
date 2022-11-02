@@ -4,9 +4,9 @@
  */
 
 #include "protonengine/core/window.h"
-#include "fmt/core.h"
+#include "protonengine/renderer/renderer.h"
 
-#include <glad/gl.h>
+#include <fmt/core.h>
 #include <GLFW/glfw3.h>
 #include <cstdlib>
 
@@ -26,11 +26,7 @@ Window::Window(int32_t width, int32_t height, std::string_view title)
     m_windowHandle = glfwCreateWindow(width, height, title.data(), nullptr, nullptr);
     glfwMakeContextCurrent(m_windowHandle);
 
-    int version = gladLoadGL(glfwGetProcAddress);
-    if(version == 0)
-    {
-        exit(EXIT_FAILURE);
-    }
+    Renderer::setWindowContext(glfwGetProcAddress);
 }
 
 Window::~Window()
@@ -40,14 +36,7 @@ Window::~Window()
 
 void Window::update()
 {
-    glClear(GL_COLOR_BUFFER_BIT);
-
-    glBegin(GL_TRIANGLES);
-    glVertex2f(0.0f, 0.5f);
-    glVertex2f(0.5f, -0.5f);
-    glVertex2f(-0.5f, -0.5f);
-    glEnd();
-
+    Renderer::update();
 
     glfwSwapBuffers(m_windowHandle);
 
