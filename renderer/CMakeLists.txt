@@ -19,3 +19,6 @@ if (APPLE)
 endif()
 
 add_library(ProtonEngine::Renderer ALIAS ProtonEngineRenderer)
+
+configure_file(shaders/fragment.shader shaders/fragment.shader COPYONLY)
+configure_file(shaders/vertex.shader shaders/vertex.shader COPYONLY)
