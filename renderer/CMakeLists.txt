@@ -1,7 +1,8 @@
 project(ProtonEngineRenderer)
 
 add_library(ProtonEngineRenderer STATIC
-        src/renderer.cpp)
+        src/renderer.cpp
+        src/shader_progam.cpp)
 
 target_include_directories(ProtonEngineRenderer PUBLIC include)
 
@@ -17,6 +18,8 @@ endif()
 if (APPLE)
     target_link_libraries(ProtonEngineRenderer PRIVATE "-framework OpenGL")
 endif()
+
+target_link_libraries(ProtonEngineRenderer PRIVATE fmt)
 
 add_library(ProtonEngine::Renderer ALIAS ProtonEngineRenderer)
 
