@@ -23,5 +23,5 @@ target_link_libraries(ProtonEngineRenderer PRIVATE fmt)
 
 add_library(ProtonEngine::Renderer ALIAS ProtonEngineRenderer)
 
-configure_file(shaders/fragment.shader shaders/fragment.shader COPYONLY)
-configure_file(shaders/vertex.shader shaders/vertex.shader COPYONLY)
+configure_file(shaders/shader.fragment ${CMAKE_BINARY_DIR}/Sandbox/assets/shaders/shader.fragment COPYONLY)
+configure_file(shaders/shader.vertex ${CMAKE_BINARY_DIR}/Sandbox/assets/shaders/shader.vertex COPYONLY)

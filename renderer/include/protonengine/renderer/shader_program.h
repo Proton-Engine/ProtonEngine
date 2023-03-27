@@ -17,14 +17,14 @@ class ShaderProgram
 {
 public:
     explicit ShaderProgram(std::string_view shaderName);
-    ~ShaderProgram();
+    ~ShaderProgram() noexcept;
     ShaderProgram(const ShaderProgram & other) = delete;
     ShaderProgram& operator =(const ShaderProgram & other) = delete;
     ShaderProgram(ShaderProgram && other) noexcept = default;
     ShaderProgram& operator =(ShaderProgram && other) = default;
 
-    void enable();
-    void disable();
+    void enable() const noexcept;
+    void disable() const noexcept;
 
     [[nodiscard]] std::string_view name() noexcept;
 
@@ -34,10 +34,6 @@ private:
     uint32_t m_shaderProgramID;
     uint32_t m_vertexShaderID;
     uint32_t m_fragmentShaderID;
-
-    uint32_t loadShader(std::string_view filename, ShaderType type);
-    std::string getErrorFromShaderCompilation(uint32_t shaderId);
-    std::string getErrorFromProgramLinking(uint32_t programId);
 };
 
 }

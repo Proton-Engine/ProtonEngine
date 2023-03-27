@@ -20,7 +20,7 @@ void update()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    ShaderProgram shaderProgram("");
+    ShaderProgram shaderProgram("shader");
     shaderProgram.enable();
 
     GLuint VertexArrayID;

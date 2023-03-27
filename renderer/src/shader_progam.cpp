@@ -8,7 +8,15 @@
 #include <glad/gl.h>
 #include <fmt/core.h>
 
+#include <fstream>
+#include <sstream>
+
 namespace ProtonEngine::Renderer {
+
+[[nodiscard]] static GLint loadShader(std::string_view filename, ShaderType type);
+[[nodiscard]] static std::string getErrorFromShaderCompilation(uint32_t shaderId);
+[[nodiscard]] static std::string getErrorFromProgramLinking(uint32_t programId);
+[[nodiscard]] static std::string loadShaderSourceFromDisk(std::string_view fileName);
 
 enum class ShaderType
 {
@@ -21,22 +29,8 @@ ShaderProgram::ShaderProgram(std::string_view shaderName)
 {
     m_shaderProgramID = glCreateProgram();
 
-    std::string vertexShaderCode = "#version 330 core\n"
-                                   "layout(location = 0) in vec3 vertexPosition_modelspace;\n"
-                                   "\n"
-                                   "void main(){\n"
-                                   "  gl_Position.xyz = vertexPosition_modelspace;\n"
-                                   "  gl_Position.w = 1.0;\n"
-                                   "}";
-    m_vertexShaderID = loadShader(vertexShaderCode, ShaderType::Vertex);
-
-    std::string fragmentShaderCode = "#version 330 core\n"
-                                     "out vec3 color;\n"
-                                     "\n"
-                                     "void main(){\n"
-                                     "  color = vec3(1,1,0);\n"
-                                     "}";
-    m_fragmentShaderID = loadShader(fragmentShaderCode, ShaderType::Fragment);
+    m_vertexShaderID = loadShader(fmt::format("./assets/shaders/{}.vertex", shaderName), ShaderType::Vertex);
+    m_fragmentShaderID = loadShader(fmt::format("./assets/shaders/{}.fragment", shaderName), ShaderType::Fragment);
 
     glAttachShader(m_shaderProgramID, m_vertexShaderID);
     glAttachShader(m_shaderProgramID, m_fragmentShaderID);
@@ -52,7 +46,7 @@ ShaderProgram::ShaderProgram(std::string_view shaderName)
     }
 }
 
-ShaderProgram::~ShaderProgram()
+ShaderProgram::~ShaderProgram() noexcept
 {
     glDeleteShader(m_vertexShaderID);
     glDeleteShader(m_fragmentShaderID);
@@ -60,12 +54,12 @@ ShaderProgram::~ShaderProgram()
     glDeleteProgram(m_shaderProgramID);
 }
 
-void ShaderProgram::enable()
+void ShaderProgram::enable() const noexcept
 {
     glUseProgram(m_shaderProgramID);
 }
 
-void ShaderProgram::disable()
+void ShaderProgram::disable() const noexcept
 {
     glUseProgram(0);
 }
@@ -75,11 +69,12 @@ std::string_view ShaderProgram::name() noexcept
     return m_name;
 }
 
-uint32_t ShaderProgram::loadShader(std::string_view source, ShaderType type)
+[[nodiscard]] GLint loadShader(std::string_view fileName, ShaderType type)
 {
     auto shaderId = glCreateShader(static_cast<int>(type));
     auto result = GL_FALSE;
 
+    const auto source = loadShaderSourceFromDisk(fileName);
     char const * vertexSourcePointer = source.data();
     glShaderSource(shaderId, 1, &vertexSourcePointer , nullptr);
     glCompileShader(shaderId);
@@ -95,7 +90,7 @@ uint32_t ShaderProgram::loadShader(std::string_view source, ShaderType type)
     return shaderId;
 }
 
-std::string ShaderProgram::getErrorFromShaderCompilation(uint32_t shaderId)
+[[nodiscard]] std::string getErrorFromShaderCompilation(uint32_t shaderId)
 {
     int InfoLogLength;
 
@@ -106,7 +101,7 @@ std::string ShaderProgram::getErrorFromShaderCompilation(uint32_t shaderId)
     return error;
 }
 
-std::string ShaderProgram::getErrorFromProgramLinking(uint32_t programId)
+[[nodiscard]] std::string getErrorFromProgramLinking(uint32_t programId)
 {
     int InfoLogLength;
 
@@ -115,6 +110,20 @@ std::string ShaderProgram::getErrorFromProgramLinking(uint32_t programId)
     glGetProgramInfoLog(programId, InfoLogLength, nullptr, error.data());
 
     return error;
+}
+
+[[nodiscard]] std::string loadShaderSourceFromDisk(std::string_view fileName)
+{
+    std::ifstream fileStream(fileName);
+    std::stringstream shaderSource;
+    std::string line;
+
+    while(std::getline(fileStream, line))
+    {
+        shaderSource << line << "\n";
+    }
+
+    return shaderSource.str();
 }
 
 }
