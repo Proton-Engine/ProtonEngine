@@ -68,6 +68,11 @@ std::string_view ShaderProgram::name() noexcept
 {
     return m_name;
 }
+void ShaderProgram::setUniformValue(std::string_view name, glm::mat4 matrix) noexcept
+{
+    GLint uniformID = glGetUniformLocation(m_shaderProgramID, name.data());
+    glUniformMatrix4fv(uniformID, 1, GL_FALSE, &matrix[0][0]);
+}
 
 [[nodiscard]] GLint loadShader(std::string_view fileName, ShaderType type)
 {

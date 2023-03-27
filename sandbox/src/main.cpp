@@ -13,7 +13,6 @@ class SandboxApplication : public ProtonEngine::Core::Application
 public:
     void initialize() override
     {
-        fmt::print("Hello world!\n");
     }
 };
 

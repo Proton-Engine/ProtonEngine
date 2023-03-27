@@ -5,6 +5,8 @@
 
 #pragma once
 
+#include <glm/mat4x4.hpp>
+
 #include <inttypes.h>
 #include <string>
 #include <string_view>
@@ -25,6 +27,8 @@ public:
 
     void enable() const noexcept;
     void disable() const noexcept;
+
+    void setUniformValue(std::string_view name, glm::mat4 matrix) noexcept;
 
     [[nodiscard]] std::string_view name() noexcept;
 

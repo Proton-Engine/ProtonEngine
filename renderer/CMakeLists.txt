@@ -8,7 +8,8 @@ target_include_directories(ProtonEngineRenderer PUBLIC include)
 
 target_link_libraries(ProtonEngineRenderer PRIVATE
         fmt
-        glad)
+        glad
+        glm)
 
 if(WIN32)
     target_link_libraries(ProtonEngineRenderer PRIVATE
