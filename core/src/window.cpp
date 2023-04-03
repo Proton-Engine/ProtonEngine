@@ -40,9 +40,6 @@ Window::~Window()
 
 void Window::update()
 {
-    Renderer::update();
-
-
     if (glfwWindowShouldClose(m_windowHandle) ||
         glfwGetKey(m_windowHandle, GLFW_KEY_ESCAPE))
     {

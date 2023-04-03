@@ -5,6 +5,8 @@
 
 #pragma once
 
+#include "mesh.h"
+
 namespace ProtonEngine::Renderer
 {
 
@@ -12,6 +14,6 @@ using ContextLoadFunctionReturn = void (*)();
 using ContextLoadFunction = ContextLoadFunctionReturn (*)(const char *name);
 
 void setWindowContext(ContextLoadFunction func);
-void update();
+void renderFrame(const Mesh & mesh);
 
 } // namespace ProtonEngine::Renderer

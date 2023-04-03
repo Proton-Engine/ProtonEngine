@@ -2,7 +2,8 @@ project(ProtonEngineRenderer)
 
 add_library(ProtonEngineRenderer STATIC
         src/renderer.cpp
-        src/shader_progam.cpp)
+        src/shader_progam.cpp
+        src/mesh.cpp)
 
 target_include_directories(ProtonEngineRenderer PUBLIC include)
 
