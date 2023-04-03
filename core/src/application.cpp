@@ -4,8 +4,9 @@
  */
 
 #include "protonengine/core/application.h"
+#include "protonengine/core/cube.h"
+
 #include "protonengine/renderer/renderer.h"
-#include "protonengine/renderer/mesh.h"
 
 namespace ProtonEngine::Core {
 
@@ -27,14 +28,8 @@ void Application::update()
 {
     m_window.update();
 
-    static const std::vector<float> g_vertex_buffer_data = {
-        -1.0f, -1.0f, 0.0f,
-        1.0f, -1.0f, 0.0f,
-        0.0f,  1.0f, 0.0f,
-    };
-    static ProtonEngine::Renderer::Mesh mesh(g_vertex_buffer_data);
-
-    Renderer::renderFrame(mesh);
+    static Cube cube;
+    Renderer::renderFrame(cube);
 }
 
 } // namespace ProtonEngine::Core

@@ -2,6 +2,7 @@ project(ProtonEngineCore)
 
 add_library(ProtonEngineCore STATIC
         src/application.cpp
+        src/cube.cpp
         src/window.cpp)
 
 target_include_directories(ProtonEngineCore PUBLIC include)

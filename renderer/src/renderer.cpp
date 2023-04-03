@@ -10,8 +10,6 @@
 #include <glad/gl.h>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include <vector>
-
 namespace ProtonEngine::Renderer
 {
 
@@ -37,7 +35,8 @@ void renderFrame(const Mesh & mesh)
     );
 
     static float offset = 0.1f;
-    glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(0.f, 0.f, offset += 0.1f));
+    glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(0.f, 0.f, 2.5f));
+    model = glm::rotate(model, offset += 0.01f, glm::vec3(0, 0.5f, 1));
 
     auto mvp = projection * view * model;
 
