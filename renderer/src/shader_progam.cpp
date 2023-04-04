@@ -10,13 +10,16 @@
 
 #include <fstream>
 #include <sstream>
+#include <string_view>
+#include <string>
+#include <filesystem>
 
 namespace ProtonEngine::Renderer {
 
-[[nodiscard]] static GLint loadShader(std::string_view filename, ShaderType type);
+[[nodiscard]] static GLint loadShader(const std::string & filename, ShaderType type);
 [[nodiscard]] static std::string getErrorFromShaderCompilation(uint32_t shaderId);
 [[nodiscard]] static std::string getErrorFromProgramLinking(uint32_t programId);
-[[nodiscard]] static std::string loadShaderSourceFromDisk(std::string_view fileName);
+[[nodiscard]] static std::string loadShaderSourceFromDisk(const std::string & fileName);
 
 enum class ShaderType
 {
@@ -74,7 +77,7 @@ void ShaderProgram::setUniformValue(std::string_view name, glm::mat4 matrix) noe
     glUniformMatrix4fv(uniformID, 1, GL_FALSE, &matrix[0][0]);
 }
 
-[[nodiscard]] GLint loadShader(std::string_view fileName, ShaderType type)
+[[nodiscard]] GLint loadShader(const std::string & fileName, ShaderType type)
 {
     auto shaderId = glCreateShader(static_cast<int>(type));
     auto result = GL_FALSE;
@@ -117,7 +120,7 @@ void ShaderProgram::setUniformValue(std::string_view name, glm::mat4 matrix) noe
     return error;
 }
 
-[[nodiscard]] std::string loadShaderSourceFromDisk(std::string_view fileName)
+[[nodiscard]] std::string loadShaderSourceFromDisk(const std::string & fileName)
 {
     std::ifstream fileStream(fileName);
     std::stringstream shaderSource;
