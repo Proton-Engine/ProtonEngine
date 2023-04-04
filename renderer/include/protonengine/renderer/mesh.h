@@ -13,7 +13,7 @@ namespace ProtonEngine::Renderer {
 class Mesh
 {
 public:
-    Mesh(const std::vector<float> & meshData);
+    Mesh(const std::vector<float> & meshData, const std::vector<float> & colorData);
     ~Mesh();
 
     Mesh(Mesh &) = delete;
@@ -28,6 +28,7 @@ public:
 private:
     uint32_t m_vertexArrayId{};
     uint32_t m_vertexBufferId{};
+    uint32_t m_colorBufferId{};
     uint32_t m_verticesCount{};
 };
 

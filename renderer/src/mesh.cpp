@@ -9,15 +9,38 @@
 
 namespace ProtonEngine::Renderer {
 
-Mesh::Mesh(const std::vector<float> & meshData)
+Mesh::Mesh(const std::vector<float> & meshData, const std::vector<float> & colorData)
 {
     glGenVertexArrays(1, &m_vertexArrayId);
     glBindVertexArray(m_vertexArrayId);
     glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(1);
 
     glGenBuffers(1, &m_vertexBufferId);
     glBindBuffer(GL_ARRAY_BUFFER, m_vertexBufferId);
     glBufferData(GL_ARRAY_BUFFER, meshData.size() * sizeof(float), meshData.data(), GL_STATIC_DRAW);
+
+    glVertexAttribPointer(
+        0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
+        3,                  // size
+        GL_FLOAT,           // type
+        GL_FALSE,           // normalized?
+        0,                  // stride
+        nullptr             // array buffer offset
+    );
+
+    glGenBuffers(1, &m_colorBufferId);
+    glBindBuffer(GL_ARRAY_BUFFER, m_colorBufferId);
+    glBufferData(GL_ARRAY_BUFFER, colorData.size() * sizeof(float), colorData.data(), GL_STATIC_DRAW);
+
+    glVertexAttribPointer(
+        1,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
+        3,                  // size
+        GL_FLOAT,           // type
+        GL_FALSE,           // normalized?
+        0,                  // stride
+        nullptr             // array buffer offset
+    );
 
     m_verticesCount = meshData.size();
 }
@@ -30,22 +53,11 @@ Mesh::~Mesh()
 void Mesh::enableForDrawing() const noexcept
 {
     glBindVertexArray(m_vertexArrayId);
-    glBindBuffer(GL_ARRAY_BUFFER, m_vertexBufferId);
-
-    glVertexAttribPointer(
-        0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
-        3,                  // size
-        GL_FLOAT,           // type
-        GL_FALSE,           // normalized?
-        0,                  // stride
-        (void*)0            // array buffer offset
-    );
 }
 
 void Mesh::disableForDrawing() const noexcept
 {
     glBindVertexArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 uint32_t Mesh::vertices() const noexcept

@@ -16,6 +16,9 @@ namespace ProtonEngine::Renderer
 void setWindowContext(GLADloadfunc func)
 {
     gladLoadGL(func);
+    
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
 }
 
 void renderFrame(const Mesh & mesh)
