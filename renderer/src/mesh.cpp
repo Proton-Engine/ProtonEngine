@@ -13,6 +13,7 @@ Mesh::Mesh(const std::vector<float> & meshData)
 {
     glGenVertexArrays(1, &m_vertexArrayId);
     glBindVertexArray(m_vertexArrayId);
+    glEnableVertexAttribArray(0);
 
     glGenBuffers(1, &m_vertexBufferId);
     glBindBuffer(GL_ARRAY_BUFFER, m_vertexBufferId);
@@ -28,7 +29,7 @@ Mesh::~Mesh()
 
 void Mesh::enableForDrawing() const noexcept
 {
-    glEnableVertexAttribArray(0);
+    glBindVertexArray(m_vertexArrayId);
     glBindBuffer(GL_ARRAY_BUFFER, m_vertexBufferId);
 
     glVertexAttribPointer(
@@ -43,8 +44,8 @@ void Mesh::enableForDrawing() const noexcept
 
 void Mesh::disableForDrawing() const noexcept
 {
+    glBindVertexArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glDisableVertexAttribArray(0);
 }
 
 uint32_t Mesh::vertices() const noexcept
