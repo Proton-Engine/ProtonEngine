@@ -5,6 +5,7 @@
 
 #include "protonengine/core/application.h"
 #include "protonengine/core/cube.h"
+#include "protonengine/core/triangle.h"
 
 #include "protonengine/renderer/renderer.h"
 
@@ -29,7 +30,9 @@ void Application::update()
     m_window.update();
 
     static Cube cube;
-    Renderer::renderFrame(cube);
+    static Triangle triangle;
+
+    Renderer::renderFrame(cube, triangle);
 }
 
 } // namespace ProtonEngine::Core

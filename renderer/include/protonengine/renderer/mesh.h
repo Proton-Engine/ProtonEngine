@@ -23,13 +23,13 @@ public:
 
     void enableForDrawing() const noexcept;
     void disableForDrawing() const noexcept;
-    [[nodiscard]] uint32_t vertices() const noexcept;
+    [[nodiscard]] int32_t verticesCount() const noexcept;
 
 private:
     uint32_t m_vertexArrayId{};
     uint32_t m_vertexBufferId{};
     uint32_t m_colorBufferId{};
-    uint32_t m_verticesCount{};
+    int32_t m_verticesCount{};
 };
 
 }

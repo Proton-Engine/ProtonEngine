@@ -5,7 +5,7 @@
 
 #include "protonengine/renderer/mesh.h"
 
-#include <glad/gl.h>
+#include <glad/glad.h>
 
 namespace ProtonEngine::Renderer {
 
@@ -35,7 +35,7 @@ Mesh::Mesh(const std::vector<float> & meshData, const std::vector<float> & color
 
     glVertexAttribPointer(
         1,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
-        3,                  // size
+        2,                  // size
         GL_FLOAT,           // type
         GL_FALSE,           // normalized?
         0,                  // stride
@@ -60,7 +60,7 @@ void Mesh::disableForDrawing() const noexcept
     glBindVertexArray(0);
 }
 
-uint32_t Mesh::vertices() const noexcept
+int32_t Mesh::verticesCount() const noexcept
 {
     return m_verticesCount;
 }

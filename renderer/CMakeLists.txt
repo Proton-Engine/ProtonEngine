@@ -10,7 +10,8 @@ target_include_directories(ProtonEngineRenderer PUBLIC include)
 target_link_libraries(ProtonEngineRenderer PRIVATE
         fmt
         glad
-        glm)
+        glm
+        stb_image)
 
 if(WIN32)
     target_link_libraries(ProtonEngineRenderer PRIVATE
@@ -25,5 +26,6 @@ target_link_libraries(ProtonEngineRenderer PRIVATE fmt)
 
 add_library(ProtonEngine::Renderer ALIAS ProtonEngineRenderer)
 
+configure_file(shaders/checkerboard.png ${CMAKE_BINARY_DIR}/Sandbox/assets/textures/checkerboard.png COPYONLY)
 configure_file(shaders/shader.fragment ${CMAKE_BINARY_DIR}/Sandbox/assets/shaders/shader.fragment COPYONLY)
 configure_file(shaders/shader.vertex ${CMAKE_BINARY_DIR}/Sandbox/assets/shaders/shader.vertex COPYONLY)

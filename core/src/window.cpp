@@ -23,14 +23,14 @@ Window::Window(int32_t width, int32_t height, std::string_view title)
         exit(EXIT_FAILURE);
     }
 
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
     m_windowHandle = glfwCreateWindow(width, height, title.data(), nullptr, nullptr);
     glfwMakeContextCurrent(m_windowHandle);
     
-    Renderer::setWindowContext(glfwGetProcAddress);
+    Renderer::setWindowContext([](const char * proc_name){return (void *) glfwGetProcAddress(proc_name);});
 }
 
 Window::~Window()

@@ -7,13 +7,16 @@
 
 #include "mesh.h"
 
+#include <string_view>
+
 namespace ProtonEngine::Renderer
 {
 
-using ContextLoadFunctionReturn = void (*)();
-using ContextLoadFunction = ContextLoadFunctionReturn (*)(const char *name);
+using ContextLoadFunction = void* (*)(const char *name);
 
 void setWindowContext(ContextLoadFunction func);
-void renderFrame(const Mesh & mesh);
+void renderFrame(const Mesh & mesh, const Mesh & mesh2);
+
+uint32_t loadTexture(std::string_view path);
 
 } // namespace ProtonEngine::Renderer
