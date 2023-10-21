@@ -92,16 +92,15 @@ uint32_t loadTexture(std::string_view path)
         dataFormat = GL_RGB;
     }
 
-    glCreateTextures(GL_TEXTURE_2D, 1, &textureId);
-    glTextureStorage2D(textureId, 1, internalFormat, width, height);
+    glGenTextures(1, &textureId);
+    glBindTexture(GL_TEXTURE_2D, textureId);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 
-    glTextureParameteri(textureId, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTextureParameteri(textureId, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-    glTextureParameteri(textureId, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTextureParameteri(textureId, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-    glTextureSubImage2D(textureId, 0, 0, 0, width, height, dataFormat, GL_UNSIGNED_BYTE, data);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     stbi_image_free(data);
 
