@@ -7,13 +7,20 @@
 
 #include "protonengine/renderer/mesh.h"
 
+#include <string>
+#include <memory>
+
 namespace ProtonEngine::Core
 {
 
-class Cube : public Renderer::Mesh
+struct TagComponent
 {
-public:
-    Cube();
+    std::string tag;
+};
+
+struct RenderableComponent
+{
+    Renderer::Mesh & mesh;
 };
 
 } // namespace ProtonEngine::Core

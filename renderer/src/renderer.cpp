@@ -22,7 +22,7 @@ void setWindowContext(ContextLoadFunction func)
     glDepthFunc(GL_LESS);
 }
 
-void renderFrame(const Mesh & mesh, const Mesh & mesh2)
+void renderRenderableComponent(const Core::RenderableComponent & renderable)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -36,9 +36,9 @@ void renderFrame(const Mesh & mesh, const Mesh & mesh2)
 //    glm::mat4 projection = glm::ortho(-10.0f,10.0f,-10.0f,10.0f,0.0f,100.0f);
 
     glm::mat4 view = glm::lookAt(
-        glm::vec3(0,0,3), // Camera is at (4,3,3), in World Space
-        glm::vec3(0,0,0), // and looks at the origin
-        glm::vec3(0,1,0)  // Head is up (set to 0,-1,0 to look upside-down)
+            glm::vec3(0,0,3), // Camera is at (4,3,3), in World Space
+            glm::vec3(0,0,0), // and looks at the origin
+            glm::vec3(0,1,0)  // Head is up (set to 0,-1,0 to look upside-down)
     );
 
     static float offset = 0.1f;
@@ -48,18 +48,9 @@ void renderFrame(const Mesh & mesh, const Mesh & mesh2)
     auto mvp = projection * view * model;
     shaderProgram.setUniformValue("MVP", mvp);
 
-    mesh.enableForDrawing();
-    glDrawArrays(GL_TRIANGLES, 0, mesh.verticesCount());
-    mesh.disableForDrawing();
-
-    model = glm::translate(glm::mat4(1.0f), glm::vec3(-2.f, 0.f, -2.5f));
-
-    mvp = projection * view * model;
-    shaderProgram.setUniformValue("MVP", mvp);
-
-    mesh2.enableForDrawing();
-    glDrawArrays(GL_TRIANGLES, 0, mesh2.verticesCount());
-    mesh2.disableForDrawing();
+    renderable.mesh.enableForDrawing();
+    glDrawArrays(GL_TRIANGLES, 0, renderable.mesh.verticesCount());
+    renderable.mesh.disableForDrawing();
 
     shaderProgram.disable();
 }

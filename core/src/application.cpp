@@ -8,6 +8,9 @@
 #include "protonengine/core/triangle.h"
 
 #include "protonengine/renderer/renderer.h"
+#include "protonengine/core/entity.h"
+
+#include <entt/entt.hpp>
 
 namespace ProtonEngine::Core {
 
@@ -20,7 +23,7 @@ Application::~Application()
 {
 }
 
-const Window & Application::getWindow()
+auto Application::getWindow() const noexcept -> const Window &
 {
     return m_window;
 }
@@ -29,10 +32,20 @@ void Application::update()
 {
     m_window.update();
 
-    static Cube cube;
-    static Triangle triangle;
+//    static Cube cube;
+//    static Triangle triangle;
 
-    Renderer::renderFrame(cube, triangle);
+    auto & registry = m_scene.getEntityRegistry();
+    auto renderableEntities = registry.view<RenderableComponent>();
+
+    renderableEntities.each(Renderer::renderRenderableComponent);
+
+//    Renderer::renderFrame(cube, triangle);
+}
+
+auto Application::getScene() noexcept -> Scene &
+{
+    return m_scene;
 }
 
 } // namespace ProtonEngine::Core

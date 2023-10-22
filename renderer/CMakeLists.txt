@@ -11,7 +11,10 @@ target_link_libraries(ProtonEngineRenderer PRIVATE
         fmt
         glad
         glm
-        stb_image)
+        stb_image
+
+        ProtonEngine::Core
+)
 
 if(WIN32)
     target_link_libraries(ProtonEngineRenderer PRIVATE

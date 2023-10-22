@@ -9,9 +9,11 @@
 
 namespace ProtonEngine::Core
 {
+
 class Triangle : public Renderer::Mesh
 {
 public:
     Triangle();
 };
+
 }

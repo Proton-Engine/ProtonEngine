@@ -6,6 +6,7 @@
 #pragma once
 
 #include "window.h"
+#include "scene.h"
 
 namespace ProtonEngine::Core
 {
@@ -24,10 +25,12 @@ public:
 
     void update();
 
-    const Window & getWindow();
+    [[nodiscard]] auto getWindow() const noexcept -> const Window &;
+    [[nodiscard]] auto getScene() noexcept -> Scene &;
 
 private:
     Window m_window;
+    Scene m_scene;
 };
 
 } // namespace ProtonEngine
