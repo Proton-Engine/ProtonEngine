@@ -5,7 +5,6 @@
 
 #include "protonengine/renderer/renderer.h"
 #include "protonengine/renderer/shader_program.h"
-#include "protonengine/renderer/mesh.h"
 
 #include <glad/glad.h>
 #include <glm/gtc/matrix_transform.hpp>
@@ -22,14 +21,14 @@ void setWindowContext(ContextLoadFunction func)
     glDepthFunc(GL_LESS);
 }
 
-void renderRenderableComponent(const Core::RenderableComponent & renderable)
+void renderRenderableComponent(const Core::TransformComponent & transform, const Core::RenderableComponent & renderable)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    ShaderProgram shaderProgram("shader");
+    static ShaderProgram shaderProgram("shader");
     shaderProgram.enable();
 
-    const auto id = loadTexture("assets/textures/checkerboard.png");
+    static const auto id = loadTexture("assets/textures/checkerboard.png");
     glBindTexture(GL_TEXTURE_2D, id);
 
     glm::mat4 projection = glm::perspective(glm::radians(45.f), 1280.f / 720.f, 0.1f, 100.0f);
@@ -42,8 +41,11 @@ void renderRenderableComponent(const Core::RenderableComponent & renderable)
     );
 
     static float offset = 0.1f;
-    glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(2.f, 0.f, -2.5f));
-    model = glm::rotate(model, offset += 0.01f, glm::vec3(0, 0.5f, 1));
+    glm::mat4 model = glm::translate(glm::mat4(1.0f), transform.position);
+    model = glm::scale(model, transform.scale);
+    model = glm::rotate(model, static_cast<float>(transform.rotation.x * M_PI / 180.0f), glm::vec3{1, 0, 0});
+    model = glm::rotate(model, static_cast<float>(transform.rotation.y * M_PI / 180.0f), glm::vec3{0, 1, 0});
+    model = glm::rotate(model, static_cast<float>(transform.rotation.z * M_PI / 180.0f), glm::vec3{0, 0, 1});
 
     auto mvp = projection * view * model;
     shaderProgram.setUniformValue("MVP", mvp);

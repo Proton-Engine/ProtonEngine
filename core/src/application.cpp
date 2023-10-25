@@ -36,11 +36,8 @@ void Application::update()
 //    static Triangle triangle;
 
     auto & registry = m_scene.getEntityRegistry();
-    auto renderableEntities = registry.view<RenderableComponent>();
 
-    renderableEntities.each(Renderer::renderRenderableComponent);
-
-//    Renderer::renderFrame(cube, triangle);
+    registry.view<TransformComponent, RenderableComponent>().each(Renderer::renderRenderableComponent);
 }
 
 auto Application::getScene() noexcept -> Scene &

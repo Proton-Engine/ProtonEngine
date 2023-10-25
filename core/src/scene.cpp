@@ -6,7 +6,8 @@
 #include "protonengine/core/scene.h"
 #include "protonengine/core/entity.h"
 #include "protonengine/core/components.h"
-#include "fmt/format.h"
+
+#include <fmt/format.h>
 
 namespace ProtonEngine::Core
 {
@@ -15,6 +16,7 @@ auto Scene::addEntity(std::string_view name) noexcept -> Entity
 {
     const auto entity = m_registry.create();
     m_registry.emplace<TagComponent>(entity, std::string(name));
+    m_registry.emplace<TransformComponent>(entity, glm::vec3{0, 0, -5}, glm::vec3{}, glm::vec3{1, 1, 1});
     return ProtonEngine::Core::Entity(entity, this);
 }
 

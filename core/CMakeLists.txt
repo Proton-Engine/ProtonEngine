@@ -13,6 +13,7 @@ target_include_directories(ProtonEngineCore PUBLIC include)
 target_link_libraries(ProtonEngineCore
         PUBLIC
         EnTT::EnTT
+        glm::glm
         ProtonEngine::Renderer
 
         PRIVATE
@@ -20,4 +21,3 @@ target_link_libraries(ProtonEngineCore
         glfw)
 
 add_library(ProtonEngine::Core ALIAS ProtonEngineCore)
-add_library(ProtonEngine ALIAS ProtonEngineCore)
