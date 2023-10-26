@@ -15,11 +15,13 @@ target_link_libraries(ProtonEngineCore
         PUBLIC
         EnTT::EnTT
         glm::glm
+        ProtonEngine::SDK
+
+        PRIVATE
         ProtonEngine::Renderer
         ProtonEngine::Components
         ProtonEngine::Assets
 
-        PRIVATE
         fmt
         glfw
         stb_image)

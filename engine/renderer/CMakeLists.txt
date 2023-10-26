@@ -15,6 +15,7 @@ target_link_libraries(ProtonEngineRenderer PRIVATE
 
         ProtonEngine::Components
         ProtonEngine::Assets
+        ProtonEngine::SDK
 )
 
 if(WIN32)

@@ -20,7 +20,6 @@ public:
         auto cube = getScene().addEntity("cube");
         static auto image = ProtonEngine::Core::AssetManager::readImageFromFile("assets/textures/checkerboard.png");
         static auto texture = ProtonEngine::Renderer::createTextureFromImage(image);
-//        static auto texture = ProtonEngine::Core::AssetManager::loadTextureFromFile("assets/textures/checkerboard.png");
         cube.addComponent(ProtonEngine::Components::MeshRenderer{m_cube, texture});
     }
 
