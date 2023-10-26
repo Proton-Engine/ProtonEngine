@@ -8,7 +8,6 @@
 
 #include <glad/glad.h>
 #include <glm/gtc/matrix_transform.hpp>
-#include <stb_image/stb_image.h>
 
 namespace ProtonEngine::Renderer
 {
@@ -21,15 +20,13 @@ void setWindowContext(ContextLoadFunction func)
     glDepthFunc(GL_LESS);
 }
 
-void renderRenderableComponent(const Core::TransformComponent & transform, const Core::RenderableComponent & renderable)
+void renderRenderableComponent(const Core::Components::Transform & transform, const Core::Components::MeshRenderer & meshRenderer)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     static ShaderProgram shaderProgram("shader");
     shaderProgram.enable();
-
-    static const auto id = loadTexture("assets/textures/checkerboard.png");
-    glBindTexture(GL_TEXTURE_2D, id);
+    meshRenderer.texture.activate();
 
     glm::mat4 projection = glm::perspective(glm::radians(45.f), 1280.f / 720.f, 0.1f, 100.0f);
 //    glm::mat4 projection = glm::ortho(-10.0f,10.0f,-10.0f,10.0f,0.0f,100.0f);
@@ -50,54 +47,17 @@ void renderRenderableComponent(const Core::TransformComponent & transform, const
     auto mvp = projection * view * model;
     shaderProgram.setUniformValue("MVP", mvp);
 
-    renderable.mesh.enableForDrawing();
-    glDrawArrays(GL_TRIANGLES, 0, renderable.mesh.verticesCount());
-    renderable.mesh.disableForDrawing();
+    meshRenderer.mesh.enableForDrawing();
+    glDrawArrays(GL_TRIANGLES, 0, meshRenderer.mesh.verticesCount());
+    meshRenderer.mesh.disableForDrawing();
 
     shaderProgram.disable();
+    meshRenderer.texture.deactivate();
 }
 
-uint32_t loadTexture(std::string_view path)
+Texture createTextureFromImage(const Core::Assets::Image & image)
 {
-    uint32_t textureId;
-
-    int width;
-    int height;
-    int channels;
-
-    stbi_set_flip_vertically_on_load(true);
-    stbi_uc * data = stbi_load(path.data(), &width, &height, &channels, 0);
-
-    if(data == nullptr)
-        return 0;
-
-    GLenum internalFormat = 0;
-    GLenum dataFormat = 0;
-
-    if (channels == 4)
-    {
-        internalFormat = GL_RGBA8;
-        dataFormat = GL_RGBA;
-    }
-    else if (channels == 3)
-    {
-        internalFormat = GL_RGB8;
-        dataFormat = GL_RGB;
-    }
-
-    glGenTextures(1, &textureId);
-    glBindTexture(GL_TEXTURE_2D, textureId);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    stbi_image_free(data);
-
-    return textureId;
+    return Texture(image);
 }
 
 } // namespace ProtonEngine::Renderer

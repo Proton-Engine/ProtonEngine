@@ -3,7 +3,7 @@
  * Licensed using the MIT license
  */
 
-#include "protonengine/core/window.h"
+#include "window.h"
 #include "protonengine/renderer/renderer.h"
 
 #include <fmt/core.h>

@@ -1,7 +1,10 @@
 project(ProtonEngineCore)
 
 add_library(ProtonEngineCore STATIC
+        src/assets/image.cpp
+
         src/application.cpp
+        src/asset_manager.cpp
         src/cube.cpp
         src/entity.cpp
         src/scene.cpp
@@ -18,6 +21,7 @@ target_link_libraries(ProtonEngineCore
 
         PRIVATE
         fmt
-        glfw)
+        glfw
+        stb_image)
 
 add_library(ProtonEngine::Core ALIAS ProtonEngineCore)

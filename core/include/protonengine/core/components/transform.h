@@ -1,6 +1,6 @@
 /*
- * Copyright © 2022 Tim Herreijgers
- * Licensed using the MIT license
+* Copyright © 2022 Tim Herreijgers
+* Licensed using the MIT license
  */
 
 #pragma once
@@ -12,24 +12,14 @@
 #include <string>
 #include <memory>
 
-namespace ProtonEngine::Core
+namespace ProtonEngine::Core::Components
 {
 
-struct TagComponent
-{
-    std::string tag;
-};
-
-struct TransformComponent
+struct Transform
 {
     glm::vec3 position;
     glm::vec3 rotation;
     glm::vec3 scale;
-};
-
-struct RenderableComponent
-{
-    Renderer::Mesh & mesh;
 };
 
 } // namespace ProtonEngine::Core

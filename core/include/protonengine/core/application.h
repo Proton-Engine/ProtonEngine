@@ -5,11 +5,14 @@
 
 #pragma once
 
-#include "window.h"
 #include "scene.h"
+
+#include <memory>
 
 namespace ProtonEngine::Core
 {
+
+class Window;
 
 class Application
 {
@@ -25,11 +28,10 @@ public:
 
     void update();
 
-    [[nodiscard]] auto getWindow() const noexcept -> const Window &;
     [[nodiscard]] auto getScene() noexcept -> Scene &;
 
 private:
-    Window m_window;
+    std::unique_ptr<Window> m_window;
     Scene m_scene;
 };
 

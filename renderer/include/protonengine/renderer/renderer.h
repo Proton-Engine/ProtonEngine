@@ -6,7 +6,11 @@
 #pragma once
 
 #include "mesh.h"
-#include "protonengine/core/components.h"
+#include "texture.h"
+
+#include "protonengine/core/assets/image.h"
+#include "protonengine/core/components/mesh_renderer.h"
+#include "protonengine/core/components/transform.h"
 
 #include <string_view>
 
@@ -16,8 +20,8 @@ namespace ProtonEngine::Renderer
 using ContextLoadFunction = void* (*)(const char *name);
 
 void setWindowContext(ContextLoadFunction func);
-void renderRenderableComponent(const Core::TransformComponent & transform, const Core::RenderableComponent & renderable);
+void renderRenderableComponent(const Core::Components::Transform & transform, const Core::Components::MeshRenderer & meshRenderer);
 
-uint32_t loadTexture(std::string_view path);
+Texture createTextureFromImage(const Core::Assets::Image & image);
 
 } // namespace ProtonEngine::Renderer
