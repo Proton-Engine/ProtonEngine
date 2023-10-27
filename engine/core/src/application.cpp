@@ -10,6 +10,8 @@
 
 #include "protonengine/components/mesh_renderer.h"
 #include "protonengine/components/transform.h"
+#include "protonengine/components/camera.h"
+
 #include "window.h"
 
 namespace ProtonEngine::Core
@@ -30,6 +32,7 @@ void Application::update()
 
     auto & registry = m_scene.getEntityRegistry();
 
+    registry.view<Components::Transform, Components::Camera>().each(Renderer::setCamera);
     registry.view<Components::Transform, Components::MeshRenderer>().each(Renderer::renderRenderableComponent);
 }
 

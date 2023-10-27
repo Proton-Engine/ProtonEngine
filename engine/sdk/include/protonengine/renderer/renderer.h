@@ -10,6 +10,7 @@
 
 #include "protonengine/components/mesh_renderer.h"
 #include "protonengine/components/transform.h"
+#include "protonengine/components/camera.h"
 
 #include "protonengine/assets/image.h"
 
@@ -21,6 +22,7 @@ namespace ProtonEngine::Renderer
 using ContextLoadFunction = void* (*)(const char *name);
 
 void setWindowContext(ContextLoadFunction func);
+void setCamera(const Components::Transform & transform, const Components::Camera & camera);
 void renderRenderableComponent(const Components::Transform & transform, const Components::MeshRenderer & meshRenderer);
 
 Texture createTextureFromImage(const Assets::Image & image);

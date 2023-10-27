@@ -5,9 +5,11 @@
 
 #include "protonengine/renderer/renderer.h"
 #include "protonengine/renderer/shader_program.h"
+#include "protonengine/components/camera.h"
 
 #include <glad/glad.h>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/quaternion.hpp>
 
 namespace ProtonEngine::Renderer
 {
@@ -20,6 +22,38 @@ void setWindowContext(ContextLoadFunction func)
     glDepthFunc(GL_LESS);
 }
 
+static glm::mat4 projection{};
+static glm::mat4 view{};
+
+void setCamera(const Components::Transform & transform, const Components::Camera & camera)
+{
+    if(!camera.isMainCamera)
+    {
+        return;
+    }
+
+    view = glm::lookAt(
+            transform.position,
+            transform.position + glm::vec3{0, 0, -1},
+            glm::vec3(0,1,0)
+    );
+
+    view = glm::rotate(view, static_cast<float>(transform.rotation.y * M_PI / 180.0f), glm::vec3{0, 1, 0});
+    view = glm::rotate(view, static_cast<float>(transform.rotation.x * M_PI / 180.0f), glm::vec3{1, 0, 0});
+    view = glm::rotate(view, static_cast<float>(transform.rotation.z * M_PI / 180.0f), glm::vec3{0, 0, 1});
+
+    if(camera.projection == Components::Camera::Projection::PERSPECTIVE)
+    {
+        projection = glm::perspective(glm::radians(camera.fieldOfView), 1280.f / 720.f, camera.clippingPlaneNear,
+                                      camera.clippingPlaneFar);
+    }
+
+    if(camera.projection == Components::Camera::Projection::ORTHOGRAPHIC)
+    {
+        throw std::runtime_error("Orthographic projection not supported yet");
+    }
+}
+
 void renderRenderableComponent(const Components::Transform & transform, const Components::MeshRenderer & meshRenderer)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -28,20 +62,10 @@ void renderRenderableComponent(const Components::Transform & transform, const Co
     shaderProgram.enable();
     meshRenderer.texture.activate();
 
-    glm::mat4 projection = glm::perspective(glm::radians(45.f), 1280.f / 720.f, 0.1f, 100.0f);
-//    glm::mat4 projection = glm::ortho(-10.0f,10.0f,-10.0f,10.0f,0.0f,100.0f);
-
-    glm::mat4 view = glm::lookAt(
-            glm::vec3(0,0,3), // Camera is at (4,3,3), in World Space
-            glm::vec3(0,0,0), // and looks at the origin
-            glm::vec3(0,1,0)  // Head is up (set to 0,-1,0 to look upside-down)
-    );
-
-    static float offset = 0.1f;
     glm::mat4 model = glm::translate(glm::mat4(1.0f), transform.position);
     model = glm::scale(model, transform.scale);
-    model = glm::rotate(model, static_cast<float>(transform.rotation.x * M_PI / 180.0f), glm::vec3{1, 0, 0});
     model = glm::rotate(model, static_cast<float>(transform.rotation.y * M_PI / 180.0f), glm::vec3{0, 1, 0});
+    model = glm::rotate(model, static_cast<float>(transform.rotation.x * M_PI / 180.0f), glm::vec3{1, 0, 0});
     model = glm::rotate(model, static_cast<float>(transform.rotation.z * M_PI / 180.0f), glm::vec3{0, 0, 1});
 
     auto mvp = projection * view * model;
