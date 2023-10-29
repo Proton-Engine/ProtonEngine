@@ -14,6 +14,7 @@
 
 #include "window.h"
 #include "delta_time.h"
+#include "input.h"
 
 namespace ProtonEngine::Core
 {

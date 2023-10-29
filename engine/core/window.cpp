@@ -4,6 +4,8 @@
  */
 
 #include "window.h"
+#include "input.h"
+
 #include "protonengine/renderer/renderer.h"
 
 #include <fmt/core.h>
@@ -31,6 +33,8 @@ Window::Window(int32_t width, int32_t height, std::string_view title)
     glfwMakeContextCurrent(m_windowHandle);
     
     Renderer::setWindowContext([](const char * proc_name){return (void *) glfwGetProcAddress(proc_name);});
+
+    glfwSetKeyCallback(m_windowHandle, Input::onKeyBoardEvent);
 }
 
 Window::~Window()
