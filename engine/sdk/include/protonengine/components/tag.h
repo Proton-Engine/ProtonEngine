@@ -6,6 +6,7 @@
 #pragma once
 
 #include "protonengine/renderer/mesh.h"
+#include "protonengine/proton_interface.h"
 
 #include <glm/vec3.hpp>
 
@@ -15,7 +16,7 @@
 namespace ProtonEngine::Components
 {
 
-struct Tag
+struct PROTON_API Tag
 {
    std::string tag;
 };

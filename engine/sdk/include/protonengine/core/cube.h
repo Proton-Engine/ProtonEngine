@@ -6,11 +6,12 @@
 #pragma once
 
 #include "protonengine/renderer/mesh.h"
+#include "protonengine/proton_interface.h"
 
 namespace ProtonEngine::Core
 {
 
-class Cube : public Renderer::Mesh
+class PROTON_API Cube : public Renderer::Mesh
 {
 public:
     Cube();

@@ -5,7 +5,8 @@
 
 #pragma once
 
-#include "scene.h"
+#include "protonengine/core/scene.h"
+#include "protonengine/proton_interface.h"
 
 #include <entt/entity/entity.hpp>
 
@@ -14,7 +15,7 @@
 namespace ProtonEngine::Core
 {
 
-class Entity
+class PROTON_API Entity
 {
 public:
     Entity();

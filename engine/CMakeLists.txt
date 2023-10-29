@@ -1,3 +1,5 @@
+add_compile_definitions(PROTON_BUILDING_ENGINE)
+
 add_subdirectory(assets)
 add_subdirectory(components)
 add_subdirectory(core)

@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "protonengine/renderer/mesh.h"
+#include "protonengine/proton_interface.h"
 
 #include <glm/vec3.hpp>
 
@@ -15,7 +15,7 @@
 namespace ProtonEngine::Components
 {
 
-struct Transform
+struct PROTON_API Transform
 {
     glm::vec3 position;
     glm::vec3 rotation;

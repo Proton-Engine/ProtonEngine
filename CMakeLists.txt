@@ -4,6 +4,11 @@ project(ProtonEngine)
 
 set(CMAKE_CXX_STANDARD 23)
 
+set(BINARY_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+
+set (CMAKE_LIBRARY_OUTPUT_DIRECTORY ${BINARY_DIRECTORY})
+set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${BINARY_DIRECTORY})
+
 # Third-party libraries
 add_subdirectory(third-party)
 find_package(OpenGL REQUIRED)

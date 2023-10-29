@@ -5,8 +5,10 @@
 
 #pragma once
 
-#include "mesh.h"
-#include "texture.h"
+#include "protonengine/proton_interface.h"
+
+#include "protonengine/renderer/mesh.h"
+#include "protonengine/renderer/texture.h"
 
 #include "protonengine/components/mesh_renderer.h"
 #include "protonengine/components/transform.h"
@@ -21,10 +23,10 @@ namespace ProtonEngine::Renderer
 
 using ContextLoadFunction = void* (*)(const char *name);
 
-void setWindowContext(ContextLoadFunction func);
-void setCamera(const Components::Transform & transform, const Components::Camera & camera);
-void renderRenderableComponent(const Components::Transform & transform, const Components::MeshRenderer & meshRenderer);
+PROTON_API void setWindowContext(ContextLoadFunction func);
+PROTON_API void setCamera(const Components::Transform & transform, const Components::Camera & camera);
+PROTON_API void renderRenderableComponent(const Components::Transform & transform, const Components::MeshRenderer & meshRenderer);
 
-Texture createTextureFromImage(const Assets::Image & image);
+[[nodiscard]] PROTON_API Texture createTextureFromImage(const Assets::Image & image);
 
 } // namespace ProtonEngine::Renderer

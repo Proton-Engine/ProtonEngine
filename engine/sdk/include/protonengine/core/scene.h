@@ -5,7 +5,9 @@
 
 #pragma once
 
-#include "entt/entt.hpp"
+#include "protonengine/proton_interface.h"
+
+#include <entt/entt.hpp>
 
 #include <string_view>
 
@@ -14,7 +16,7 @@ namespace ProtonEngine::Core
 
 class Entity;
 
-class Scene
+class PROTON_API Scene
 {
 public:
     Scene() = default;

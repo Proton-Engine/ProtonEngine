@@ -11,6 +11,10 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/quaternion.hpp>
 
+#include <stdexcept>
+
+# define M_PI           3.14159265358979323846  /* pi */
+
 namespace ProtonEngine::Renderer
 {
 

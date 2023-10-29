@@ -5,12 +5,14 @@
 
 #pragma once
 
+#include "protonengine/proton_interface.h"
+
 #include <cinttypes>
 #include <vector>
 
 namespace ProtonEngine::Renderer {
 
-class Mesh
+class PROTON_API Mesh
 {
 public:
     Mesh(const std::vector<float> & meshData, const std::vector<float> & colorData);

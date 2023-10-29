@@ -5,6 +5,7 @@
 
 #pragma once
 
+#include "protonengine/proton_interface.h"
 #include "protonengine/assets/image.h"
 
 #include <cinttypes>
@@ -13,7 +14,7 @@
 namespace ProtonEngine::Renderer
 {
 
-class Texture
+class PROTON_API Texture
 {
 public:
     explicit Texture(const Assets::Image & image);

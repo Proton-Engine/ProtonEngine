@@ -6,11 +6,12 @@
 #pragma once
 
 #include "protonengine/renderer/mesh.h"
+#include "protonengine/proton_interface.h"
 
 namespace ProtonEngine::Core
 {
 
-class Triangle : public Renderer::Mesh
+class PROTON_API  Triangle : public Renderer::Mesh
 {
 public:
     Triangle();

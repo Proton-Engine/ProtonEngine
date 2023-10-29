@@ -5,9 +5,11 @@
 
 #pragma once
 
+#include "protonengine/proton_interface.h"
+
 #include <glm/mat4x4.hpp>
 
-#include <inttypes.h>
+#include <cinttypes>
 #include <string>
 #include <string_view>
 
@@ -15,7 +17,7 @@ namespace ProtonEngine::Renderer {
 
 enum class ShaderType;
 
-class ShaderProgram
+class PROTON_API ShaderProgram
 {
 public:
     explicit ShaderProgram(std::string_view shaderName);

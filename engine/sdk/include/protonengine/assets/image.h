@@ -5,13 +5,15 @@
 
 #pragma once
 
+#include "protonengine/proton_interface.h"
+
 #include <cinttypes>
 #include <vector>
 
 namespace ProtonEngine::Assets
 {
 
-class Image
+class PROTON_API Image
 {
 public:
     Image(const uint8_t * data, int width, int height, int channels);

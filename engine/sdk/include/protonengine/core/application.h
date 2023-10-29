@@ -5,7 +5,8 @@
 
 #pragma once
 
-#include "scene.h"
+#include "protonengine/core/scene.h"
+#include "protonengine/proton_interface.h"
 
 #include <memory>
 
@@ -14,7 +15,7 @@ namespace ProtonEngine::Core
 
 class Window;
 
-class Application
+class PROTON_API Application
 {
 public:
     Application();

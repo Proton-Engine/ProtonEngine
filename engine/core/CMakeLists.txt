@@ -27,3 +27,8 @@ target_link_libraries(ProtonEngineCore
         stb_image)
 
 add_library(ProtonEngine::Core ALIAS ProtonEngineCore)
+
+set_target_properties(ProtonEngineCore PROPERTIES
+        IMPORTED_LOCATION ${CMAKE_CURRENT_BINARY_DIR})
+
+#target_compile_definitions(ProtonEngineCore PRIVATE PROTON_BUILDING_ENGINE)
