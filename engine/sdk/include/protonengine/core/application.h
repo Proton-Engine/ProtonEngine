@@ -27,7 +27,7 @@ public:
 
     virtual void initialize() = 0;
 
-    void update();
+    void run();
 
     [[nodiscard]] auto getScene() noexcept -> Scene &;
 

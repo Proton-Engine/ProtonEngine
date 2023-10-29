@@ -16,8 +16,5 @@ int main(int argc, char **argv)
     auto application = getProtonApplication(argc, argv);
     application->initialize();
 
-    while(true)
-    {
-        application->update();
-    }
+    application->run();
 }

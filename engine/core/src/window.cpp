@@ -38,17 +38,18 @@ Window::~Window()
     glfwDestroyWindow(m_windowHandle);
 }
 
-void Window::update()
+auto Window::update() noexcept -> bool
 {
     if (glfwWindowShouldClose(m_windowHandle) ||
         glfwGetKey(m_windowHandle, GLFW_KEY_ESCAPE))
     {
         glfwTerminate();
-        exit(EXIT_SUCCESS);
+        return false;
     }
 
     glfwSwapBuffers(m_windowHandle);
     glfwPollEvents();
+    return true;
 }
 
 } // namespace ProtonEngine::Core

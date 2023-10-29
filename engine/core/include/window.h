@@ -19,7 +19,7 @@ public:
     Window(int32_t width, int32_t height, std::string_view title);
     ~Window();
 
-    void update();
+    [[nodiscard]] auto update() noexcept -> bool;
 
 private:
     GLFWwindow * m_windowHandle{};
