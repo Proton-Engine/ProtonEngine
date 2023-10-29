@@ -5,7 +5,7 @@
 
 #include "protonengine/renderer/mesh.h"
 
-#include <glad/glad.h>
+#include "glad/glad.h"
 
 namespace ProtonEngine::Renderer {
 

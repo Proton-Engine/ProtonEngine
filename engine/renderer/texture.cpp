@@ -5,8 +5,8 @@
 
 #include "protonengine/renderer/texture.h"
 
-#include <glad/glad.h>
-#include <fmt/core.h>
+#include "glad/glad.h"
+#include "fmt/core.h"
 
 namespace ProtonEngine::Renderer
 {

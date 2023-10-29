@@ -7,9 +7,9 @@
 #include "protonengine/renderer/shader_program.h"
 #include "protonengine/components/camera.h"
 
-#include <glad/glad.h>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/quaternion.hpp>
+#include "glad/glad.h"
+#include "glm/gtc/matrix_transform.hpp"
+#include "glm/gtc/quaternion.hpp"
 
 #include <stdexcept>
 

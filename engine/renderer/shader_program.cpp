@@ -5,8 +5,8 @@
 
 #include "protonengine/renderer/shader_program.h"
 
-#include <glad/glad.h>
-#include <fmt/core.h>
+#include "glad/glad.h"
+#include "fmt/core.h"
 
 #include <fstream>
 #include <sstream>

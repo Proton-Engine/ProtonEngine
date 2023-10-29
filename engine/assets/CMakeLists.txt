@@ -1,13 +1,2 @@
-project(ProtonEngineAssets)
-
-add_library(ProtonEngineAssets STATIC
-        src/image.cpp)
-
-target_include_directories(ProtonEngineAssets PUBLIC include)
-
-target_link_libraries(ProtonEngineAssets
-        PRIVATE
-        ProtonEngine::SDK
-        fmt)
-
-add_library(ProtonEngine::Assets ALIAS ProtonEngineAssets)
+set(PROTON_ENGINE_SOURCES ${PROTON_ENGINE_SOURCES}
+        ${CMAKE_CURRENT_SOURCE_DIR}/image.cpp PARENT_SCOPE)
