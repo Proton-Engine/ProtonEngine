@@ -6,7 +6,6 @@
 #pragma once
 
 #include "protonengine/core/scene.h"
-#include "protonengine/components/proton_script.h"
 
 #include "protonengine/proton_interface.h"
 
@@ -14,6 +13,11 @@
 
 #include <functional>
 #include <memory>
+
+namespace ProtonEngine::Components
+{
+    class ProtonScript;
+}
 
 namespace ProtonEngine::Core
 {
@@ -37,6 +41,15 @@ public:
         std::unique_ptr<Components::ProtonScript> script = std::make_unique<T>();
         addScript(std::move(script));
     };
+
+    template<typename T>
+    T * getComponent()
+    {
+//        if (!m_scene->getEntityRegistry().any_of<T>(m_handle))
+//            return nullptr;
+
+        return &m_scene->getEntityRegistry().get<T>(m_handle);
+    }
 private:
     entt::entity m_handle;
     Scene * m_scene;

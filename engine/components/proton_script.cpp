@@ -21,4 +21,9 @@ Core::KeyState ProtonScript::getKeyState(Core::Key key)
     return Core::Input::getKeyState(key);
 }
 
+void ProtonScript::setEntity(Core::Entity entity)
+{
+    m_entity = entity;
+}
+
 } // namespace ProtonEngine::Components

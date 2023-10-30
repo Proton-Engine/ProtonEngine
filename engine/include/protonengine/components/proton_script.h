@@ -7,7 +7,14 @@
 
 #include "protonengine/core/key_codes.h"
 #include "protonengine/core/key_state.h"
+#include "protonengine/core/entity.h"
+
 #include "protonengine/proton_interface.h"
+
+namespace ProtonEngine::Core
+{
+    class Entity;
+}
 
 namespace ProtonEngine::Components
 {
@@ -20,8 +27,21 @@ public:
 
     virtual void onUpdate();
 
+    void setEntity(Core::Entity entity);
+
 protected:
     static Core::KeyState getKeyState(Core::Key key);
+
+    template<typename T>
+    T * getComponent()
+    {
+        // TODO: Change for custom assert
+        assert(m_entity.has_value());
+        return m_entity.value().getComponent<T>();
+    }
+
+private:
+    std::optional<Core::Entity> m_entity = std::nullopt;
 };
 
 } // namespace ProtonEngine::Scripting

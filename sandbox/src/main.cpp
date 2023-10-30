@@ -15,14 +15,22 @@
 
 #include "protonengine/renderer/renderer.h"
 
-#include <fmt/core.h>
-
 class MyScript : public ProtonEngine::Components::ProtonScript
 {
 public:
     void onUpdate() override
     {
-        fmt::print("Custom update\n");
+        auto * transform = getComponent<ProtonEngine::Components::Transform>();
+
+        if(getKeyState(ProtonEngine::Core::KeyCode::KEY_A) == ProtonEngine::Core::KeyState::PRESSED)
+        {
+            transform->position.x += 0.1f;
+        }
+
+        if(getKeyState(ProtonEngine::Core::KeyCode::KEY_D) == ProtonEngine::Core::KeyState::PRESSED)
+        {
+            transform->position.x -= 0.1f;
+        }
     }
 };
 
@@ -38,8 +46,8 @@ public:
                                                0.1f, 100.0f, 60, true});
         camera.addScript<MyScript>();
 
-        getScene().getEntityRegistry().get<Components::Transform>(camera.getHandle()).position = glm::vec3{2, 0, 3};
-        getScene().getEntityRegistry().get<Components::Transform>(camera.getHandle()).rotation = glm::vec3{0, -33.7, 0};
+        getScene().getEntityRegistry().get<Components::Transform>(camera.getHandle()).position = glm::vec3{0, 0, 3};
+        getScene().getEntityRegistry().get<Components::Transform>(camera.getHandle()).rotation = glm::vec3{0, 0, 0};
 
         auto cube = getScene().addEntity("cube");
         static auto image = Core::AssetManager::readImageFromFile("assets/textures/checkerboard.png");

@@ -27,6 +27,7 @@ Entity::Entity() : m_handle(), m_scene(nullptr)
 
 void Entity::addScript(std::unique_ptr<Components::ProtonScript> script)
 {
+    script->setEntity(*this);
     auto scriptComponent = Components::NativeScript{std::move(script)};
     addComponent(std::move(scriptComponent));
 }
