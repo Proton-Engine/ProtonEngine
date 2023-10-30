@@ -6,6 +6,7 @@
 #pragma once
 
 #include "protonengine/core/key_codes.h"
+#include "protonengine/core/key_state.h"
 
 #include <GLFW/glfw3.h>
 
@@ -13,12 +14,6 @@
 
 namespace ProtonEngine::Core
 {
-
-enum class KeyState
-{
-    RELEASED,
-    PRESSED
-};
 
 class Input
 {

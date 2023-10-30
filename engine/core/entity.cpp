@@ -4,6 +4,7 @@
  */
 
 #include "protonengine/core/entity.h"
+#include "components/native_script.h"
 
 namespace ProtonEngine::Core
 {
@@ -22,6 +23,12 @@ auto Entity::getHandle() noexcept -> entt::entity
 Entity::Entity() : m_handle(), m_scene(nullptr)
 {
 
+}
+
+void Entity::addScript(std::unique_ptr<Components::ProtonScript> script)
+{
+    auto scriptComponent = Components::NativeScript{std::move(script)};
+    addComponent(std::move(scriptComponent));
 }
 
 } // namespace ProtonEngine::Core

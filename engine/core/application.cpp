@@ -11,10 +11,12 @@
 #include "protonengine/components/mesh_renderer.h"
 #include "protonengine/components/transform.h"
 #include "protonengine/components/camera.h"
+#include "protonengine/components/proton_script.h"
 
 #include "window.h"
 #include "delta_time.h"
 #include "input.h"
+#include "components/native_script.h"
 
 namespace ProtonEngine::Core
 {
@@ -40,6 +42,8 @@ void Application::run()
         DeltaTime::update();
 
         auto & registry = m_scene.getEntityRegistry();
+
+        registry.view<Components::NativeScript>().each([](Components::NativeScript & component) { component.onUpdate(); });
 
         registry.view<Components::Transform, Components::Camera>().each(Renderer::setCamera);
         registry.view<Components::Transform, Components::MeshRenderer>().each(Renderer::renderRenderableComponent);

@@ -11,8 +11,20 @@
 
 #include "protonengine/components/mesh_renderer.h"
 #include "protonengine/components/camera.h"
+#include "protonengine/components/proton_script.h"
 
 #include "protonengine/renderer/renderer.h"
+
+#include <fmt/core.h>
+
+class MyScript : public ProtonEngine::Components::ProtonScript
+{
+public:
+    void onUpdate() override
+    {
+        fmt::print("Custom update\n");
+    }
+};
 
 class SandboxApplication : public ProtonEngine::Core::Application
 {
@@ -24,6 +36,7 @@ public:
         auto camera = getScene().addEntity("MainCamera");
         camera.addComponent(Components::Camera{Components::Camera::Projection::PERSPECTIVE,
                                                0.1f, 100.0f, 60, true});
+        camera.addScript<MyScript>();
 
         getScene().getEntityRegistry().get<Components::Transform>(camera.getHandle()).position = glm::vec3{2, 0, 3};
         getScene().getEntityRegistry().get<Components::Transform>(camera.getHandle()).rotation = glm::vec3{0, -33.7, 0};

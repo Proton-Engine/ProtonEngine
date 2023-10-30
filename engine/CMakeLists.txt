@@ -3,6 +3,7 @@ add_compile_definitions(PROTON_BUILDING_ENGINE)
 set(PROTON_ENGINE_SOURCES)
 
 add_subdirectory(assets)
+add_subdirectory(components)
 add_subdirectory(core)
 add_subdirectory(renderer)
 

@@ -33,7 +33,7 @@ public:
 
     void addComponentToEntity(entt::entity handle, auto component) noexcept
     {
-        m_registry.emplace<decltype(component)>(handle, component);
+        m_registry.emplace<decltype(component)>(handle, std::move(component));
     }
 private:
     entt::registry m_registry;
