@@ -11,6 +11,8 @@
 
 #include "protonengine/proton_interface.h"
 
+#include <chrono>
+
 namespace ProtonEngine::Core
 {
     class Entity;
@@ -25,7 +27,7 @@ public:
     ProtonScript() = default;
     virtual ~ProtonScript() = default;
 
-    virtual void onUpdate();
+    virtual void onUpdate(double timestep);
 
     void setEntity(Core::Entity entity);
 

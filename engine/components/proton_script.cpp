@@ -11,7 +11,7 @@ namespace ProtonEngine::Components
 {
 
 
-void ProtonScript::onUpdate()
+void ProtonScript::onUpdate(double /*timestep*/)
 {
 
 }

@@ -13,9 +13,9 @@ NativeScript::NativeScript(std::unique_ptr<ProtonScript> script) : m_script(std:
 
 }
 
-void NativeScript::onUpdate()
+void NativeScript::onUpdate(double timestep)
 {
-    m_script->onUpdate();
+    m_script->onUpdate(timestep);
 }
 
 } // namespace ProtonEngine::Components

@@ -5,7 +5,6 @@
 
 #include "protonengine/core/entrypoint.h"
 #include "protonengine/core/application.h"
-#include "protonengine/core/entity.h"
 #include "protonengine/core/cube.h"
 #include "protonengine/core/asset_manager.h"
 
@@ -15,21 +14,22 @@
 
 #include "protonengine/renderer/renderer.h"
 
+
 class MyScript : public ProtonEngine::Components::ProtonScript
 {
 public:
-    void onUpdate() override
+    void onUpdate(double timestep) override
     {
         auto * transform = getComponent<ProtonEngine::Components::Transform>();
 
         if(getKeyState(ProtonEngine::Core::KeyCode::KEY_A) == ProtonEngine::Core::KeyState::PRESSED)
         {
-            transform->position.x += 0.1f;
+            transform->position.x += static_cast<float>(5.0f * timestep);
         }
 
         if(getKeyState(ProtonEngine::Core::KeyCode::KEY_D) == ProtonEngine::Core::KeyState::PRESSED)
         {
-            transform->position.x -= 0.1f;
+            transform->position.x -= static_cast<float>(5.0f * timestep);
         }
     }
 };

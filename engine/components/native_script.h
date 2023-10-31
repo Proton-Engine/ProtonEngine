@@ -24,7 +24,7 @@ public:
     NativeScript& operator=(NativeScript&&) = default;
 
 
-    void onUpdate();
+    void onUpdate(double timestep);
 
 private:
     std::unique_ptr<ProtonScript> m_script;
