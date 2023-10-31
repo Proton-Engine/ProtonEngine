@@ -27,7 +27,7 @@ public:
     ProtonScript() = default;
     virtual ~ProtonScript() = default;
 
-    virtual void onUpdate(double timestep);
+    virtual void onUpdate(float timestep);
 
     void setEntity(Core::Entity entity);
 

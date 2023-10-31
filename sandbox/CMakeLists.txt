@@ -1,4 +1,6 @@
 add_executable(Sandbox
+        src/scripts/rotator.cpp
+
         src/main.cpp)
 
 target_link_libraries(Sandbox PRIVATE

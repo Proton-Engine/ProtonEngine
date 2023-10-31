@@ -13,7 +13,7 @@ NativeScript::NativeScript(std::unique_ptr<ProtonScript> script) : m_script(std:
 
 }
 
-void NativeScript::onUpdate(double timestep)
+void NativeScript::onUpdate(float timestep)
 {
     m_script->onUpdate(timestep);
 }

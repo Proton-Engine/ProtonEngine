@@ -3,6 +3,8 @@
  * Licensed using the MIT license
  */
 
+#include "scripts/rotator.h"
+
 #include "protonengine/core/entrypoint.h"
 #include "protonengine/core/application.h"
 #include "protonengine/core/cube.h"
@@ -18,7 +20,7 @@
 class MyScript : public ProtonEngine::Components::ProtonScript
 {
 public:
-    void onUpdate(double timestep) override
+    void onUpdate(float timestep) override
     {
         auto * transform = getComponent<ProtonEngine::Components::Transform>();
 
@@ -54,6 +56,7 @@ public:
         static auto texture = Renderer::createTextureFromImage(image);
 
         cube.addComponent(Components::MeshRenderer{m_cube, texture});
+        cube.addScript<Rotator>();
     }
 
 private:

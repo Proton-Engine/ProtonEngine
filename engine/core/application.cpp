@@ -41,11 +41,13 @@ void Application::run()
     {
         DeltaTime::update();
 
-        const auto deltaTimeSeconds = static_cast<double>(DeltaTime::getDeltaTimeMicroSeconds().count()) / 1'000'000.0 ;
+        const auto deltaTimeSeconds = static_cast<float>(DeltaTime::getDeltaTimeMicroSeconds().count()) / 1'000'000.0f ;
 
         auto & registry = m_scene.getEntityRegistry();
 
-        registry.view<Components::NativeScript>().each([&](Components::NativeScript & component) { component.onUpdate(deltaTimeSeconds); });
+        registry.view<Components::NativeScript>().each([&](Components::NativeScript & component) {
+            component.onUpdate(deltaTimeSeconds);
+        });
 
         registry.view<Components::Transform, Components::Camera>().each(Renderer::setCamera);
         registry.view<Components::Transform, Components::MeshRenderer>().each(Renderer::renderRenderableComponent);
