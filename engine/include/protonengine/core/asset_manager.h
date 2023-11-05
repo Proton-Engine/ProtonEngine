@@ -5,9 +5,10 @@
 
 #pragma once
 
-#include "protonengine/assets/image.h"
-#include "protonengine/renderer/texture.h"
 #include "protonengine/proton_interface.h"
+
+#include "protonengine/assets/image.h"
+#include "protonengine/assets/model.h"
 
 #include <string_view>
 
@@ -18,7 +19,10 @@ class PROTON_API AssetManager
 {
 public:
     [[nodiscard]] static Assets::Image readImageFromFile(std::string_view path);
+    [[nodiscard]] static Assets::Model loadModel(std::string_view path);
 private:
+
+    [[nodiscard]] static Assets::Model loadObjModel(std::string_view path);
 };
 
 } // namespace ProtonEngine

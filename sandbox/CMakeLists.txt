@@ -1,4 +1,5 @@
 add_executable(Sandbox
+        src/scripts/camera_controller.cpp
         src/scripts/rotator.cpp
 
         src/main.cpp)
@@ -9,7 +10,4 @@ target_link_libraries(Sandbox PRIVATE
 
 add_dependencies(Sandbox ProtonEngine)
 
-file(GLOB ASSETS
-        "assets/*"
-)
-file(COPY ${ASSETS} DESTINATION "${BINARY_DIRECTORY}/assets")
+copy_assets(assets)

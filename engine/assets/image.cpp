@@ -11,7 +11,7 @@ namespace ProtonEngine::Assets
 Assets::Image::Image(const uint8_t * data, int width, int height, int channels) :
     m_width(width), m_height(height), m_channels(channels)
 {
-    m_data.reserve(width * height * channels);
+    m_data.resize(width * height * channels);
 
     for(int i = 0; i < width * height * channels; i++)
     {

@@ -9,7 +9,7 @@
 
 namespace ProtonEngine::Renderer {
 
-Mesh::Mesh(const std::vector<float> & meshData, const std::vector<float> & colorData)
+Mesh::Mesh(const std::vector<float> & meshData, const std::vector<float> & textureCoordinates)
 {
     glGenVertexArrays(1, &m_vertexArrayId);
     glBindVertexArray(m_vertexArrayId);
@@ -29,12 +29,12 @@ Mesh::Mesh(const std::vector<float> & meshData, const std::vector<float> & color
         nullptr             // array buffer offset
     );
 
-    glGenBuffers(1, &m_colorBufferId);
-    glBindBuffer(GL_ARRAY_BUFFER, m_colorBufferId);
-    glBufferData(GL_ARRAY_BUFFER, colorData.size() * sizeof(float), colorData.data(), GL_STATIC_DRAW);
+    glGenBuffers(1, &m_textureBufferId);
+    glBindBuffer(GL_ARRAY_BUFFER, m_textureBufferId);
+    glBufferData(GL_ARRAY_BUFFER, textureCoordinates.size() * sizeof(float), textureCoordinates.data(), GL_STATIC_DRAW);
 
     glVertexAttribPointer(
-        1,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
+        1,                  // attribute 1. No particular reason for 1, but must match the layout in the shader.
         2,                  // size
         GL_FLOAT,           // type
         GL_FALSE,           // normalized?
@@ -43,6 +43,7 @@ Mesh::Mesh(const std::vector<float> & meshData, const std::vector<float> & color
     );
 
     m_verticesCount = meshData.size();
+
 }
 
 Mesh::~Mesh()

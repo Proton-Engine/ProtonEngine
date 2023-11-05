@@ -18,9 +18,26 @@
 namespace ProtonEngine::Renderer
 {
 
+void GLAPIENTRY
+    MessageCallback( GLenum source,
+                    GLenum type,
+                    GLuint id,
+                    GLenum severity,
+                    GLsizei length,
+                    const GLchar* message,
+                    const void* userParam )
+{
+    fprintf( stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
+            ( type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : "" ),
+            type, severity, message );
+}
+
 void setWindowContext(ContextLoadFunction func)
 {
     gladLoadGLLoader(func);
+
+    glEnable(GL_DEBUG_OUTPUT);
+    glDebugMessageCallback(MessageCallback, 0);
 
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
@@ -60,6 +77,7 @@ void setCamera(const Components::Transform & transform, const Components::Camera
 
 void renderRenderableComponent(const Components::Transform & transform, const Components::MeshRenderer & meshRenderer)
 {
+    const auto error = glGetError();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     static ShaderProgram shaderProgram("shader");

@@ -4,19 +4,18 @@
  */
 
 #include "protonengine/core/application.h"
-#include "protonengine/core/entity.h"
 
 #include "protonengine/renderer/renderer.h"
 
 #include "protonengine/components/mesh_renderer.h"
 #include "protonengine/components/transform.h"
 #include "protonengine/components/camera.h"
-#include "protonengine/components/proton_script.h"
 
 #include "window.h"
 #include "delta_time.h"
-#include "input.h"
 #include "components/native_script.h"
+
+#include "glad/glad.h"
 
 namespace ProtonEngine::Core
 {
