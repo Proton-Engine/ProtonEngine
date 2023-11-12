@@ -36,8 +36,10 @@ void setWindowContext(ContextLoadFunction func)
 {
     gladLoadGLLoader(func);
 
+#ifndef __APPLE__
     glEnable(GL_DEBUG_OUTPUT);
     glDebugMessageCallback(MessageCallback, 0);
+#endif
 
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
