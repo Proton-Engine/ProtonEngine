@@ -6,14 +6,13 @@
 #include "protonengine/renderer/renderer.h"
 #include "protonengine/renderer/shader_program.h"
 #include "protonengine/components/camera.h"
+#include "protonengine/math/constants.h"
 
 #include "glad/glad.h"
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/quaternion.hpp"
 
 #include <stdexcept>
-
-# define M_PI           3.14159265358979323846  /* pi */
 
 namespace ProtonEngine::Renderer
 {
@@ -61,9 +60,9 @@ void setCamera(const Components::Transform & transform, const Components::Camera
             glm::vec3(0,1,0)
     );
 
-    view = glm::rotate(view, static_cast<float>(transform.rotation.y * M_PI / 180.0f), glm::vec3{0, 1, 0});
-    view = glm::rotate(view, static_cast<float>(transform.rotation.x * M_PI / 180.0f), glm::vec3{1, 0, 0});
-    view = glm::rotate(view, static_cast<float>(transform.rotation.z * M_PI / 180.0f), glm::vec3{0, 0, 1});
+    view = glm::rotate(view, transform.rotation.y * Math::ConstantsFloat::pi / 180.0f, glm::vec3{0, 1, 0});
+    view = glm::rotate(view, transform.rotation.x * Math::ConstantsFloat::pi / 180.0f, glm::vec3{1, 0, 0});
+    view = glm::rotate(view, transform.rotation.z * Math::ConstantsFloat::pi / 180.0f, glm::vec3{0, 0, 1});
 
     if(camera.projection == Components::Camera::Projection::PERSPECTIVE)
     {
@@ -88,9 +87,9 @@ void renderRenderableComponent(const Components::Transform & transform, const Co
 
     glm::mat4 model = glm::translate(glm::mat4(1.0f), transform.position);
     model = glm::scale(model, transform.scale);
-    model = glm::rotate(model, static_cast<float>(transform.rotation.y * M_PI / 180.0f), glm::vec3{0, 1, 0});
-    model = glm::rotate(model, static_cast<float>(transform.rotation.x * M_PI / 180.0f), glm::vec3{1, 0, 0});
-    model = glm::rotate(model, static_cast<float>(transform.rotation.z * M_PI / 180.0f), glm::vec3{0, 0, 1});
+    model = glm::rotate(model, transform.rotation.y * Math::ConstantsFloat::pi / 180.0f, glm::vec3{0, 1, 0});
+    model = glm::rotate(model, transform.rotation.x * Math::ConstantsFloat::pi / 180.0f, glm::vec3{1, 0, 0});
+    model = glm::rotate(model, transform.rotation.z * Math::ConstantsFloat::pi / 180.0f, glm::vec3{0, 0, 1});
 
     auto mvp = projection * view * model;
     shaderProgram.setUniformValue("MVP", mvp);

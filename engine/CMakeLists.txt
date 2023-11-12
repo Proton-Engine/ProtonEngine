@@ -15,6 +15,7 @@ add_library(ProtonEngine SHARED
         ${PROTON_ENGINE_ASSETS_HEADERS}
         ${PROTON_ENGINE_COMPONENTS_HEADERS}
         ${PROTON_ENGINE_CORE_HEADERS}
+        ${PROTON_ENGINE_MATH_HEADERS}
         ${PROTON_ENGINE_RENDERER_HEADERS})
 
 source_group(assets FILES ${PROTON_ENGINE_ASSETS_SOURCES})
@@ -25,6 +26,7 @@ source_group(renderer FILES ${PROTON_ENGINE_RENDERER_SOURCES})
 source_group(include/assets FILES ${PROTON_ENGINE_ASSETS_HEADERS})
 source_group(include/components FILES ${PROTON_ENGINE_COMPONENTS_HEADERS})
 source_group(include/core FILES ${PROTON_ENGINE_CORE_HEADERS})
+source_group(include/math FILES ${PROTON_ENGINE_MATH_HEADERS})
 source_group(include/renderer FILES ${PROTON_ENGINE_RENDERER_HEADERS})
 
 target_include_directories(ProtonEngine PUBLIC include PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
