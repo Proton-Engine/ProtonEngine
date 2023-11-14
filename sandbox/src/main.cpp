@@ -3,19 +3,19 @@
  * Licensed using the MIT license
  */
 
-#include "scripts/rotator.h"
 #include "scripts/camera_controller.h"
+#include "scripts/rotator.h"
 
-#include "protonengine/core/entrypoint.h"
 #include "protonengine/core/application.h"
 #include "protonengine/core/asset_manager.h"
+#include "protonengine/core/entrypoint.h"
 
-#include "protonengine/components/mesh_renderer.h"
 #include "protonengine/components/camera.h"
+#include "protonengine/components/mesh_renderer.h"
 
 #include "protonengine/renderer/renderer.h"
 
-class SandboxApplication : public ProtonEngine::Core::Application
+class SandboxApplication final : public ProtonEngine::Core::Application
 {
 public:
     void initialize() override
@@ -23,7 +23,7 @@ public:
         using namespace ProtonEngine;
 
         static const auto cubeModel = Core::AssetManager::loadModel("assets/models/indoor_plant.obj");
-        static Renderer::Mesh cubeMesh{cubeModel.getVertices(), cubeModel.getTextureCoordinates()};
+        static Renderer::Mesh plantMesh{cubeModel.getVertices(), cubeModel.getTextureCoordinates()};
 
         static auto image = Core::AssetManager::readImageFromFile("assets/textures/indoor_plant.jpg");
         static auto texture = Renderer::createTextureFromImage(image);
@@ -34,14 +34,22 @@ public:
         camera.addScript<CameraController>();
         camera.getComponent<Components::Transform>()->position = glm::vec3{0, 0, 5};
 
-        auto cube = getScene().addEntity("Cube");
-        cube.addComponent(Components::MeshRenderer{cubeMesh, texture});
-        cube.addScript<Rotator>();
+        for (int z = -10; z < 10; z += 2)
+        {
+            for (int x = -10; x < 10; x += 2)
+            {
+                auto plant = getScene().addEntity("Cube");
+                plant.addComponent(Components::MeshRenderer{plantMesh, texture});
+                plant.addScript<Rotator>();
+                auto & position = plant.getComponent<Components::Transform>()->position;
+                position.x = x;
+                position.z = z;
+            }
+        }
     }
 };
 
-std::unique_ptr<ProtonEngine::Core::Application> getProtonApplication(int argc, char **argv)
+std::unique_ptr<ProtonEngine::Core::Application> getProtonApplication(int argc, char ** argv)
 {
     return std::make_unique<SandboxApplication>();
 }
-

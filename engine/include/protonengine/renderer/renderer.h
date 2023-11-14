@@ -25,6 +25,8 @@ using ContextLoadFunction = void* (*)(const char *name);
 
 PROTON_API void setWindowContext(ContextLoadFunction func);
 PROTON_API void setCamera(const Components::Transform & transform, const Components::Camera & camera);
+
+PROTON_API void update();
 PROTON_API void renderRenderableComponent(const Components::Transform & transform, const Components::MeshRenderer & meshRenderer);
 
 [[nodiscard]] PROTON_API Texture createTextureFromImage(const Assets::Image & image);

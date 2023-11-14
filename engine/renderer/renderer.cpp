@@ -87,11 +87,13 @@ void setCamera(const Components::Transform & transform, const Components::Camera
     }
 }
 
+void update()
+{
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
 void renderRenderableComponent(const Components::Transform & transform, const Components::MeshRenderer & meshRenderer)
 {
-    const auto error = glGetError();
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
     static ShaderProgram shaderProgram("shader");
     shaderProgram.enable();
     meshRenderer.texture.activate();

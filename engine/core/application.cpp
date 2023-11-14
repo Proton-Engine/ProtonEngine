@@ -39,6 +39,7 @@ void Application::run()
     while (m_window->update())
     {
         DeltaTime::update();
+        Renderer::update();
 
         const auto deltaTimeSeconds = static_cast<float>(DeltaTime::getDeltaTimeMicroSeconds().count()) / 1'000'000.0f;
 
