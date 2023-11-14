@@ -4,9 +4,11 @@
  */
 
 #include "protonengine/renderer/renderer.h"
-#include "protonengine/renderer/shader_program.h"
+
+#include "core/event_bus.h"
 #include "protonengine/components/camera.h"
 #include "protonengine/math/constants.h"
+#include "protonengine/renderer/shader_program.h"
 
 #include "glad/glad.h"
 #include "glm/gtc/matrix_transform.hpp"
@@ -14,21 +16,23 @@
 
 #include <stdexcept>
 
-namespace ProtonEngine::Renderer
-{
+namespace ProtonEngine::Renderer {
+
+static float windowWidth;
+static float windowHeight;
 
 void GLAPIENTRY
-    MessageCallback( GLenum source,
+    MessageCallback(GLenum source,
                     GLenum type,
                     GLuint id,
                     GLenum severity,
                     GLsizei length,
-                    const GLchar* message,
-                    const void* userParam )
+                    const GLchar * message,
+                    const void * userParam)
 {
-    fprintf( stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
-            ( type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : "" ),
-            type, severity, message );
+    fprintf(stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
+            (type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""),
+            type, severity, message);
 }
 
 void setWindowContext(ContextLoadFunction func)
@@ -42,6 +46,14 @@ void setWindowContext(ContextLoadFunction func)
 
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
+
+    // TODO: Move to an initialize for the renderer
+    Core::EventBus::subscribeToEvent(Core::Event::WINDOW_RESIZE_EVENT, std::function([&](Core::Event, Core::WindowResizeEventContext context) {
+                                         windowWidth = static_cast<float>(context.width);
+                                         windowHeight = static_cast<float>(context.height);
+
+                                         glViewport(0, 0, context.width, context.height);
+                                     }));
 }
 
 static glm::mat4 projection{};
@@ -49,28 +61,27 @@ static glm::mat4 view{};
 
 void setCamera(const Components::Transform & transform, const Components::Camera & camera)
 {
-    if(!camera.isMainCamera)
+    if (!camera.isMainCamera)
     {
         return;
     }
 
     view = glm::lookAt(
-            transform.position,
-            transform.position + glm::vec3{0, 0, -1},
-            glm::vec3(0,1,0)
-    );
+        transform.position,
+        transform.position + glm::vec3{0, 0, -1},
+        glm::vec3(0, 1, 0));
 
     view = glm::rotate(view, transform.rotation.y * Math::ConstantsFloat::pi / 180.0f, glm::vec3{0, 1, 0});
     view = glm::rotate(view, transform.rotation.x * Math::ConstantsFloat::pi / 180.0f, glm::vec3{1, 0, 0});
     view = glm::rotate(view, transform.rotation.z * Math::ConstantsFloat::pi / 180.0f, glm::vec3{0, 0, 1});
 
-    if(camera.projection == Components::Camera::Projection::PERSPECTIVE)
+    if (camera.projection == Components::Camera::Projection::PERSPECTIVE)
     {
-        projection = glm::perspective(glm::radians(camera.fieldOfView), 1280.f / 720.f, camera.clippingPlaneNear,
+        projection = glm::perspective(glm::radians(camera.fieldOfView), windowWidth / windowHeight, camera.clippingPlaneNear,
                                       camera.clippingPlaneFar);
     }
 
-    if(camera.projection == Components::Camera::Projection::ORTHOGRAPHIC)
+    if (camera.projection == Components::Camera::Projection::ORTHOGRAPHIC)
     {
         throw std::runtime_error("Orthographic projection not supported yet");
     }

@@ -4,6 +4,8 @@ set(PROTON_ENGINE_CORE_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/delta_time.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/delta_time.h
         ${CMAKE_CURRENT_SOURCE_DIR}/entity.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/event_bus.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/event_bus.h
         ${CMAKE_CURRENT_SOURCE_DIR}/input.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/input.h
         ${CMAKE_CURRENT_SOURCE_DIR}/scene.cpp

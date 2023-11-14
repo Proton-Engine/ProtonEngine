@@ -7,20 +7,18 @@
 
 #include "protonengine/renderer/renderer.h"
 
+#include "protonengine/components/camera.h"
 #include "protonengine/components/mesh_renderer.h"
 #include "protonengine/components/transform.h"
-#include "protonengine/components/camera.h"
 
-#include "window.h"
-#include "delta_time.h"
 #include "components/native_script.h"
+#include "delta_time.h"
+#include "input.h"
+#include "window.h"
 
-#include "glad/glad.h"
+namespace ProtonEngine::Core {
 
-namespace ProtonEngine::Core
-{
-
-ProtonEngine::Core::Application::Application() :
+Application::Application() :
     m_window(std::make_unique<Window>(1280, 720, "Test title"))
 {
 }
@@ -36,11 +34,13 @@ auto Application::getScene() noexcept -> Scene &
 
 void Application::run()
 {
-    while(m_window->update())
+    Input::connectToEventBus();
+
+    while (m_window->update())
     {
         DeltaTime::update();
 
-        const auto deltaTimeSeconds = static_cast<float>(DeltaTime::getDeltaTimeMicroSeconds().count()) / 1'000'000.0f ;
+        const auto deltaTimeSeconds = static_cast<float>(DeltaTime::getDeltaTimeMicroSeconds().count()) / 1'000'000.0f;
 
         auto & registry = m_scene.getEntityRegistry();
 

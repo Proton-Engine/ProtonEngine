@@ -1,10 +1,11 @@
 /*
- * Copyright © 2022-2023. Tim Herreijgers
+ * Copyright © 2022-2023. Proton Engine
  * Licensed using the MIT license
  */
 
 #pragma once
 
+#include "event_bus.h"
 #include "protonengine/core/key_codes.h"
 #include "protonengine/core/key_state.h"
 
@@ -20,7 +21,11 @@ class Input
 public:
     Input() = delete;
 
-    static void onKeyBoardEvent(GLFWwindow* window, int key, int scancode, int action, int mods) noexcept;
+    static void connectToEventBus();
+
+    static void onKeyBoardEvent(Event event, KeyEventEventContext eventContext) noexcept;
+    static void onMouseMoveEvent(Event event, MouseMoveEventContext eventContext) noexcept;
+    static void onWindowResize(Event event, WindowResizeEventContext eventContext) noexcept;
 
     [[nodiscard]] static KeyState getKeyState(Key key) noexcept;
 
