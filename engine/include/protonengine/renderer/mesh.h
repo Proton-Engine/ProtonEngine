@@ -15,7 +15,7 @@ namespace ProtonEngine::Renderer {
 class PROTON_API Mesh
 {
 public:
-    Mesh(const std::vector<float> & meshData, const std::vector<float> & textureCoordinates);
+    Mesh(const std::vector<float> & meshData, const std::vector<float> & normals, const std::vector<float> & textureCoordinates);
     ~Mesh();
 
     Mesh(Mesh &) = delete;
@@ -30,6 +30,7 @@ public:
 private:
     uint32_t m_vertexArrayId{};
     uint32_t m_vertexBufferId{};
+    uint32_t m_normalBufferId{};
     uint32_t m_textureBufferId{};
     int32_t m_verticesCount{};
 };

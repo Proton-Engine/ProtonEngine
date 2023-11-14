@@ -15,6 +15,7 @@
 #include "delta_time.h"
 #include "input.h"
 #include "window.h"
+#include "fmt/core.h"
 
 namespace ProtonEngine::Core {
 
@@ -51,6 +52,8 @@ void Application::run()
 
         registry.view<Components::Transform, Components::Camera>().each(Renderer::setCamera);
         registry.view<Components::Transform, Components::MeshRenderer>().each(Renderer::renderRenderableComponent);
+
+        fmt::print("Fps: {}\n", 1.f / (DeltaTime::getDeltaTimeMicroSeconds().count() / 1'000'000.f));
     }
 }
 

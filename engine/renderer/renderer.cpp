@@ -104,8 +104,9 @@ void renderRenderableComponent(const Components::Transform & transform, const Co
     model = glm::rotate(model, transform.rotation.x * Math::ConstantsFloat::pi / 180.0f, glm::vec3{1, 0, 0});
     model = glm::rotate(model, transform.rotation.z * Math::ConstantsFloat::pi / 180.0f, glm::vec3{0, 0, 1});
 
-    auto mvp = projection * view * model;
-    shaderProgram.setUniformValue("MVP", mvp);
+    shaderProgram.setUniformValue("modelMatrix", model);
+    shaderProgram.setUniformValue("projectionMatrix", projection);
+    shaderProgram.setUniformValue("viewMatrix", view);
 
     meshRenderer.mesh.enableForDrawing();
     glDrawArrays(GL_TRIANGLES, 0, meshRenderer.mesh.verticesCount());

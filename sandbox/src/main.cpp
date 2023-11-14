@@ -23,7 +23,7 @@ public:
         using namespace ProtonEngine;
 
         static const auto cubeModel = Core::AssetManager::loadModel("assets/models/indoor_plant.obj");
-        static Renderer::Mesh plantMesh{cubeModel.getVertices(), cubeModel.getTextureCoordinates()};
+        static Renderer::Mesh plantMesh{cubeModel.getVertices(), cubeModel.getNormals(), cubeModel.getTextureCoordinates()};
 
         static auto image = Core::AssetManager::readImageFromFile("assets/textures/indoor_plant.jpg");
         static auto texture = Renderer::createTextureFromImage(image);
@@ -34,18 +34,22 @@ public:
         camera.addScript<CameraController>();
         camera.getComponent<Components::Transform>()->position = glm::vec3{0, 0, 5};
 
-        for (int z = -10; z < 10; z += 2)
-        {
-            for (int x = -10; x < 10; x += 2)
-            {
-                auto plant = getScene().addEntity("Cube");
-                plant.addComponent(Components::MeshRenderer{plantMesh, texture});
-                plant.addScript<Rotator>();
-                auto & position = plant.getComponent<Components::Transform>()->position;
-                position.x = x;
-                position.z = z;
-            }
-        }
+        // for (int z = -10; z < 10; z += 2)
+        // {
+        //     for (int x = -10; x < 10; x += 2)
+        //     {
+        //         auto plant = getScene().addEntity("Cube");
+        //         plant.addComponent(Components::MeshRenderer{plantMesh, texture});
+        //         plant.addScript<Rotator>();
+        //         auto & position = plant.getComponent<Components::Transform>()->position;
+        //         position.x = x;
+        //         position.z = z;
+        //     }
+        // }
+
+        auto plant = getScene().addEntity("Plant");
+        plant.addComponent(Components::MeshRenderer{plantMesh, texture});
+        plant.addScript<Rotator>();
     }
 };
 
