@@ -1,7 +1,7 @@
 /*
-* Copyright © 2022 Tim Herreijgers
-* Licensed using the MIT license
-*/
+ * Copyright © 2022-2023. Tim Herreijgers
+ * Licensed using the MIT license
+ */
 
 #pragma once
 

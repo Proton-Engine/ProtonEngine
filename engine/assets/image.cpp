@@ -1,6 +1,6 @@
 /*
-* Copyright © 2022 Tim Herreijgers
-* Licensed using the MIT license
+ * Copyright © 2022-2023. Tim Herreijgers
+ * Licensed using the MIT license
  */
 
 #include "protonengine/assets/image.h"
