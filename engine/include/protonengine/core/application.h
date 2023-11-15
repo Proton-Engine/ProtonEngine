@@ -1,5 +1,5 @@
 /*
- * Copyright © 2022-2023. Tim Herreijgers
+ * Copyright © 2022-2023. Proton Engine
  * Licensed using the MIT license
  */
 
@@ -7,8 +7,10 @@
 
 #include "protonengine/core/scene.h"
 #include "protonengine/proton_interface.h"
+#include "protonengine/user_interface/layer.h"
 
 #include <memory>
+#include <vector>
 
 namespace ProtonEngine::Core
 {
@@ -31,8 +33,12 @@ public:
 
     [[nodiscard]] auto getScene() noexcept -> Scene &;
 
+protected:
+    void addLayer(std::unique_ptr<UserInterface::Layer> layer);
+
 private:
     std::unique_ptr<Window> m_window;
+    std::vector<std::unique_ptr<UserInterface::Layer>> m_layers;
     Scene m_scene;
 };
 

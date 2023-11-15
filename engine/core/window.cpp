@@ -4,16 +4,19 @@
  */
 
 #include "window.h"
+#include "backends/imgui_impl_opengl3.h"
 #include "event_bus.h"
-#include "input.h"
 
 #include "protonengine/renderer/renderer.h"
+
+#include <backends/imgui_impl_glfw.h>
 
 #include <GLFW/glfw3.h>
 #include <cstdlib>
 #include <fmt/core.h>
 
-namespace ProtonEngine::Core {
+namespace ProtonEngine::Core
+{
 
 Window::Window(int32_t width, int32_t height, std::string_view title)
 {
@@ -41,25 +44,18 @@ Window::Window(int32_t width, int32_t height, std::string_view title)
 
     Renderer::setWindowContext([](const char * proc_name) { return (void *)glfwGetProcAddress(proc_name); });
 
-    glfwSetKeyCallback(m_windowHandle, [](GLFWwindow * /*window*/, int key, int /*scancode*/, int action, int /*mods*/) {
-        if (action == GLFW_REPEAT)
-            return;
-
-        KeyEventEventContext context{
-            .key = static_cast<Key>(key),
-            .state = action == GLFW_PRESS ? KeyState::PRESSED : KeyState::RELEASED};
-        EventBus::fireEvent(Event::KEY_EVENT, context);
-    });
-
-    glfwSetWindowSizeCallback(m_windowHandle, [](GLFWwindow *, const int newWidth, const int newHeight) {
-        EventBus::fireEvent(Event::WINDOW_RESIZE_EVENT, WindowResizeEventContext{newWidth, newHeight});
-    });
+    initializeImGui();
+    registerCallbacks();
 
     EventBus::fireEvent(Event::WINDOW_RESIZE_EVENT, WindowResizeEventContext{width, height});
 }
 
 Window::~Window()
 {
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
+
     glfwDestroyWindow(m_windowHandle);
 }
 
@@ -75,6 +71,32 @@ auto Window::update() noexcept -> bool
     glfwSwapBuffers(m_windowHandle);
     glfwPollEvents();
     return true;
+}
+
+void Window::initializeImGui() const
+{
+    ImGui::CreateContext();
+    ImGuiIO & io = ImGui::GetIO();
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+    ImGui_ImplGlfw_InitForOpenGL(m_windowHandle, true);
+    ImGui_ImplOpenGL3_Init("#version 410");
+}
+
+void Window::registerCallbacks() const
+{
+    glfwSetKeyCallback(m_windowHandle, [](GLFWwindow * /*window*/, int key, int /*scancode*/, int action, int /*mods*/) {
+        if (action == GLFW_REPEAT)
+            return;
+
+        KeyEventEventContext context{
+            .key = static_cast<Key>(key),
+            .state = action == GLFW_PRESS ? KeyState::PRESSED : KeyState::RELEASED};
+        EventBus::fireEvent(Event::KEY_EVENT, context);
+    });
+
+    glfwSetWindowSizeCallback(m_windowHandle, [](GLFWwindow *, const int newWidth, const int newHeight) {
+        EventBus::fireEvent(Event::WINDOW_RESIZE_EVENT, WindowResizeEventContext{newWidth, newHeight});
+    });
 }
 
 } // namespace ProtonEngine::Core

@@ -1,5 +1,5 @@
 /*
- * Copyright © 2022-2023. Tim Herreijgers
+ * Copyright © 2022-2023. Proton Engine
  * Licensed using the MIT license
  */
 
@@ -11,13 +11,15 @@
 #include "protonengine/components/mesh_renderer.h"
 #include "protonengine/components/transform.h"
 
+#include "..\include\protonengine\user_interface\debug_layer.h"
 #include "components/native_script.h"
 #include "delta_time.h"
+#include "fmt/core.h"
 #include "input.h"
 #include "window.h"
-#include "fmt/core.h"
 
-namespace ProtonEngine::Core {
+namespace ProtonEngine::Core
+{
 
 Application::Application() :
     m_window(std::make_unique<Window>(1280, 720, "Test title"))
@@ -53,8 +55,24 @@ void Application::run()
         registry.view<Components::Transform, Components::Camera>().each(Renderer::setCamera);
         registry.view<Components::Transform, Components::MeshRenderer>().each(Renderer::renderRenderableComponent);
 
-        fmt::print("Fps: {}\n", 1.f / (DeltaTime::getDeltaTimeMicroSeconds().count() / 1'000'000.f));
+        for (const auto & layer : m_layers)
+        {
+            layer->onUpdate(deltaTimeSeconds);
+        }
+
+        for (const auto & layer : m_layers)
+        {
+            layer->begin();
+            layer->onImGuiRender();
+            layer->end();
+        }
     }
+}
+
+void Application::addLayer(std::unique_ptr<UserInterface::Layer> layer)
+{
+    layer->onAttach();
+    m_layers.emplace_back(std::move(layer));
 }
 
 } // namespace ProtonEngine::Core

@@ -1,5 +1,5 @@
 /*
- * Copyright © 2022-2023. Tim Herreijgers
+ * Copyright © 2022-2023. Proton Engine
  * Licensed using the MIT license
  */
 
@@ -13,6 +13,7 @@
 #include "protonengine/components/camera.h"
 #include "protonengine/components/mesh_renderer.h"
 
+#include "..\..\engine\include\protonengine\user_interface\debug_layer.h"
 #include "protonengine/renderer/renderer.h"
 
 class SandboxApplication final : public ProtonEngine::Core::Application
@@ -21,6 +22,8 @@ public:
     void initialize() override
     {
         using namespace ProtonEngine;
+
+        addLayer(std::make_unique<UserInterface::DebugLayer>());
 
         static const auto cubeModel = Core::AssetManager::loadModel("assets/models/indoor_plant.obj");
         static Renderer::Mesh plantMesh{cubeModel.getVertices(), cubeModel.getNormals(), cubeModel.getTextureCoordinates()};
@@ -33,19 +36,6 @@ public:
                                                0.1f, 100.0f, 60, true});
         camera.addScript<CameraController>();
         camera.getComponent<Components::Transform>()->position = glm::vec3{0, 0, 5};
-
-        // for (int z = -10; z < 10; z += 2)
-        // {
-        //     for (int x = -10; x < 10; x += 2)
-        //     {
-        //         auto plant = getScene().addEntity("Cube");
-        //         plant.addComponent(Components::MeshRenderer{plantMesh, texture});
-        //         plant.addScript<Rotator>();
-        //         auto & position = plant.getComponent<Components::Transform>()->position;
-        //         position.x = x;
-        //         position.z = z;
-        //     }
-        // }
 
         auto plant = getScene().addEntity("Plant");
         plant.addComponent(Components::MeshRenderer{plantMesh, texture});

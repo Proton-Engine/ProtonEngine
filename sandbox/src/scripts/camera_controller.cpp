@@ -1,5 +1,5 @@
 /*
- * Copyright © 2022-2023. Tim Herreijgers
+ * Copyright © 2022-2023. Proton Engine
  * Licensed using the MIT license
  */
 

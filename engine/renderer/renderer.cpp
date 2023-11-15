@@ -1,10 +1,12 @@
 /*
- * Copyright © 2022-2023. Tim Herreijgers
+ * Copyright © 2022-2023. Proton Engine
  * Licensed using the MIT license
  */
 
 #include "protonengine/renderer/renderer.h"
 
+#include "backends/imgui_impl_glfw.h"
+#include "backends/imgui_impl_opengl3.h"
 #include "core/event_bus.h"
 #include "protonengine/components/camera.h"
 #include "protonengine/math/constants.h"
@@ -14,9 +16,12 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/quaternion.hpp"
 
+#include <imgui.h>
+
 #include <stdexcept>
 
-namespace ProtonEngine::Renderer {
+namespace ProtonEngine::Renderer
+{
 
 static float windowWidth;
 static float windowHeight;
@@ -30,6 +35,9 @@ void GLAPIENTRY
                     const GLchar * message,
                     const void * userParam)
 {
+    if (type != GL_DEBUG_TYPE_ERROR)
+        return;
+
     fprintf(stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
             (type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""),
             type, severity, message);
@@ -39,6 +47,7 @@ void setWindowContext(ContextLoadFunction func)
 {
     gladLoadGLLoader(func);
 
+    // TODO: Move to an initialize for the renderer
 #ifndef __APPLE__
     glEnable(GL_DEBUG_OUTPUT);
     glDebugMessageCallback(MessageCallback, 0);
@@ -47,7 +56,9 @@ void setWindowContext(ContextLoadFunction func)
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
 
-    // TODO: Move to an initialize for the renderer
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
+
     Core::EventBus::subscribeToEvent(Core::Event::WINDOW_RESIZE_EVENT, std::function([&](Core::Event, Core::WindowResizeEventContext context) {
                                          windowWidth = static_cast<float>(context.width);
                                          windowHeight = static_cast<float>(context.height);

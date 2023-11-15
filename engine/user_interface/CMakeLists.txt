@@ -1,0 +1,4 @@
+set(PROTON_ENGINE_USER_INTERFACE_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/layer.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/debug_layer.cpp
+        PARENT_SCOPE)

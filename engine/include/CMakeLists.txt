@@ -21,6 +21,11 @@ set(PROTON_ENGINE_CORE_HEADERS
         ${CMAKE_CURRENT_SOURCE_DIR}/protonengine/core/scene.h
         PARENT_SCOPE)
 
+set(PROTON_ENGINE_USER_INTERFACE_HEADERS
+        ${CMAKE_CURRENT_SOURCE_DIR}/protonengine/user_interface/layer.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/protonengine/user_interface/debug_layer.h
+        PARENT_SCOPE)
+
 set(PROTON_ENGINE_MATH_HEADERS
         ${CMAKE_CURRENT_SOURCE_DIR}/protonengine/math/constants.h
         PARENT_SCOPE

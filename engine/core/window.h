@@ -1,5 +1,5 @@
 /*
- * Copyright © 2022-2023. Tim Herreijgers
+ * Copyright © 2022-2023. Proton Engine
  * Licensed using the MIT license
  */
 
@@ -23,6 +23,9 @@ public:
 
 private:
     GLFWwindow * m_windowHandle{};
+
+    void initializeImGui() const;
+    void registerCallbacks() const;
 };
 
 } // namespace ProtonEngine::Core
