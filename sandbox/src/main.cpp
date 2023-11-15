@@ -25,10 +25,10 @@ public:
 
         addLayer(std::make_unique<UserInterface::DebugLayer>());
 
-        static const auto cubeModel = Core::AssetManager::loadModel("assets/models/indoor_plant.obj");
+        static const auto cubeModel = Core::AssetManager::loadModel("assets/models/cube.obj");
         static Renderer::Mesh plantMesh{cubeModel.getVertices(), cubeModel.getNormals(), cubeModel.getTextureCoordinates()};
 
-        static auto image = Core::AssetManager::readImageFromFile("assets/textures/indoor_plant.jpg");
+        static auto image = Core::AssetManager::readImageFromFile("assets/textures/checkerboard.jpg");
         static auto texture = Renderer::createTextureFromImage(image);
 
         auto camera = getScene().addEntity("MainCamera");
