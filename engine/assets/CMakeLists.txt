@@ -1,0 +1,4 @@
+set(PROTON_ENGINE_ASSETS_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/image.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/model.cpp
+        PARENT_SCOPE)
