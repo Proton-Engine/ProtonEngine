@@ -4,15 +4,16 @@
  */
 
 #include "protonengine/core/asset_manager.h"
-#include "glm/vec2.hpp"
+#include "protonengine/core/logger.h"
 
 #include <fmt/format.h>
+#include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 #include <stb_image/stb_image.h>
 
-#include <stdexcept>
 #include <fstream>
 #include <sstream>
+#include <stdexcept>
 
 namespace ProtonEngine::Core
 {
@@ -24,10 +25,10 @@ static auto splitString(std::string_view input, char delimiter = ' ') -> std::ve
 
     while (true)
     {
-        const auto newPos  = input.find(delimiter, pos);
+        const auto newPos = input.find(delimiter, pos);
         substrings.emplace_back(input.substr(pos, newPos - pos));
 
-        if(newPos == std::string_view::npos)
+        if (newPos == std::string_view::npos)
             break;
 
         pos = newPos + 1;
@@ -38,6 +39,7 @@ static auto splitString(std::string_view input, char delimiter = ' ') -> std::ve
 
 Assets::Image AssetManager::readImageFromFile(std::string_view path)
 {
+    PROTON_LOG_INFO(fmt::format("Loading image file: {}", path));
     int width;
     int height;
     int channels;
@@ -45,7 +47,7 @@ Assets::Image AssetManager::readImageFromFile(std::string_view path)
     stbi_set_flip_vertically_on_load(true);
     stbi_uc * data = stbi_load(path.data(), &width, &height, &channels, 0);
 
-    if(data == nullptr)
+    if (data == nullptr)
         throw std::runtime_error(fmt::format("Something went wrong when loading image at :{}\n", path));
 
     const auto image = Assets::Image(data, width, height, channels);
@@ -57,6 +59,8 @@ Assets::Image AssetManager::readImageFromFile(std::string_view path)
 
 Assets::Model AssetManager::loadModel(std::string_view path)
 {
+    PROTON_LOG_INFO(fmt::format("Loading model file: {}", path));
+
     if (path.contains(".obj"))
     {
         return loadObjModel(path);
@@ -67,8 +71,7 @@ Assets::Model AssetManager::loadModel(std::string_view path)
 
 Assets::Model AssetManager::loadObjModel(std::string_view path)
 {
-    const auto fileContents = [&]() -> std::string
-    {
+    const auto fileContents = [&]() -> std::string {
         std::ifstream inputFile(path.data());
         std::stringstream buffer;
         buffer << inputFile.rdbuf();
@@ -86,9 +89,9 @@ Assets::Model AssetManager::loadObjModel(std::string_view path)
     std::ifstream inputFile(path.data());
     std::string line;
 
-    while(std::getline(inputFile, line))
+    while (std::getline(inputFile, line))
     {
-        switch(line[0])
+        switch (line[0])
         {
         case '#':
         case 'o':
@@ -100,19 +103,19 @@ Assets::Model AssetManager::loadObjModel(std::string_view path)
         {
             const auto splittedString = splitString(line);
 
-            if(splittedString[0] == "v")
+            if (splittedString[0] == "v")
             {
                 vertices.emplace_back(std::stof(splittedString[1]), std::stof(splittedString[2]), std::stof(splittedString[3]));
                 continue;
             }
 
-            if(splittedString[0] == "vn")
+            if (splittedString[0] == "vn")
             {
                 normals.emplace_back(std::stof(splittedString[1]), std::stof(splittedString[2]), std::stof(splittedString[3]));
                 continue;
             }
 
-            if(splittedString[0] == "vt")
+            if (splittedString[0] == "vt")
             {
                 textureCoords.emplace_back(std::stof(splittedString[1]), std::stof(splittedString[2]));
                 continue;

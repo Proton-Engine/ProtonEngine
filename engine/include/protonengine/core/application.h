@@ -27,13 +27,12 @@ public:
     Application &operator=(const Application &) = delete;
     Application &operator=(Application &&) = delete;
 
-    virtual void initialize() = 0;
-
     void run();
 
     [[nodiscard]] auto getScene() noexcept -> Scene &;
 
 protected:
+    virtual void initialize() = 0;
     void addLayer(std::unique_ptr<UserInterface::Layer> layer);
 
 private:

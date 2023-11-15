@@ -16,13 +16,13 @@
 #include "delta_time.h"
 #include "fmt/core.h"
 #include "input.h"
+#include "protonengine/core/logger.h"
 #include "window.h"
 
 namespace ProtonEngine::Core
 {
 
-Application::Application() :
-    m_window(std::make_unique<Window>(1280, 720, "Test title"))
+Application::Application()
 {
 }
 
@@ -30,14 +30,15 @@ Application::~Application()
 {
 }
 
-auto Application::getScene() noexcept -> Scene &
-{
-    return m_scene;
-}
-
 void Application::run()
 {
+    // TODO: Do any engine initialization (like renderers here)
+    PROTON_LOG_DEBUG("Initializing Proton Engine systems");
+    m_window = std::make_unique<Window>(1280, 720, "Test title");
     Input::connectToEventBus();
+
+    PROTON_LOG_INFO("Initializing user application");
+    initialize();
 
     while (m_window->update())
     {
@@ -67,6 +68,11 @@ void Application::run()
             layer->end();
         }
     }
+}
+
+auto Application::getScene() noexcept -> Scene &
+{
+    return m_scene;
 }
 
 void Application::addLayer(std::unique_ptr<UserInterface::Layer> layer)

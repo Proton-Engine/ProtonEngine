@@ -4,15 +4,19 @@
  */
 
 #include "protonengine/renderer/texture.h"
+#include "protonengine/core/logger.h"
 
-#include "glad/glad.h"
 #include "fmt/core.h"
+#include "glad/glad.h"
 
 namespace ProtonEngine::Renderer
 {
 
+// TODO: Free textures
 Texture::Texture(const Assets::Image & image)
 {
+    PROTON_LOG_DEBUG(fmt::format("Loading image {} into texture buffers", "__instert_image_name__"));
+
     auto data = image.getData();
     GLenum internalFormat = 0;
     GLenum dataFormat = 0;

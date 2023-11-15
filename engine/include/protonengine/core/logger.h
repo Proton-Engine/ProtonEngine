@@ -43,6 +43,8 @@ public:
 
 private:
     static LogLevel m_level;
+
+    static void printMessage(std::string_view message);
 };
 
 #ifndef DISTRIBUTION_BUILD

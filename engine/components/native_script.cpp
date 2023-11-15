@@ -8,12 +8,12 @@
 namespace ProtonEngine::Components
 {
 
-NativeScript::NativeScript(std::unique_ptr<ProtonScript> script) : m_script(std::move(script))
+NativeScript::NativeScript(std::unique_ptr<ProtonScript> script) :
+    m_script(std::move(script))
 {
-
 }
 
-void NativeScript::onUpdate(float timestep)
+void NativeScript::onUpdate(float timestep) const
 {
     m_script->onUpdate(timestep);
 }

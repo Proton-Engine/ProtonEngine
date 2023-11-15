@@ -7,6 +7,7 @@
 #include "backends/imgui_impl_opengl3.h"
 #include "event_bus.h"
 
+#include "protonengine/core/logger.h"
 #include "protonengine/renderer/renderer.h"
 
 #include <backends/imgui_impl_glfw.h>
@@ -20,11 +21,12 @@ namespace ProtonEngine::Core
 
 Window::Window(int32_t width, int32_t height, std::string_view title)
 {
+    PROTON_LOG_INFO(fmt::format("Creating window of size {}x{} with title {}", width, height, title));
     if (!glfwInit())
     {
         const char * description;
         glfwGetError(&description);
-        fmt::print("Failed to initialize glfw with error: {}\n", description);
+        PROTON_LOG_ERROR(fmt::format("Failed to initialize glfw with error: {}", description));
         exit(EXIT_FAILURE);
     }
 

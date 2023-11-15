@@ -14,7 +14,6 @@ std::unique_ptr<ProtonEngine::Core::Application> getProtonApplication(int argc, 
 int main(int argc, char **argv)
 {
     auto application = getProtonApplication(argc, argv);
-    application->initialize();
 
     application->run();
 }

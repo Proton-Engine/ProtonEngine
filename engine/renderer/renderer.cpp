@@ -4,18 +4,18 @@
  */
 
 #include "protonengine/renderer/renderer.h"
-
-#include "backends/imgui_impl_glfw.h"
-#include "backends/imgui_impl_opengl3.h"
-#include "core/event_bus.h"
 #include "protonengine/components/camera.h"
+#include "protonengine/core/logger.h"
 #include "protonengine/math/constants.h"
 #include "protonengine/renderer/shader_program.h"
+
+#include "core/event_bus.h"
 
 #include "glad/glad.h"
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/quaternion.hpp"
 
+#include <fmt/core.h>
 #include <imgui.h>
 
 #include <stdexcept>
@@ -27,20 +27,22 @@ static float windowWidth;
 static float windowHeight;
 
 void GLAPIENTRY
-    MessageCallback(GLenum source,
+    MessageCallback(GLenum /*source*/,
                     GLenum type,
-                    GLuint id,
+                    GLuint /*id*/,
                     GLenum severity,
-                    GLsizei length,
+                    GLsizei /*length*/,
                     const GLchar * message,
-                    const void * userParam)
+                    const void * /*userParam*/)
 {
     if (type != GL_DEBUG_TYPE_ERROR)
+    {
+        PROTON_LOG_TRACE(fmt::format("GL CALLBACK: type = {:#x}, severity = {:#x}, message = {}", type, severity, message));
         return;
+    }
 
-    fprintf(stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
-            (type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""),
-            type, severity, message);
+    std::string messageType = (type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : "");
+    PROTON_LOG_ERROR(fmt::format("GL CALLBACK: {} type = {:#x}, severity = {:#x}, message = {}", messageType, type, severity, message));
 }
 
 void setWindowContext(ContextLoadFunction func)

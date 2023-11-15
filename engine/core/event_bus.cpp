@@ -5,12 +5,33 @@
 
 #include "event_bus.h"
 
-namespace ProtonEngine::Core {
+#include "fmt/color.h"
+#include "protonengine/core/logger.h"
+
+namespace ProtonEngine::Core
+{
 
 std::map<Event, std::vector<std::function<void(Event, EventContext)>>> EventBus::m_eventListeners{};
 
+static constexpr std::string parseEventToString(Event event)
+{
+    switch (event)
+    {
+    case Event::KEY_EVENT:
+        return "KEY_EVENT";
+    case Event::MOUSE_MOVE_EVENT:
+        return "MOUSE_MOVE_EVENT";
+    case Event::WINDOW_RESIZE_EVENT:
+        return "WINDOW_RESIZE_EVENT";
+    }
+
+    return "UNKNOWN_EVENT";
+}
+
 void EventBus::fireEvent(Event event, EventContext context)
 {
+    PROTON_LOG_DEBUG(fmt::format("Event {} fired", parseEventToString(event)));
+
     if (!m_eventListeners.contains(event))
     {
         return;
@@ -25,6 +46,8 @@ void EventBus::fireEvent(Event event, EventContext context)
 template <>
 void EventBus::subscribeToEvent(Event event, std::function<void(Event, EventContext)> callback)
 {
+    PROTON_LOG_DEBUG(fmt::format("New listener for event {}", parseEventToString(event)));
+
     if (!m_eventListeners.contains(event))
     {
         m_eventListeners[event] = std::vector<std::function<void(Event, EventContext)>>{};

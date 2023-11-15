@@ -7,15 +7,17 @@
 #include "protonengine/components/tag.h"
 #include "protonengine/components/transform.h"
 #include "protonengine/core/entity.h"
+#include "protonengine/core/logger.h"
 
 #include <fmt/format.h>
-#include <glm/glm.hpp>
 
 namespace ProtonEngine::Core
 {
 
 auto Scene::addEntity(std::string_view name) noexcept -> Entity
 {
+    PROTON_LOG_DEBUG(fmt::format("New entity with name {} created", name));
+
     const auto entity = m_registry.create();
     m_registry.emplace<Components::Tag>(entity, std::string(name));
     m_registry.emplace<Components::Transform>(entity, glm::vec3{0, 0, -5}, glm::vec3{}, glm::vec3{1, 1, 1});
