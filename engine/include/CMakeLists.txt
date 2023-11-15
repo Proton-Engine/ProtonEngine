@@ -18,6 +18,7 @@ set(PROTON_ENGINE_CORE_HEADERS
         ${CMAKE_CURRENT_SOURCE_DIR}/protonengine/core/entrypoint.h
         ${CMAKE_CURRENT_SOURCE_DIR}/protonengine/core/key_codes.h
         ${CMAKE_CURRENT_SOURCE_DIR}/protonengine/core/key_state.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/protonengine/core/logger.h
         ${CMAKE_CURRENT_SOURCE_DIR}/protonengine/core/scene.h
         PARENT_SCOPE)
 

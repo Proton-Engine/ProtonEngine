@@ -14,6 +14,7 @@
 #include "protonengine/components/mesh_renderer.h"
 
 #include "..\..\engine\include\protonengine\user_interface\debug_layer.h"
+#include "protonengine/core/logger.h"
 #include "protonengine/renderer/renderer.h"
 
 class SandboxApplication final : public ProtonEngine::Core::Application
@@ -28,7 +29,7 @@ public:
         static const auto cubeModel = Core::AssetManager::loadModel("assets/models/cube.obj");
         static Renderer::Mesh plantMesh{cubeModel.getVertices(), cubeModel.getNormals(), cubeModel.getTextureCoordinates()};
 
-        static auto image = Core::AssetManager::readImageFromFile("assets/textures/checkerboard.jpg");
+        static auto image = Core::AssetManager::readImageFromFile("assets/textures/checkerboard.png");
         static auto texture = Renderer::createTextureFromImage(image);
 
         auto camera = getScene().addEntity("MainCamera");

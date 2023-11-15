@@ -8,6 +8,7 @@ set(PROTON_ENGINE_CORE_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/event_bus.h
         ${CMAKE_CURRENT_SOURCE_DIR}/input.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/input.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/logger.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/scene.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/window.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/window.h
