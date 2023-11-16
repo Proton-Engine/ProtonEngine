@@ -9,7 +9,7 @@ out vec3 color;
 uniform sampler2D textureSampler;
 
 float ambientLight = 0.1;
-vec3 lightPosition = vec3(5, 0, -5);
+vec3 lightPosition = vec3(1.5, 2, -5);
 vec3 lightColor = vec3(1, 1, 1);
 
 void main(){

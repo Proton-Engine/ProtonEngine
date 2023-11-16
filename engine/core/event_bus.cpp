@@ -30,7 +30,7 @@ static constexpr std::string parseEventToString(Event event)
 
 void EventBus::fireEvent(Event event, EventContext context)
 {
-    PROTON_LOG_DEBUG(fmt::format("Event {} fired", parseEventToString(event)));
+    PROTON_LOG_TRACE(fmt::format("Event {} fired", parseEventToString(event)));
 
     if (!m_eventListeners.contains(event))
     {

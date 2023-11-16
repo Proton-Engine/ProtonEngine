@@ -16,7 +16,6 @@
 #include "glm/gtc/quaternion.hpp"
 
 #include <fmt/core.h>
-#include <imgui.h>
 
 #include <stdexcept>
 
@@ -117,9 +116,12 @@ void renderRenderableComponent(const Components::Transform & transform, const Co
     model = glm::rotate(model, transform.rotation.x * Math::ConstantsFloat::pi / 180.0f, glm::vec3{1, 0, 0});
     model = glm::rotate(model, transform.rotation.z * Math::ConstantsFloat::pi / 180.0f, glm::vec3{0, 0, 1});
 
+    const auto normalModelMatrix = glm::transpose(glm::inverse(model));
+
     shaderProgram.setUniformValue("modelMatrix", model);
     shaderProgram.setUniformValue("projectionMatrix", projection);
     shaderProgram.setUniformValue("viewMatrix", view);
+    shaderProgram.setUniformValue("normalModelMatrix", normalModelMatrix);
 
     meshRenderer.mesh.enableForDrawing();
     glDrawArrays(GL_TRIANGLES, 0, meshRenderer.mesh.verticesCount());

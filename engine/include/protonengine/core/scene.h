@@ -5,10 +5,12 @@
 
 #pragma once
 
+#include "protonengine/components/transform.h"
 #include "protonengine/proton_interface.h"
 
 #include <entt/entt.hpp>
 
+#include <glm/vec3.hpp>
 #include <string_view>
 
 namespace ProtonEngine::Core
@@ -28,6 +30,7 @@ public:
     Scene operator=(Scene&&) = delete;
 
     [[nodiscard]] auto addEntity(std::string_view name) noexcept -> Entity;
+    [[nodiscard]] auto addEntity(std::string_view name, Components::Transform transform) noexcept -> Entity;
     [[nodiscard]] auto getEntityWithName(std::string_view) -> Entity;
     [[nodiscard]] auto getEntityRegistry() noexcept -> entt::registry &;
 
