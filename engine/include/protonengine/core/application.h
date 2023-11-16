@@ -36,7 +36,7 @@ protected:
     void addLayer(std::unique_ptr<UserInterface::Layer> layer);
 
 private:
-    std::unique_ptr<Window> m_window;
+    std::unique_ptr<Window>m_window;
     std::vector<std::unique_ptr<UserInterface::Layer>> m_layers;
     Scene m_scene;
 };

@@ -5,6 +5,9 @@
 
 #pragma once
 
+#include "protonengine/renderer/irenderer.h"
+
+
 #include <cinttypes>
 #include <string_view>
 
@@ -16,7 +19,7 @@ namespace ProtonEngine::Core
 class Window
 {
 public:
-    Window(int32_t width, int32_t height, std::string_view title);
+    Window(int32_t width, int32_t height, std::string_view title, Renderer::IRenderer& renderer);
     ~Window();
 
     [[nodiscard]] auto update() noexcept -> bool;

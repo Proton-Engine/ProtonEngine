@@ -8,6 +8,7 @@
 #include "event_bus.h"
 
 #include "protonengine/core/logger.h"
+#include "protonengine/renderer/irenderer.h"
 #include "protonengine/renderer/renderer.h"
 
 #include <backends/imgui_impl_glfw.h>
@@ -19,7 +20,7 @@
 namespace ProtonEngine::Core
 {
 
-Window::Window(int32_t width, int32_t height, std::string_view title)
+Window::Window(int32_t width, int32_t height, std::string_view title, Renderer::IRenderer & renderer)
 {
     PROTON_LOG_INFO(fmt::format("Creating window of size {}x{} with title {}", width, height, title));
     if (!glfwInit())
@@ -44,7 +45,7 @@ Window::Window(int32_t width, int32_t height, std::string_view title)
     m_windowHandle = glfwCreateWindow(width, height, title.data(), nullptr, nullptr);
     glfwMakeContextCurrent(m_windowHandle);
 
-    Renderer::setWindowContext([](const char * proc_name) { return (void *)glfwGetProcAddress(proc_name); });
+    renderer.setWindowContext([](const char * proc_name) { return (void *)glfwGetProcAddress(proc_name); });
 
     initializeImGui();
     registerCallbacks();
