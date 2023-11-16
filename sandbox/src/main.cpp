@@ -13,9 +13,8 @@
 #include "protonengine/components/camera.h"
 #include "protonengine/components/mesh_renderer.h"
 
-#include "..\..\engine\include\protonengine\user_interface\debug_layer.h"
-#include "protonengine/core/logger.h"
 #include "protonengine/renderer/renderer.h"
+#include "protonengine/user_interface/debug_layer.h"
 
 class SandboxApplication final : public ProtonEngine::Core::Application
 {
@@ -27,20 +26,30 @@ public:
         addLayer(std::make_unique<UserInterface::DebugLayer>());
 
         static const auto cubeModel = Core::AssetManager::loadModel("assets/models/cube.obj");
-        static Renderer::Mesh plantMesh{cubeModel.getVertices(), cubeModel.getNormals(), cubeModel.getTextureCoordinates()};
+        static Renderer::Mesh cubeMesh{cubeModel.getVertices(), cubeModel.getNormals(), cubeModel.getTextureCoordinates()};
 
         static auto image = Core::AssetManager::readImageFromFile("assets/textures/checkerboard.png");
         static auto texture = Renderer::createTextureFromImage(image);
 
-        auto camera = getScene().addEntity("MainCamera");
+        auto camera = getScene().addEntity("MainCamera", Components::Transform{{0, 2, 5}, {0, 0, 0}, {1, 1, 1}});
         camera.addComponent(Components::Camera{Components::Camera::Projection::PERSPECTIVE,
                                                0.1f, 100.0f, 60, true});
         camera.addScript<CameraController>();
-        camera.getComponent<Components::Transform>()->position = glm::vec3{0, 0, 5};
 
-        auto plant = getScene().addEntity("Plant");
-        plant.addComponent(Components::MeshRenderer{plantMesh, texture});
-        plant.addScript<Rotator>();
+        auto floor = getScene().addEntity("Floor", Components::Transform{{0, 0, -5}, {0, 0, 0}, {2, 0.1, 5}});
+        floor.addComponent(Components::MeshRenderer{cubeMesh, texture});
+
+        auto leftWall = getScene().addEntity("leftWall", Components::Transform{{-2, 2, -5}, {0, 0, 0}, {0.1, 2, 5}});
+        leftWall.addComponent(Components::MeshRenderer{cubeMesh, texture});
+
+        auto rightWall = getScene().addEntity("rightWall", Components::Transform{{2, 2, -5}, {0, 0, 0}, {0.1, 2, 5}});
+        rightWall.addComponent(Components::MeshRenderer{cubeMesh, texture});
+
+        auto backWall = getScene().addEntity("backWall", Components::Transform{{0, 2, -10}, {0, 0, 0}, {2, 2, 0.1}});
+        backWall.addComponent(Components::MeshRenderer{cubeMesh, texture});
+
+        auto light = getScene().addEntity("light", Components::Transform{{1.5, 2, -5}, {0, 0, 0}, {0.1, 0.1, 0.1}});
+        light.addComponent(Components::MeshRenderer{cubeMesh, texture});
     }
 };
 
