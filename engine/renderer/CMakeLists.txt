@@ -3,6 +3,7 @@ set(PROTON_ENGINE_RENDERER_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/opengl/opengl_renderer.h
 
         ${CMAKE_CURRENT_SOURCE_DIR}/mesh.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/renderable_object.h
         ${CMAKE_CURRENT_SOURCE_DIR}/renderer.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/renderer.h
         ${CMAKE_CURRENT_SOURCE_DIR}/shader_program.cpp

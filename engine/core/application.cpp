@@ -53,8 +53,9 @@ void Application::run()
             component.onUpdate(deltaTimeSeconds);
         });
 
-        registry.view<Components::Transform, Components::Camera>().each([&](auto transform, auto camera) { renderer.setCamera(transform, camera); });
-        registry.view<Components::Transform, Components::MeshRenderer>().each([&](auto transform, auto meshRenderer) { renderer.addToRenderQueue(transform, meshRenderer); });
+        // TODO: Remove lambda
+        registry.view<Components::Transform, Components::Camera>().each([&](auto & transform, auto & camera) { renderer.setCamera(transform, camera); });
+        registry.view<Components::Transform, Components::MeshRenderer>().each([&](auto & transform, auto & meshRenderer) { renderer.addToRenderQueue(transform, meshRenderer); });
         renderer.renderAllInQueue();
 
         for (const auto & layer : m_layers)
