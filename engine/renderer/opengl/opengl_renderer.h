@@ -6,8 +6,11 @@
 #pragma once
 
 #include "protonengine/renderer/irenderer.h"
+#include "renderer/renderable_object.h"
 
 #include <glm/glm.hpp>
+
+#include <vector>
 
 namespace ProtonEngine::Renderer::OpenGL
 {
@@ -26,6 +29,8 @@ public:
 private:
     glm::mat4 projection{};
     glm::mat4 view{};
+
+    std::vector<RenderableObject> m_renderableObjects;
 };
 
 } // namespace ProtonEngine::Renderer::OpenGL

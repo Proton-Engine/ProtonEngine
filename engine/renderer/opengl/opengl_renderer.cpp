@@ -72,33 +72,39 @@ void OpenGLRenderer::setWindowContext(ContextLoadFunction func)
 
 void OpenGLRenderer::addToRenderQueue(const Components::Transform & transform, const Components::MeshRenderer & meshRenderer)
 {
-    static ShaderProgram shaderProgram("shader");
-    shaderProgram.enable();
-    meshRenderer.texture.activate();
-
-    glm::mat4 model = glm::translate(glm::mat4(1.0f), transform.position);
-    model = glm::scale(model, transform.scale);
-    model = glm::rotate(model, transform.rotation.y * Math::ConstantsFloat::pi / 180.0f, glm::vec3{0, 1, 0});
-    model = glm::rotate(model, transform.rotation.x * Math::ConstantsFloat::pi / 180.0f, glm::vec3{1, 0, 0});
-    model = glm::rotate(model, transform.rotation.z * Math::ConstantsFloat::pi / 180.0f, glm::vec3{0, 0, 1});
-
-    const auto normalModelMatrix = glm::transpose(glm::inverse(model));
-
-    shaderProgram.setUniformValue("modelMatrix", model);
-    shaderProgram.setUniformValue("projectionMatrix", projection);
-    shaderProgram.setUniformValue("viewMatrix", view);
-    shaderProgram.setUniformValue("normalModelMatrix", normalModelMatrix);
-
-    meshRenderer.mesh.enableForDrawing();
-    glDrawArrays(GL_TRIANGLES, 0, meshRenderer.mesh.verticesCount());
-    meshRenderer.mesh.disableForDrawing();
-
-    shaderProgram.disable();
-    meshRenderer.texture.deactivate();
+    m_renderableObjects.emplace_back(transform, meshRenderer);
 }
 
 void OpenGLRenderer::renderAllInQueue()
 {
+    for (const auto & renderableObject : m_renderableObjects)
+    {
+        static ShaderProgram shaderProgram("shader");
+        shaderProgram.enable();
+        renderableObject.meshRenderer.texture.activate();
+
+        glm::mat4 model = glm::translate(glm::mat4(1.0f), renderableObject.transform.position);
+        model = glm::scale(model, renderableObject.transform.scale);
+        model = glm::rotate(model, renderableObject.transform.rotation.y * Math::ConstantsFloat::pi / 180.0f, glm::vec3{0, 1, 0});
+        model = glm::rotate(model, renderableObject.transform.rotation.x * Math::ConstantsFloat::pi / 180.0f, glm::vec3{1, 0, 0});
+        model = glm::rotate(model, renderableObject.transform.rotation.z * Math::ConstantsFloat::pi / 180.0f, glm::vec3{0, 0, 1});
+
+        const auto normalModelMatrix = glm::transpose(glm::inverse(model));
+
+        shaderProgram.setUniformValue("modelMatrix", model);
+        shaderProgram.setUniformValue("projectionMatrix", projection);
+        shaderProgram.setUniformValue("viewMatrix", view);
+        shaderProgram.setUniformValue("normalModelMatrix", normalModelMatrix);
+
+        renderableObject.meshRenderer.mesh.enableForDrawing();
+        glDrawArrays(GL_TRIANGLES, 0, renderableObject.meshRenderer.mesh.verticesCount());
+        renderableObject.meshRenderer.mesh.disableForDrawing();
+
+        shaderProgram.disable();
+        renderableObject.meshRenderer.texture.deactivate();
+    }
+
+    m_renderableObjects.clear();
 }
 
 void OpenGLRenderer::setCamera(const Components::Transform & transform, const Components::Camera & camera)
