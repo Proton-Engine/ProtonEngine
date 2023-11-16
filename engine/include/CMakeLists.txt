@@ -33,6 +33,8 @@ set(PROTON_ENGINE_MATH_HEADERS
 )
 
 set(PROTON_ENGINE_RENDERER_HEADERS
+        ${CMAKE_CURRENT_SOURCE_DIR}/protonengine/renderer/irenderer.h
+
         ${CMAKE_CURRENT_SOURCE_DIR}/protonengine/renderer/mesh.h
         ${CMAKE_CURRENT_SOURCE_DIR}/protonengine/renderer/renderer.h
         ${CMAKE_CURRENT_SOURCE_DIR}/protonengine/renderer/shader_program.h
