@@ -8,14 +8,14 @@
 #include "protonengine/components/camera.h"
 #include "protonengine/components/mesh_renderer.h"
 #include "protonengine/components/transform.h"
-
-#include "..\include\protonengine\user_interface\debug_layer.h"
 #include "components/native_script.h"
+
 #include "delta_time.h"
 #include "fmt/core.h"
 #include "input.h"
 #include "protonengine/core/logger.h"
 #include "protonengine/renderer/irenderer.h"
+#include "protonengine/user_interface/debug_layer.h"
 #include "renderer/renderer.h"
 #include "window.h"
 
@@ -53,9 +53,8 @@ void Application::run()
             component.onUpdate(deltaTimeSeconds);
         });
 
-        // TODO: Remove lambda
-        registry.view<Components::Transform, Components::Camera>().each([&](auto & transform, auto & camera) { renderer.setCamera(transform, camera); });
-        registry.view<Components::Transform, Components::MeshRenderer>().each([&](auto & transform, auto & meshRenderer) { renderer.addToRenderQueue(transform, meshRenderer); });
+        registry.view<Components::Transform, Components::Camera>().each([&renderer](auto & transform, auto & camera) { renderer.setCamera(transform, camera); });
+        registry.view<Components::Transform, Components::MeshRenderer>().each([&renderer](auto & transform, auto & meshRenderer) { renderer.addToRenderQueue(transform, meshRenderer); });
         renderer.renderAllInQueue();
 
         for (const auto & layer : m_layers)

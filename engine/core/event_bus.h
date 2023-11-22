@@ -50,18 +50,18 @@ public:
     template<typename T>
     static void subscribeToEvent(Event event, std::function<void(Event, T)> callback)
     {
-        subscribeToEvent<EventContext>(event, [callback](Event event, EventContext eventContext)
+        subscribeToEventGeneric(event, [callback](Event event, EventContext eventContext)
                          {
                              callback(event, std::get<T>(eventContext));
                          });
     }
 
-    template<>
-    static void subscribeToEvent<EventContext>(Event event, std::function<void(Event, EventContext)> callback);
-
     static void fireEvent(Event event, EventContext context);
 private:
     static std::map<Event, std::vector<std::function<void(Event, EventContext)>>> m_eventListeners;
+
+    static void subscribeToEventGeneric(Event event, std::function<void(Event, EventContext)> callback);
+
 };
 
 } // namespace ProtonEngine::Core
