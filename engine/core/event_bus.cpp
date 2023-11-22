@@ -43,8 +43,7 @@ void EventBus::fireEvent(Event event, EventContext context)
     }
 }
 
-template <>
-void EventBus::subscribeToEvent(Event event, std::function<void(Event, EventContext)> callback)
+void EventBus::subscribeToEventGeneric(Event event, std::function<void(Event, EventContext)> callback)
 {
     PROTON_LOG_DEBUG(fmt::format("New listener for event {}", parseEventToString(event)));
 

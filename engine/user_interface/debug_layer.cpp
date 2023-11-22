@@ -3,7 +3,7 @@
  * Licensed using the MIT license
  */
 
-#include "..\include\protonengine\user_interface\debug_layer.h"
+#include "protonengine/user_interface/debug_layer.h"
 
 #include "imgui.h"
 
