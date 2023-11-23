@@ -76,6 +76,13 @@ std::string_view ShaderProgram::name() noexcept
 {
     return m_name;
 }
+
+void ShaderProgram::setUniformValue(std::string_view name, glm::vec3 vector) noexcept
+{
+    GLint uniformID = glGetUniformLocation(m_shaderProgramID, name.data());
+    glUniform3f(uniformID, vector[0], vector[1], vector[2]);
+}
+
 void ShaderProgram::setUniformValue(std::string_view name, glm::mat4 matrix) noexcept
 {
     GLint uniformID = glGetUniformLocation(m_shaderProgramID, name.data());
