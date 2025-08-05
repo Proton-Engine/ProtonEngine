@@ -1,17 +1,31 @@
 /*
- * Copyright © 2023. Proton Engine
+ * Copyright © 2023-2025. Proton Engine
  * Licensed using the MIT license
  */
 
 #include "protonengine/core/logger.h"
 
-#include <fmt/color.h>
-#include <fmt/core.h>
+#include "color.h"
+
+// #include <fmt/color.h>
+// #include <fmt/core.h>
+#include <format>
+#include <print>
+#include <utility>
 
 namespace ProtonEngine::Core
 {
 
 LogLevel Logger::m_level = LogLevel::DEBUG;
+
+static void printWithForegroundColor(Color color, std::string_view message)
+{
+    const auto red = static_cast<char>(std::to_underlying(color) >> 16 & 0xFF);
+    const auto green = static_cast<char>(std::to_underlying(color) >> 8 & 0xFF);
+    const auto blue = static_cast<char>(std::to_underlying(color) & 0xFF);
+
+    std::println("\033[32,2;{};{};{};{}\033[0m", red, green, blue, message);
+}
 
 void Logger::setLogLevel(const LogLevel level)
 {
@@ -20,37 +34,34 @@ void Logger::setLogLevel(const LogLevel level)
 
 void Logger::logTrace(std::string_view file, int line, std::string_view message)
 {
-    if (m_level <= LogLevel::TRACE)
-        printMessage(fmt::format(fmt::fg(fmt::color::gray), "[TRACE]   {}:{} - {}", file, line, message));
+    // if (m_level <= LogLevel::TRACE)
+    // printMessage(std::format(fmt::fg(fmt::color::gray), "[TRACE]   {}:{} - {}", file, line, message));
 }
 
 void Logger::logDebug(std::string_view file, int line, std::string_view message)
 {
-    if (m_level <= LogLevel::DEBUG)
-        printMessage(fmt::format(fmt::fg(fmt::color::dark_gray), "[DEBUG]   {}:{} - {}", file, line, message));
+    // if (m_level <= LogLevel::DEBUG)
+    // printMessage(std::format(fmt::fg(fmt::color::dark_gray), "[DEBUG]   {}:{} - {}", file, line, message));
 }
 
 void Logger::logInfo(std::string_view file, int line, std::string_view message)
 {
-    if (m_level <= LogLevel::INFO)
-        printMessage(fmt::format(fmt::fg(fmt::color::white), "[INFO]    {}:{} - {}", file, line, message));
+    // if (m_level <= LogLevel::INFO)
+    // printMessage(std::format(fmt::fg(fmt::color::white), "[INFO]    {}:{} - {}", file, line, message));
 }
 
 void Logger::logWarning(std::string_view file, int line, std::string_view message)
 {
-    if (m_level <= LogLevel::WARNING)
-        printMessage(fmt::format(fmt::fg(fmt::color::yellow), "[WARNING] {}:{} - {}", file, line, message));
+    // if (m_level <= LogLevel::WARNING)
+    // printMessage(std::format(fmt::fg(fmt::color::yellow), "[WARNING] {}:{} - {}", file, line, message));
 }
 
 void Logger::logError(std::string_view file, int line, std::string_view message)
 {
     if (m_level <= LogLevel::ERROR)
-        printMessage(fmt::format(fmt::fg(fmt::color::red), "[ERROR]   {}:{} - {}", file, line, message));
-}
-
-void Logger::printMessage(std::string_view message)
-{
-    fmt::print("{}\n", message);
+    {
+        printWithForegroundColor(Color::red, std::format("[ERROR]   {}:{} - {}", file, line, message));
+    }
 }
 
 } // namespace ProtonEngine::Core

@@ -1,17 +1,16 @@
 /*
- * Copyright © 2022-2023. Proton Engine
+ * Copyright © 2022-2025. Proton Engine
  * Licensed using the MIT license
  */
 
 #include "protonengine/core/application.h"
 
+#include "components/native_script.h"
 #include "protonengine/components/camera.h"
 #include "protonengine/components/mesh_renderer.h"
 #include "protonengine/components/transform.h"
-#include "components/native_script.h"
 
 #include "delta_time.h"
-#include "fmt/core.h"
 #include "input.h"
 #include "protonengine/core/logger.h"
 #include "protonengine/renderer/irenderer.h"

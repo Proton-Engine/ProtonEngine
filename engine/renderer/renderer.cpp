@@ -1,23 +1,18 @@
 /*
- * Copyright © 2022-2023. Proton Engine
+ * Copyright © 2022-2025. Proton Engine
  * Licensed using the MIT license
  */
 
 #include "renderer.h"
-#include "protonengine/components/camera.h"
 #include "protonengine/core/logger.h"
-#include "protonengine/math/constants.h"
 #include "protonengine/renderer/renderer.h"
 #include "protonengine/renderer/shader_program.h"
 
 #include "core/event_bus.h"
 
 #include "glad/glad.h"
-#include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/quaternion.hpp"
 #include "opengl/opengl_renderer.h"
-
-#include <fmt/core.h>
 
 #include <stdexcept>
 

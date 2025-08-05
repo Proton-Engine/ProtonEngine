@@ -1,5 +1,5 @@
 /*
- * Copyright © 2022-2023. Proton Engine
+ * Copyright © 2022-2025. Proton Engine
  * Licensed using the MIT license
  */
 
@@ -14,20 +14,21 @@
 #include <backends/imgui_impl_glfw.h>
 
 #include <GLFW/glfw3.h>
+
 #include <cstdlib>
-#include <fmt/core.h>
+#include <format>
 
 namespace ProtonEngine::Core
 {
 
 Window::Window(int32_t width, int32_t height, std::string_view title, Renderer::IRenderer & renderer)
 {
-    PROTON_LOG_INFO(fmt::format("Creating window of size {}x{} with title {}", width, height, title));
+    PROTON_LOG_INFO(std::format("Creating window of size {}x{} with title {}", width, height, title));
     if (!glfwInit())
     {
         const char * description;
         glfwGetError(&description);
-        PROTON_LOG_ERROR(fmt::format("Failed to initialize glfw with error: {}", description));
+        PROTON_LOG_ERROR(std::format("Failed to initialize glfw with error: {}", description));
         exit(EXIT_FAILURE);
     }
 

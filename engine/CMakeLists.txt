@@ -42,7 +42,6 @@ target_link_libraries(ProtonEngine
         glm::glm
 
         PRIVATE
-        fmt
         glad
         stb_image
         glfw

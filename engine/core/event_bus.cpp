@@ -1,12 +1,13 @@
 /*
- * Copyright © 2023. Proton Engine
+ * Copyright © 2023-2025. Proton Engine
  * Licensed using the MIT license
  */
 
 #include "event_bus.h"
 
-#include "fmt/color.h"
 #include "protonengine/core/logger.h"
+
+#include <format>
 
 namespace ProtonEngine::Core
 {
@@ -30,7 +31,7 @@ static constexpr std::string parseEventToString(Event event)
 
 void EventBus::fireEvent(Event event, EventContext context)
 {
-    PROTON_LOG_TRACE(fmt::format("Event {} fired", parseEventToString(event)));
+    PROTON_LOG_TRACE(std::format("Event {} fired", parseEventToString(event)));
 
     if (!m_eventListeners.contains(event))
     {
@@ -45,7 +46,7 @@ void EventBus::fireEvent(Event event, EventContext context)
 
 void EventBus::subscribeToEventGeneric(Event event, std::function<void(Event, EventContext)> callback)
 {
-    PROTON_LOG_DEBUG(fmt::format("New listener for event {}", parseEventToString(event)));
+    PROTON_LOG_DEBUG(std::format("New listener for event {}", parseEventToString(event)));
 
     if (!m_eventListeners.contains(event))
     {

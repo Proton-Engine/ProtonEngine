@@ -1,14 +1,14 @@
 /*
- * Copyright © 2023. Proton Engine
+ * Copyright © 2023-2025. Proton Engine
  * Licensed using the MIT license
  */
- 
+
 #pragma once
 
 #include "protonengine/proton_interface.h"
 
-#include <string_view>
 #include <string.h>
+#include <string_view>
 
 #ifdef _WIN32
 #define __FILENAME__ (strrchr(__FILE__, '\\') ? strrchr(__FILE__, '\\') + 1 : __FILE__)
@@ -44,8 +44,6 @@ public:
 
 private:
     static LogLevel m_level;
-
-    static void printMessage(std::string_view message);
 };
 
 #ifndef DISTRIBUTION_BUILD
