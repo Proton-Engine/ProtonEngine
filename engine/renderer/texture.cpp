@@ -1,13 +1,14 @@
 /*
- * Copyright © 2022-2023. Proton Engine
+ * Copyright © 2022-2025. Proton Engine
  * Licensed using the MIT license
  */
 
 #include "protonengine/renderer/texture.h"
 #include "protonengine/core/logger.h"
 
-#include "fmt/core.h"
 #include "glad/glad.h"
+
+#include <format>
 
 namespace ProtonEngine::Renderer
 {
@@ -15,7 +16,7 @@ namespace ProtonEngine::Renderer
 // TODO: Free textures
 Texture::Texture(const Assets::Image & image)
 {
-    PROTON_LOG_DEBUG(fmt::format("Loading image {} into texture buffers", "__instert_image_name__"));
+    PROTON_LOG_DEBUG(std::format("Loading image {} into texture buffers", "__instert_image_name__"));
 
     auto data = image.getData();
     GLenum internalFormat = 0;

@@ -1,16 +1,16 @@
 /*
- * Copyright © 2022-2023. Proton Engine
+ * Copyright © 2022-2025. Proton Engine
  * Licensed using the MIT license
  */
 
 #include "protonengine/renderer/shader_program.h"
 #include "protonengine/core/logger.h"
 
-#include "fmt/core.h"
 #include "glad/glad.h"
 
 #include <filesystem>
 #include <fstream>
+#include <print>
 #include <sstream>
 #include <string>
 
@@ -31,11 +31,11 @@ enum class ShaderType
 ShaderProgram::ShaderProgram(std::string_view shaderName) :
     m_name(shaderName)
 {
-    PROTON_LOG_INFO(fmt::format("Creating shader from file: {}", shaderName));
+    PROTON_LOG_INFO(std::format("Creating shader from file: {}", shaderName));
     m_shaderProgramID = glCreateProgram();
 
-    m_vertexShaderID = loadShader(fmt::format("./assets/shaders/{}.vertex", shaderName), ShaderType::Vertex);
-    m_fragmentShaderID = loadShader(fmt::format("./assets/shaders/{}.fragment", shaderName), ShaderType::Fragment);
+    m_vertexShaderID = loadShader(std::format("./assets/shaders/{}.vertex", shaderName), ShaderType::Vertex);
+    m_fragmentShaderID = loadShader(std::format("./assets/shaders/{}.fragment", shaderName), ShaderType::Fragment);
 
     glAttachShader(m_shaderProgramID, m_vertexShaderID);
     glAttachShader(m_shaderProgramID, m_fragmentShaderID);
@@ -47,11 +47,11 @@ ShaderProgram::ShaderProgram(std::string_view shaderName) :
     if (result != GL_TRUE)
     {
         const auto error = getErrorFromProgramLinking(m_shaderProgramID);
-        PROTON_LOG_ERROR(fmt::format("Linking shader {} gave the following error: {}", shaderName, error));
+        PROTON_LOG_ERROR(std::format("Linking shader {} gave the following error: {}", shaderName, error));
         exit(-1);
     }
 
-    PROTON_LOG_INFO(fmt::format("Succesfully compiled shader: {}", shaderName));
+    PROTON_LOG_INFO(std::format("Succesfully compiled shader: {}", shaderName));
 }
 
 ShaderProgram::~ShaderProgram() noexcept
@@ -104,7 +104,7 @@ void ShaderProgram::setUniformValue(std::string_view name, glm::mat4 matrix) noe
     if (result != GL_TRUE)
     {
         const auto error = getErrorFromShaderCompilation(shaderId);
-        fmt::print("{}\n", error);
+        std::println("{}", error);
     }
 
     return shaderId;
@@ -134,7 +134,7 @@ void ShaderProgram::setUniformValue(std::string_view name, glm::mat4 matrix) noe
 
 [[nodiscard]] std::string loadShaderSourceFromDisk(const std::string & fileName)
 {
-    PROTON_LOG_DEBUG(fmt::format("Loading shader source from file: {}", fileName));
+    PROTON_LOG_DEBUG(std::format("Loading shader source from file: {}", fileName));
 
     std::ifstream fileStream(fileName);
     std::stringstream shaderSource;

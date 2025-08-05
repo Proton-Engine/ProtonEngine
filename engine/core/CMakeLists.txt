@@ -1,6 +1,7 @@
 set(PROTON_ENGINE_CORE_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/application.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/asset_manager.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/color.h
         ${CMAKE_CURRENT_SOURCE_DIR}/delta_time.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/delta_time.h
         ${CMAKE_CURRENT_SOURCE_DIR}/entity.cpp

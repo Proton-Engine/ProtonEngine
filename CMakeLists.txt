@@ -4,12 +4,16 @@ project(ProtonEngine)
 
 set(CMAKE_CXX_STANDARD 23)
 
+add_compile_options(-fPIC -Wall -Wextra -Wpedantic)
+
 set(BINARY_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
-set (CMAKE_LIBRARY_OUTPUT_DIRECTORY ${BINARY_DIRECTORY})
-set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${BINARY_DIRECTORY})
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${BINARY_DIRECTORY})
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${BINARY_DIRECTORY})
 
 include(cmake/copy_assets.cmake)
+include(cmake/CPM.cmake)
+include(cmake/download_dependencies.cmake)
 
 # Third-party libraries
 add_subdirectory(third-party)

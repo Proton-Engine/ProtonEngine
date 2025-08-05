@@ -1,5 +1,5 @@
 /*
- * Copyright © 2022-2023. Proton Engine
+ * Copyright © 2022-2025. Proton Engine
  * Licensed using the MIT license
  */
 
@@ -9,14 +9,14 @@
 #include "protonengine/core/entity.h"
 #include "protonengine/core/logger.h"
 
-#include <fmt/format.h>
+#include <format>
 
 namespace ProtonEngine::Core
 {
 
 auto Scene::addEntity(std::string_view name) noexcept -> Entity
 {
-    PROTON_LOG_DEBUG(fmt::format("New entity with name {} created", name));
+    PROTON_LOG_DEBUG(std::format("New entity with name {} created", name));
 
     const auto entity = m_registry.create();
     m_registry.emplace<Components::Tag>(entity, std::string(name));
@@ -26,7 +26,7 @@ auto Scene::addEntity(std::string_view name) noexcept -> Entity
 
 auto Scene::addEntity(std::string_view name, Components::Transform transform) noexcept -> Entity
 {
-    PROTON_LOG_DEBUG(fmt::format("New entity with name {} created", name));
+    PROTON_LOG_DEBUG(std::format("New entity with name {} created", name));
 
     const auto entity = m_registry.create();
     m_registry.emplace<Components::Tag>(entity, std::string(name));
@@ -43,7 +43,7 @@ auto Scene::getEntityWithName(std::string_view name) -> Entity
     });
 
     return found != view.end() ? Entity{*found, this} :
-                                 throw std::runtime_error(fmt::format("Entity with name {} not found in the registry", name));
+                                 throw std::runtime_error(std::format("Entity with name {} not found in the registry", name));
 }
 
 auto Scene::getEntityRegistry() noexcept -> entt::registry &

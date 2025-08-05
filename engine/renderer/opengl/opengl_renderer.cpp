@@ -1,5 +1,5 @@
 /*
- * Copyright © 2023. Proton Engine
+ * Copyright © 2023-2025. Proton Engine
  * Licensed using the MIT license
  */
 
@@ -17,8 +17,7 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/quaternion.hpp"
 
-#include <fmt/core.h>
-
+#include <format>
 #include <stdexcept>
 
 namespace ProtonEngine::Renderer::OpenGL
@@ -38,12 +37,12 @@ void GLAPIENTRY
 {
     if (type != GL_DEBUG_TYPE_ERROR)
     {
-        PROTON_LOG_TRACE(fmt::format("GL CALLBACK: type = {:#x}, severity = {:#x}, message = {}", type, severity, message));
+        PROTON_LOG_TRACE(std::format("GL CALLBACK: type = {:#x}, severity = {:#x}, message = {}", type, severity, message));
         return;
     }
 
     std::string messageType = (type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : "");
-    PROTON_LOG_ERROR(fmt::format("GL CALLBACK: {} type = {:#x}, severity = {:#x}, message = {}", messageType, type, severity, message));
+    PROTON_LOG_ERROR(std::format("GL CALLBACK: {} type = {:#x}, severity = {:#x}, message = {}", messageType, type, severity, message));
 }
 
 void OpenGLRenderer::setWindowContext(ContextLoadFunction func)

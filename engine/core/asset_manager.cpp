@@ -1,16 +1,16 @@
 /*
- * Copyright © 2022-2023. Proton Engine
+ * Copyright © 2022-2025. Proton Engine
  * Licensed using the MIT license
  */
 
 #include "protonengine/core/asset_manager.h"
 #include "protonengine/core/logger.h"
 
-#include <fmt/format.h>
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 #include <stb_image/stb_image.h>
 
+#include <format>
 #include <fstream>
 #include <sstream>
 #include <stdexcept>
@@ -39,7 +39,7 @@ static auto splitString(std::string_view input, char delimiter = ' ') -> std::ve
 
 Assets::Image AssetManager::readImageFromFile(std::string_view path)
 {
-    PROTON_LOG_INFO(fmt::format("Loading image file: {}", path));
+    PROTON_LOG_INFO(std::format("Loading image file: {}", path));
     int width;
     int height;
     int channels;
@@ -48,7 +48,7 @@ Assets::Image AssetManager::readImageFromFile(std::string_view path)
     stbi_uc * data = stbi_load(path.data(), &width, &height, &channels, 0);
 
     if (data == nullptr)
-        throw std::runtime_error(fmt::format("Something went wrong when loading image at :{}\n", path));
+        throw std::runtime_error(std::format("Something went wrong when loading image at :{}\n", path));
 
     const auto image = Assets::Image(data, width, height, channels);
 
@@ -59,7 +59,7 @@ Assets::Image AssetManager::readImageFromFile(std::string_view path)
 
 Assets::Model AssetManager::loadModel(std::string_view path)
 {
-    PROTON_LOG_INFO(fmt::format("Loading model file: {}", path));
+    PROTON_LOG_INFO(std::format("Loading model file: {}", path));
 
     if (path.contains(".obj"))
     {
@@ -172,7 +172,7 @@ Assets::Model AssetManager::loadObjModel(std::string_view path)
         }
         }
 
-        throw std::runtime_error(fmt::format("Unsupported line: {}", line));
+        throw std::runtime_error(std::format("Unsupported line: {}", line));
     }
 
     return Assets::Model{std::move(modelVertices), std::move(modelNormals), modelTextureCoords};
