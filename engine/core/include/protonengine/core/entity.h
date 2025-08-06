@@ -6,15 +6,14 @@
 #pragma once
 
 #include "protonengine/core/scene.h"
-
+#include "protonengine/core/components/proton_script.h"
 #include "protonengine/core/export.h"
 
 #include <entt/entity/entity.hpp>
 
-#include <functional>
 #include <memory>
 
-namespace ProtonEngine::Components
+namespace ProtonEngine::Core::Components
 {
     class ProtonScript;
 }
@@ -35,26 +34,27 @@ public:
         m_scene->addComponentToEntity(m_handle, std::move(component));
     }
 
-    template<typename T, typename = std::enable_if_t<std::is_base_of_v<Components::ProtonScript, T>>>
-    void addScript() noexcept
-    {
-        std::unique_ptr<Components::ProtonScript> script = std::make_unique<T>();
-        addScript(std::move(script));
-    };
+    // template<typename T, typename = std::enable_if_t<std::is_base_of_v<Components::ProtonScript, T>>>
+    // void addScript() noexcept
+    // {
+    //     std::unique_ptr<Components::ProtonScript> script = std::make_unique<T>();
+    //     addScript(std::move(script));
+    // };
 
     template<typename T>
     T * getComponent()
     {
-//        if (!m_scene->getEntityRegistry().any_of<T>(m_handle))
-//            return nullptr;
+        // if (!m_scene->getEntityRegistry().any_of<T>(m_handle))
+            // return nullptr;
 
         return &m_scene->getEntityRegistry().get<T>(m_handle);
     }
+
+    // TODO: Move back to private
+    void addScript(std::unique_ptr<Components::ProtonScript> script);
 private:
     entt::entity m_handle;
     Scene * m_scene;
-
-    void addScript(std::unique_ptr<Components::ProtonScript> script);
 };
 
 } // namespace ProtonEngine::Core

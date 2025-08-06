@@ -4,8 +4,8 @@
  */
 
 #include "protonengine/core/scene.h"
-#include "protonengine/components/tag.h"
-#include "protonengine/components/transform.h"
+#include "protonengine/core/components/tag.h"
+#include "protonengine/core/components/transform.h"
 #include "protonengine/core/entity.h"
 #include "protonengine/core/logger.h"
 

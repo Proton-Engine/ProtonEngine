@@ -9,19 +9,14 @@
 #include "protonengine/core/key_codes.h"
 #include "protonengine/core/key_state.h"
 
-#include "protonengine/components/export.h"
+#include "protonengine/core/export.h"
 
 #include <chrono>
 
-namespace ProtonEngine::Core
-{
-class Entity;
-}
-
-namespace ProtonEngine::Components
+namespace ProtonEngine::Core::Components
 {
 
-class PROTONENGINE_COMPONENTS_EXPORT ProtonScript
+class PROTONENGINE_CORE_EXPORT ProtonScript
 {
 public:
     ProtonScript() = default;
@@ -46,4 +41,4 @@ private:
     std::optional<Core::Entity> m_entity = std::nullopt;
 };
 
-} // namespace ProtonEngine::Components
+} // namespace ProtonEngine::Core::Components

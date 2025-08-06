@@ -3,11 +3,11 @@
  * Licensed using the MIT license
  */
 
-#include "protonengine/components/proton_script.h"
+#include "protonengine/core/components/proton_script.h"
 
 #include "protonengine/core/input.h"
 
-namespace ProtonEngine::Components
+namespace ProtonEngine::Core::Components
 {
 
 
@@ -25,4 +25,4 @@ void ProtonScript::setEntity(Core::Entity entity)
     m_entity = entity;
 }
 
-} // namespace ProtonEngine::Components
+} // namespace ProtonEngine::Core::Components

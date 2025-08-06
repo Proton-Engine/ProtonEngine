@@ -5,18 +5,16 @@
 
 #pragma once
 
-#include "protonengine/components/transform.h"
+#include "protonengine/core/components/transform.h"
 #include "protonengine/core/export.h"
+#include "protonengine/core/entity.h"
 
 #include <entt/entt.hpp>
 
-#include <glm/vec3.hpp>
 #include <string_view>
 
 namespace ProtonEngine::Core
 {
-
-class Entity;
 
 class PROTONENGINE_CORE_EXPORT Scene
 {

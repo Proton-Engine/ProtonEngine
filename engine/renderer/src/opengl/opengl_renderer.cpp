@@ -5,7 +5,7 @@
 
 #include "opengl_renderer.h"
 
-#include "protonengine/components/camera.h"
+#include "protonengine/core/components/camera.h"
 #include "protonengine/core/logger.h"
 #include "protonengine/renderer/renderer.h"
 #include "protonengine/renderer/shader_program.h"
@@ -70,7 +70,7 @@ void OpenGLRenderer::setWindowContext(ContextLoadFunction func)
                                      }));
 }
 
-void OpenGLRenderer::addToRenderQueue(const Components::Transform & transform, const Components::MeshRenderer & meshRenderer)
+void OpenGLRenderer::addToRenderQueue(const Core::Components::Transform & transform, const Core::Components::MeshRenderer & meshRenderer)
 {
     m_renderableObjects.emplace_back(transform, meshRenderer);
 }
@@ -107,7 +107,7 @@ void OpenGLRenderer::renderAllInQueue()
     m_renderableObjects.clear();
 }
 
-void OpenGLRenderer::setCamera(const Components::Transform & transform, const Components::Camera & camera)
+void OpenGLRenderer::setCamera(const Core::Components::Transform & transform, const Core::Components::Camera & camera)
 {
     if (!camera.isMainCamera)
     {
@@ -123,13 +123,13 @@ void OpenGLRenderer::setCamera(const Components::Transform & transform, const Co
     view = glm::rotate(view, transform.rotation.x * std::numbers::pi_v<float> / 180.0f, glm::vec3{1, 0, 0});
     view = glm::rotate(view, transform.rotation.z * std::numbers::pi_v<float> / 180.0f, glm::vec3{0, 0, 1});
 
-    if (camera.projection == Components::Camera::Projection::PERSPECTIVE)
+    if (camera.projection == Core::Components::Camera::Projection::PERSPECTIVE)
     {
         projection = glm::perspective(glm::radians(camera.fieldOfView), windowWidth / windowHeight, camera.clippingPlaneNear,
                                       camera.clippingPlaneFar);
     }
 
-    if (camera.projection == Components::Camera::Projection::ORTHOGRAPHIC)
+    if (camera.projection == Core::Components::Camera::Projection::ORTHOGRAPHIC)
     {
         throw std::runtime_error("Orthographic projection not supported yet");
     }

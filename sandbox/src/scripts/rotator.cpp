@@ -5,11 +5,11 @@
 
 #include "rotator.h"
 
-#include <protonengine/components/transform.h>
+#include <protonengine/core/components/transform.h>
 
 void Rotator::onUpdate(float timestep)
 {
-    auto * transform = getComponent<ProtonEngine::Components::Transform>();
+    auto * transform = getComponent<ProtonEngine::Core::Components::Transform>();
 
     transform->rotation.y += 90.0f * timestep;
 }
