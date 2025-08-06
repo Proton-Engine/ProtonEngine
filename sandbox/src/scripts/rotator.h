@@ -5,9 +5,9 @@
 
 #pragma once
 
-#include <protonengine/core/components/proton_script.h>
+#include <protonengine/core/components/native_script.h>
 
-class Rotator : public ProtonEngine::Core::Components::ProtonScript
+class Rotator : public ProtonEngine::Core::Components::NativeScript
 {
 protected:
     void onUpdate(float timestep) override;

@@ -7,7 +7,7 @@
 
 #include "protonengine/core/components/camera.h"
 #include "protonengine/core/components/mesh_renderer.h"
-#include "protonengine/core/components/proton_script.h"
+#include "protonengine/core/components/native_script.h"
 #include "protonengine/core/components/transform.h"
 
 #include "delta_time.h"
@@ -48,12 +48,14 @@ void Application::run()
 
         auto & registry = m_scene.getEntityRegistry();
 
-        registry.view<std::unique_ptr<Components::ProtonScript>>().each([&](std::unique_ptr<Components::ProtonScript> & component) {
-            component->onUpdate(deltaTimeSeconds);
+        registry.view<Components::ScriptComponent>().each([&](Components::ScriptComponent & component) {
+            component.nativeScript->onUpdate(deltaTimeSeconds);
         });
 
         registry.view<Components::Transform, Components::Camera>().each([&renderer](auto & transform, auto & camera) { renderer.setCamera(transform, camera); });
-        registry.view<Components::Transform, Components::MeshRenderer>().each([&renderer](auto & transform, auto & meshRenderer) { renderer.addToRenderQueue(transform, meshRenderer); });
+        registry.view<Components::Transform, Components::MeshRenderer>().each([&renderer](auto & transform, auto & meshRenderer) {
+            renderer.addToRenderQueue(transform, meshRenderer);
+        });
         renderer.renderAllInQueue();
 
         for (const auto & layer : m_layers)

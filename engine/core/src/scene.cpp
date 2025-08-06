@@ -21,7 +21,7 @@ auto Scene::addEntity(std::string_view name) noexcept -> Entity
     const auto entity = m_registry.create();
     m_registry.emplace<Components::Tag>(entity, std::string(name));
     m_registry.emplace<Components::Transform>(entity, glm::vec3{0, 0, 0}, glm::vec3{}, glm::vec3{1, 1, 1});
-    return Entity(entity, this);
+    return Entity(entity, *this);
 }
 
 auto Scene::addEntity(std::string_view name, Components::Transform transform) noexcept -> Entity
@@ -31,7 +31,7 @@ auto Scene::addEntity(std::string_view name, Components::Transform transform) no
     const auto entity = m_registry.create();
     m_registry.emplace<Components::Tag>(entity, std::string(name));
     m_registry.emplace<Components::Transform>(entity, transform.position, transform.rotation, transform.scale);
-    return Entity(entity, this);
+    return Entity(entity, *this);
 }
 
 auto Scene::getEntityWithName(std::string_view name) -> Entity
@@ -42,7 +42,7 @@ auto Scene::getEntityWithName(std::string_view name) -> Entity
         return view.get<Components::Tag>(entity).tag == name;
     });
 
-    return found != view.end() ? Entity{*found, this} :
+    return found != view.end() ? Entity{*found, *this} :
                                  throw std::runtime_error(std::format("Entity with name {} not found in the registry", name));
 }
 
