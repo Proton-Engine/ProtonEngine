@@ -6,25 +6,20 @@
 #pragma once
 
 #include "protonengine/core/entity.h"
+#include "protonengine/core/export.h"
 #include "protonengine/core/key_codes.h"
 #include "protonengine/core/key_state.h"
-
-#include "protonengine/core/export.h"
-
-#include <chrono>
 
 namespace ProtonEngine::Core::Components
 {
 
-class PROTONENGINE_CORE_EXPORT ProtonScript
+class PROTONENGINE_CORE_EXPORT NativeScript
 {
 public:
-    ProtonScript() = default;
-    virtual ~ProtonScript() = default;
+    NativeScript(const Entity & entity);
+    virtual ~NativeScript() = default;
 
     virtual void onUpdate(float timestep);
-
-    void setEntity(Core::Entity entity);
 
 protected:
     static Core::KeyState getKeyState(Core::Key key);
@@ -32,13 +27,11 @@ protected:
     template <typename T>
     T * getComponent()
     {
-        // TODO: Change for custom assert
-        assert(m_entity.has_value());
-        return m_entity.value().getComponent<T>();
+        return &m_entity.getComponent<T>();
     }
 
 private:
-    std::optional<Core::Entity> m_entity = std::nullopt;
+    Entity m_entity;
 };
 
 } // namespace ProtonEngine::Core::Components

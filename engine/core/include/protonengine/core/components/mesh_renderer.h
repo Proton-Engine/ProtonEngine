@@ -17,6 +17,10 @@ struct PROTONENGINE_CORE_EXPORT MeshRenderer
 {
     Renderer::Mesh & mesh;
     Renderer::Texture & texture;
+
+    MeshRenderer(Renderer::Mesh & mesh, Renderer::Texture & texture) :
+        mesh(mesh),
+        texture(texture) {}
 };
 
 } // namespace ProtonEngine::Core::Components

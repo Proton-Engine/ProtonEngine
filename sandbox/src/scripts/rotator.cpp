@@ -1,5 +1,5 @@
 /*
- * Copyright © 2022-2023. Proton Engine
+ * Copyright © 2022-2025. Proton Engine
  * Licensed using the MIT license
  */
 
@@ -9,7 +9,7 @@
 
 void Rotator::onUpdate(float timestep)
 {
-    auto * transform = getComponent<ProtonEngine::Core::Components::Transform>();
+    auto transform = getComponent<ProtonEngine::Core::Components::Transform>();
 
     transform->rotation.y += 90.0f * timestep;
 }

@@ -19,6 +19,11 @@ namespace ProtonEngine::Core::Components
 struct PROTONENGINE_CORE_EXPORT Tag
 {
     std::string tag;
+
+    explicit Tag(const std::string & tag) :
+        tag(tag) {}
+
+    Tag() = default;
 };
 
 } // namespace ProtonEngine::Core::Components
