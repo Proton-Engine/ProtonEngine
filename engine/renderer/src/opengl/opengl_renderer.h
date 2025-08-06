@@ -22,9 +22,9 @@ public:
 
     void setWindowContext(ContextLoadFunction func) override;
 
-    void addToRenderQueue(const Components::Transform & transform, const Components::MeshRenderer & meshRenderer) override;
+    void addToRenderQueue(const Core::Components::Transform & transform, const Core::Components::MeshRenderer & meshRenderer) override;
     void renderAllInQueue() override;
-    void setCamera(const Components::Transform & transform, const Components::Camera & camera) override;
+    void setCamera(const Core::Components::Transform & transform, const Core::Components::Camera & camera) override;
     void update() override;
 private:
     glm::mat4 projection{};

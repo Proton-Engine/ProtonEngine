@@ -5,9 +5,9 @@
 
 #pragma once
 
-#include <protonengine/components/proton_script.h>
+#include <protonengine/core/components/proton_script.h>
 
-class CameraController : public ProtonEngine::Components::ProtonScript
+class CameraController : public ProtonEngine::Core::Components::ProtonScript
 {
 protected:
     void onUpdate(float timestep) override;

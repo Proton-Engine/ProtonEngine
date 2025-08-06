@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "protonengine/components/export.h"
+#include "protonengine/core/export.h"
 #include "protonengine/renderer/mesh.h"
 
 #include <glm/vec3.hpp>
@@ -13,12 +13,12 @@
 #include <memory>
 #include <string>
 
-namespace ProtonEngine::Components
+namespace ProtonEngine::Core::Components
 {
 
-struct PROTONENGINE_COMPONENTS_EXPORT Tag
+struct PROTONENGINE_CORE_EXPORT Tag
 {
     std::string tag;
 };
 
-} // namespace ProtonEngine::Components
+} // namespace ProtonEngine::Core::Components

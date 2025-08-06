@@ -5,11 +5,11 @@
 
 #include "camera_controller.h"
 
-#include <protonengine/components/transform.h>
+#include <protonengine/core/components/transform.h>
 
 void CameraController::onUpdate(float timestep)
 {
-    auto * transform = getComponent<ProtonEngine::Components::Transform>();
+    auto * transform = getComponent<ProtonEngine::Core::Components::Transform>();
 
     if (getKeyState(ProtonEngine::Core::KeyCode::KEY_A) == ProtonEngine::Core::KeyState::PRESSED)
     {

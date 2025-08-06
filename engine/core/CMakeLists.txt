@@ -28,12 +28,12 @@ target_include_directories(ProtonEngineCore
 
 target_link_libraries(ProtonEngineCore
         PUBLIC
-        ProtonEngine::Components
         ProtonEngine::Assets
         ProtonEngine::Renderer
         ProtonEngine::Ui
         EnTT::EnTT
         glfw
+        glm
         PRIVATE
         stb_image
         ImGui

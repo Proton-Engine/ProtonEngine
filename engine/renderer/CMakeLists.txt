@@ -34,6 +34,13 @@ target_link_libraries(ProtonEngineRenderer
         glm::glm
 )
 
+if (WIN32)
+    target_link_libraries(ProtonEngineRenderer PRIVATE opengl32)
+endif ()
+
+if (APPLE)
+    target_link_libraries(ProtonEngineRenderer PRIVATE "-framework OpenGL")
+endif ()
 
 install(
         TARGETS ProtonEngineRenderer

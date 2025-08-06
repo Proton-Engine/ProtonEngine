@@ -5,10 +5,10 @@
 
 #include "protonengine/core/application.h"
 
-#include "protonengine/components/camera.h"
-#include "protonengine/components/mesh_renderer.h"
-#include "protonengine/components/proton_script.h"
-#include "protonengine/components/transform.h"
+#include "protonengine/core/components/camera.h"
+#include "protonengine/core/components/mesh_renderer.h"
+#include "protonengine/core/components/proton_script.h"
+#include "protonengine/core/components/transform.h"
 
 #include "delta_time.h"
 #include "protonengine/core/input.h"

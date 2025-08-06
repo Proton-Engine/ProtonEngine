@@ -5,16 +5,16 @@
  
 #pragma once
 
-#include "protonengine/components/transform.h"
-#include "protonengine/components/mesh_renderer.h"
+#include "protonengine/core/components/transform.h"
+#include "protonengine/core/components/mesh_renderer.h"
 
 namespace ProtonEngine::Renderer
 {
 
 struct RenderableObject
 {
-    const Components::Transform & transform;
-    const Components::MeshRenderer & meshRenderer;
+    const Core::Components::Transform & transform;
+    const Core::Components::MeshRenderer & meshRenderer;
 };
 
 } // namespace ProtonEngine::Renderer

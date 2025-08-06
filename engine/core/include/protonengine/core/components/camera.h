@@ -5,12 +5,12 @@
 
 #pragma once
 
-#include "protonengine/components/export.h"
+#include "protonengine/core/export.h"
 
-namespace ProtonEngine::Components
+namespace ProtonEngine::Core::Components
 {
 
-struct PROTONENGINE_COMPONENTS_EXPORT Camera
+struct PROTONENGINE_CORE_EXPORT Camera
 {
     enum class Projection
     {
@@ -25,4 +25,4 @@ struct PROTONENGINE_COMPONENTS_EXPORT Camera
     bool isMainCamera;
 };
 
-} // namespace ProtonEngine::Components
+} // namespace ProtonEngine::Core::Components

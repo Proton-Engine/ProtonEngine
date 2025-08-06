@@ -4,7 +4,7 @@
  */
 
 #include "protonengine/core/entity.h"
-#include "protonengine/components/proton_script.h"
+#include "protonengine/core/components/proton_script.h"
 
 namespace ProtonEngine::Core
 {
