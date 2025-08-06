@@ -1,0 +1,43 @@
+{
+  "version": 10,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 23,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "Debug",
+      "displayName": "Debug",
+      "description": "Debug build using Ninja",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/cmake-build-debug",
+      "graphviz": "ProtonEngine.dot",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "Release",
+      "displayName": "Release",
+      "description": "Release build using Ninja",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/cmake-build-release",
+      "graphviz": "ProtonEngine.dot",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo"
+      }
+    },
+    {
+      "name": "Distribution",
+      "displayName": "Distribution",
+      "description": "Distribution build using Ninja",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/cmake-build-distribution",
+      "graphviz": "ProtonEngine.dot",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    }
+  ]
+}

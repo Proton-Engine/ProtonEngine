@@ -1,0 +1,9 @@
+file(GLOB_RECURSE DOT_FILES CONFIGURE_DEPENDS BASE_DIRECTORY ${CMAKE_BINARY_DIR}/*.dot*)
+
+add_custom_command(
+        OUTPUT ${CMAKE_SOURCE_DIR}/${CMAKE_PROJECT_NAME}.svg
+        COMMAND dot -Tsvg ${CMAKE_BINARY_DIR}/ProtonEngine.dot > ${CMAKE_SOURCE_DIR}/${CMAKE_PROJECT_NAME}.svg
+        DEPENDS ${DOT_FILES}
+)
+
+add_custom_target(generate_graphviz DEPENDS ${CMAKE_SOURCE_DIR}/${CMAKE_PROJECT_NAME}.svg)

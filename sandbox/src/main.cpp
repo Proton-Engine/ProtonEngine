@@ -14,7 +14,7 @@
 #include "protonengine/components/mesh_renderer.h"
 
 #include "protonengine/renderer/renderer.h"
-#include "protonengine/user_interface/debug_layer.h"
+#include "protonengine/ui/debug_layer.h"
 
 class SandboxApplication final : public ProtonEngine::Core::Application
 {
