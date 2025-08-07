@@ -22,7 +22,7 @@ public:
 
     void setWindowContext(ContextLoadFunction func) override;
 
-    void addToRenderQueue(const Transform & transform, const Core::Components::MeshRenderer & meshRenderer) override;
+    void addToRenderQueue(const Transform & transform, const Mesh & mesh, const Texture & texture) override;
     void renderAllInQueue() override;
     void setCamera(const Transform & transform, const Camera & camera) override;
     void update() override;

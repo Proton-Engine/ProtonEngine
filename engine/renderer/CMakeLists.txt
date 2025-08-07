@@ -4,7 +4,7 @@ file(GLOB_RECURSE RENDERER_HEADERS CONFIGURE_DEPENDS RELATIVE_PATH ${CMAKE_CURRE
 source_group(src FILES ${RENDERER_SOURCES})
 source_group(include FILES ${RENDERER_HEADERS})
 
-add_library(ProtonEngineRenderer STATIC)
+add_library(ProtonEngineRenderer SHARED)
 add_library(ProtonEngine::Renderer ALIAS ProtonEngineRenderer)
 generate_export_header(ProtonEngineRenderer BASE_NAME PROTONENGINE_RENDERER EXPORT_FILE_NAME protonengine/renderer/export.h)
 
@@ -28,10 +28,10 @@ target_include_directories(ProtonEngineRenderer
 
 target_link_libraries(ProtonEngineRenderer
         PUBLIC
-        ProtonEngine::Core
+        ProtonEngine::Assets
+        glm::glm
         PRIVATE
         glad
-        glm::glm
         ProtonEngine::Common
 )
 

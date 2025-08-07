@@ -1,5 +1,5 @@
 /*
- * Copyright © 2022-2023. Proton Engine
+ * Copyright © 2022-2025. Proton Engine
  * Licensed using the MIT license
  */
 
@@ -7,7 +7,7 @@
 
 #include <cinttypes>
 
-namespace ProtonEngine::Core
+namespace ProtonEngine::Common
 {
 
 using Key = uint16_t;
@@ -137,6 +137,4 @@ static constexpr Key KEY_RIGHT_SUPER = 347;
 static constexpr Key KEY_MENU = 348;
 
 } // namespace KeyCode
-} // namespace ProtonEngine::Core
-
-
+} // namespace ProtonEngine::Common

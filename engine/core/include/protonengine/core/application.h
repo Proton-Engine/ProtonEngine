@@ -33,11 +33,11 @@ public:
 
 protected:
     virtual void initialize() = 0;
-    void addLayer(std::unique_ptr<UserInterface::Layer> layer);
+    void addLayer(std::unique_ptr<Ui::Layer> layer);
 
 private:
     std::unique_ptr<Window> m_window;
-    std::vector<std::unique_ptr<UserInterface::Layer>> m_layers;
+    std::vector<std::unique_ptr<Ui::Layer>> m_layers;
     Scene m_scene;
 };
 

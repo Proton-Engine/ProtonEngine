@@ -1,5 +1,5 @@
 /*
- * Copyright © 2022-2023. Proton Engine
+ * Copyright © 2022-2025. Proton Engine
  * Licensed using the MIT license
  */
 
@@ -10,7 +10,7 @@
 #include "backends/imgui_impl_opengl3.h"
 #include "imgui.h"
 
-namespace ProtonEngine::UserInterface
+namespace ProtonEngine::Ui
 {
 
 void Layer::begin()
@@ -27,4 +27,4 @@ void Layer::end()
     ImGui::EndFrame();
 }
 
-} // namespace ProtonEngine::UserInterface
+} // namespace ProtonEngine::Ui

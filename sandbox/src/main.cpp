@@ -24,7 +24,7 @@ public:
     {
         using namespace ProtonEngine;
 
-        addLayer(std::make_unique<UserInterface::DebugLayer>());
+        addLayer(std::make_unique<Ui::DebugLayer>());
 
         static const auto cubeModel = Core::AssetManager::loadModel("assets/models/cube.obj");
         static Renderer::Mesh cubeMesh{cubeModel.getVertices(), cubeModel.getNormals(), cubeModel.getTextureCoordinates()};
