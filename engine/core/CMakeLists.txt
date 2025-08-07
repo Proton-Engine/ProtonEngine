@@ -37,6 +37,7 @@ target_link_libraries(ProtonEngineCore
         PRIVATE
         stb_image
         ImGui
+        ProtonEngine::Common
 )
 
 install(

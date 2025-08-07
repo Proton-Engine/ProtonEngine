@@ -8,7 +8,7 @@
 
 #include <cstdint>
 
-namespace ProtonEngine::Core
+namespace ProtonEngine::Common
 {
 
 enum class Color : uint32_t
@@ -156,4 +156,4 @@ enum class Color : uint32_t
     yellow_green = 0x9ACD32 // rgb(154,205,50)
 };
 
-} // namespace ProtonEngine::Core
+} // namespace ProtonEngine::Common

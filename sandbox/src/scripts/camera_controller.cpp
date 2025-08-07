@@ -7,7 +7,7 @@
 
 #include "protonengine/core/components/mesh_renderer.h"
 
-#include <protonengine/core/components/transform.h>
+#include <protonengine/core/components/transform_component.h>
 
 CameraController::CameraController(const ProtonEngine::Core::Entity & entity) :
     NativeScript(entity)
@@ -17,30 +17,30 @@ CameraController::CameraController(const ProtonEngine::Core::Entity & entity) :
 void CameraController::onUpdate(float timestep)
 {
     // TODO: Go to try_get, maybe that will prevent segfault?
-    auto transform = getComponent<ProtonEngine::Core::Components::Transform>();
+    auto transform = getComponent<ProtonEngine::Core::Components::TransformComponent>();
 
     if (getKeyState(ProtonEngine::Core::KeyCode::KEY_A) == ProtonEngine::Core::KeyState::PRESSED)
     {
-        transform->position.x -= static_cast<float>(5.0f * timestep);
+        transform->transform.position.x -= static_cast<float>(5.0f * timestep);
     }
     if (getKeyState(ProtonEngine::Core::KeyCode::KEY_D) == ProtonEngine::Core::KeyState::PRESSED)
     {
-        transform->position.x += static_cast<float>(5.0f * timestep);
+        transform->transform.position.x += static_cast<float>(5.0f * timestep);
     }
     if (getKeyState(ProtonEngine::Core::KeyCode::KEY_W) == ProtonEngine::Core::KeyState::PRESSED)
     {
-        transform->position.y += static_cast<float>(5.0f * timestep);
+        transform->transform.position.y += static_cast<float>(5.0f * timestep);
     }
     if (getKeyState(ProtonEngine::Core::KeyCode::KEY_S) == ProtonEngine::Core::KeyState::PRESSED)
     {
-        transform->position.y -= static_cast<float>(5.0f * timestep);
+        transform->transform.position.y -= static_cast<float>(5.0f * timestep);
     }
     if (getKeyState(ProtonEngine::Core::KeyCode::KEY_LEFT_SHIFT) == ProtonEngine::Core::KeyState::PRESSED)
     {
-        transform->position.z -= static_cast<float>(5.0f * timestep);
+        transform->transform.position.z -= static_cast<float>(5.0f * timestep);
     }
     if (getKeyState(ProtonEngine::Core::KeyCode::KEY_LEFT_CONTROL) == ProtonEngine::Core::KeyState::PRESSED)
     {
-        transform->position.z += static_cast<float>(5.0f * timestep);
+        transform->transform.position.z += static_cast<float>(5.0f * timestep);
     }
 }

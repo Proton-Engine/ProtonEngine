@@ -8,7 +8,7 @@
 #include "backends/imgui_impl_opengl3.h"
 #include "protonengine/core/event_bus.h"
 
-#include "protonengine/core/logger.h"
+#include "protonengine/common/logger.h"
 #include "protonengine/renderer/irenderer.h"
 #include "protonengine/renderer/renderer.h"
 

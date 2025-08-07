@@ -32,25 +32,25 @@ public:
         static auto image = Core::AssetManager::readImageFromFile("assets/textures/checkerboard.png");
         static auto texture = Renderer::createTextureFromImage(image);
 
-        auto camera = getScene().addEntity("MainCamera", Core::Components::Transform{{0, 2, 5}, {0, 0, 0}, {1, 1, 1}});
+        auto camera = getScene().addEntity("MainCamera", Core::Components::TransformComponent{{0, 2, 5}, {0, 0, 0}, {1, 1, 1}});
         camera.addComponent(Core::Components::Camera{Core::Components::Camera::Projection::PERSPECTIVE, 0.1f, 100.0f, 60, true});
         camera.emplaceScript<CameraController>();
         // camera.addScript(std::make_unique<CameraController>());
         // getScene().addScriptToEntity<CameraController>(camera);
 
-        auto floor = getScene().addEntity("Floor", Core::Components::Transform{{0, 0, -5}, {0, 0, 0}, {2, 0.1, 5}});
+        auto floor = getScene().addEntity("Floor", Core::Components::TransformComponent{{0, 0, -5}, {0, 0, 0}, {2, 0.1, 5}});
         floor.emplaceComponent<Core::Components::MeshRenderer>(cubeMesh, texture);
 
-        auto leftWall = getScene().addEntity("leftWall", Core::Components::Transform{{-2, 2, -5}, {0, 0, 0}, {0.1, 2, 5}});
+        auto leftWall = getScene().addEntity("leftWall", Core::Components::TransformComponent{{-2, 2, -5}, {0, 0, 0}, {0.1, 2, 5}});
         leftWall.emplaceComponent<Core::Components::MeshRenderer>(cubeMesh, texture);
 
-        auto rightWall = getScene().addEntity("rightWall", Core::Components::Transform{{2, 2, -5}, {0, 0, 0}, {0.1, 2, 5}});
+        auto rightWall = getScene().addEntity("rightWall", Core::Components::TransformComponent{{2, 2, -5}, {0, 0, 0}, {0.1, 2, 5}});
         rightWall.emplaceComponent<Core::Components::MeshRenderer>(cubeMesh, texture);
 
-        auto backWall = getScene().addEntity("backWall", Core::Components::Transform{{0, 2, -10}, {0, 0, 0}, {2, 2, 0.1}});
+        auto backWall = getScene().addEntity("backWall", Core::Components::TransformComponent{{0, 2, -10}, {0, 0, 0}, {2, 2, 0.1}});
         backWall.emplaceComponent<Core::Components::MeshRenderer>(cubeMesh, texture);
 
-        auto light = getScene().addEntity("light", Core::Components::Transform{{1.5, 2, -5}, {0, 0, 0}, {0.1, 0.1, 0.1}});
+        auto light = getScene().addEntity("light", Core::Components::TransformComponent{{1.5, 2, -5}, {0, 0, 0}, {0.1, 0.1, 0.1}});
         light.emplaceComponent<Core::Components::MeshRenderer>(cubeMesh, texture);
     }
 };

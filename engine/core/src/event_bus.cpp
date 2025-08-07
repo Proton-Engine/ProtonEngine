@@ -5,7 +5,7 @@
 
 #include "protonengine/core/event_bus.h"
 
-#include "protonengine/core/logger.h"
+#include "protonengine/common/logger.h"
 
 #include <format>
 

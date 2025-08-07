@@ -5,9 +5,7 @@
 
 #pragma once
 
-#include "protonengine/core/export.h"
-
-#include <string.h>
+#include <cstring>
 #include <string_view>
 
 #ifdef _WIN32
@@ -16,8 +14,7 @@
 #define __FILENAME__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
 #endif
 
-
-namespace ProtonEngine::Core
+namespace ProtonEngine::Common
 {
 
 enum class LogLevel
@@ -29,7 +26,7 @@ enum class LogLevel
     ERROR = 4
 };
 
-class PROTONENGINE_CORE_EXPORT Logger
+class Logger
 {
 public:
     Logger() = delete;
@@ -47,11 +44,11 @@ private:
 };
 
 #ifndef DISTRIBUTION_BUILD
-#define PROTON_LOG_TRACE(message) ProtonEngine::Core::Logger::logTrace(__FILENAME__, __LINE__, message);
-#define PROTON_LOG_DEBUG(message) ProtonEngine::Core::Logger::logDebug(__FILENAME__, __LINE__, message);
-#define PROTON_LOG_INFO(message) ProtonEngine::Core::Logger::logInfo(__FILENAME__, __LINE__, message);
-#define PROTON_LOG_WARNING(message) ProtonEngine::Core::Logger::logWarning(__FILENAME__, __LINE__, message);
-#define PROTON_LOG_ERROR(message) ProtonEngine::Core::Logger::logError(__FILENAME__, __LINE__, message);
+#define PROTON_LOG_TRACE(message) ProtonEngine::Common::Logger::logTrace(__FILENAME__, __LINE__, message);
+#define PROTON_LOG_DEBUG(message) ProtonEngine::Common::Logger::logDebug(__FILENAME__, __LINE__, message);
+#define PROTON_LOG_INFO(message) ProtonEngine::Common::Logger::logInfo(__FILENAME__, __LINE__, message);
+#define PROTON_LOG_WARNING(message) ProtonEngine::Common::Logger::logWarning(__FILENAME__, __LINE__, message);
+#define PROTON_LOG_ERROR(message) ProtonEngine::Common::Logger::logError(__FILENAME__, __LINE__, message);
 #else
 #define PROTON_LOG_TRACE(message)
 #define PROTON_LOG_DEBUG(message)
@@ -60,4 +57,4 @@ private:
 #define PROTON_LOG_ERROR(message)
 #endif
 
-} // namespace ProtonEngine::Core
+} // namespace ProtonEngine::Common

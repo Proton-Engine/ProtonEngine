@@ -3,17 +3,15 @@
  * Licensed using the MIT license
  */
 
-#include "protonengine/core/logger.h"
+#include "protonengine/common/logger.h"
 
 #include "color.h"
 
-// #include <fmt/color.h>
-// #include <fmt/core.h>
 #include <format>
 #include <print>
 #include <utility>
 
-namespace ProtonEngine::Core
+namespace ProtonEngine::Common
 {
 
 LogLevel Logger::m_level = LogLevel::DEBUG;
@@ -62,4 +60,4 @@ void Logger::logError(std::string_view file, int line, std::string_view message)
         printWithForegroundColor(Color::red, std::format("[ERROR]   {}:{} - {}", file, line, message));
 }
 
-} // namespace ProtonEngine::Core
+} // namespace ProtonEngine::Common
