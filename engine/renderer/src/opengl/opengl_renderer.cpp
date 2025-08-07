@@ -6,7 +6,6 @@
 #include "opengl_renderer.h"
 
 #include "protonengine/common/logger.h"
-#include "protonengine/core/components/camera.h"
 #include "protonengine/renderer/renderer.h"
 #include "protonengine/renderer/shader_program.h"
 
@@ -107,7 +106,7 @@ void OpenGLRenderer::renderAllInQueue()
     m_renderableObjects.clear();
 }
 
-void OpenGLRenderer::setCamera(const Transform & transform, const Core::Components::Camera & camera)
+void OpenGLRenderer::setCamera(const Transform & transform, const Camera & camera)
 {
     if (!camera.isMainCamera)
     {
@@ -123,14 +122,15 @@ void OpenGLRenderer::setCamera(const Transform & transform, const Core::Componen
     view = glm::rotate(view, transform.rotation.x * std::numbers::pi_v<float> / 180.0f, glm::vec3{1, 0, 0});
     view = glm::rotate(view, transform.rotation.z * std::numbers::pi_v<float> / 180.0f, glm::vec3{0, 0, 1});
 
-    if (camera.projection == Core::Components::Camera::Projection::PERSPECTIVE)
+    if (camera.projection == Camera::Projection::PERSPECTIVE)
     {
         projection = glm::perspective(glm::radians(camera.fieldOfView), windowWidth / windowHeight, camera.clippingPlaneNear,
                                       camera.clippingPlaneFar);
     }
 
-    if (camera.projection == Core::Components::Camera::Projection::ORTHOGRAPHIC)
+    if (camera.projection == Camera::Projection::ORTHOGRAPHIC)
     {
+        PROTON_LOG_ERROR("Orthographic projection not supported yet");
         throw std::runtime_error("Orthographic projection not supported yet");
     }
 }
