@@ -5,7 +5,7 @@
 
 #include "protonengine/core/application.h"
 
-#include "protonengine/core/components/camera.h"
+#include "protonengine/core/components/camera_component.h"
 #include "protonengine/core/components/mesh_renderer.h"
 #include "protonengine/core/components/native_script.h"
 #include "protonengine/core/components/transform_component.h"
@@ -52,7 +52,7 @@ void Application::run()
             component.nativeScript->onUpdate(deltaTimeSeconds);
         });
 
-        registry.view<Components::TransformComponent, Components::Camera>().each([&renderer](auto & transform, auto & camera) { renderer.setCamera(transform.transform, camera); });
+        registry.view<Components::TransformComponent, Components::CameraComponent>().each([&renderer](auto & transform, auto & camera) { renderer.setCamera(transform.transform, camera.camera); });
         registry.view<Components::TransformComponent, Components::MeshRenderer>().each([&renderer](auto & transform, auto & meshRenderer) {
             renderer.addToRenderQueue(transform.transform, meshRenderer);
         });

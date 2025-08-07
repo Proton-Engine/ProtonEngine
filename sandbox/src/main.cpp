@@ -11,7 +11,7 @@
 #include "protonengine/core/entity.h"
 #include "protonengine/core/entrypoint.h"
 
-#include "protonengine/core/components/camera.h"
+#include "protonengine/core/components/camera_component.h"
 #include "protonengine/core/components/mesh_renderer.h"
 
 #include "protonengine/renderer/renderer.h"
@@ -33,10 +33,8 @@ public:
         static auto texture = Renderer::createTextureFromImage(image);
 
         auto camera = getScene().addEntity("MainCamera", Core::Components::TransformComponent{{0, 2, 5}, {0, 0, 0}, {1, 1, 1}});
-        camera.addComponent(Core::Components::Camera{Core::Components::Camera::Projection::PERSPECTIVE, 0.1f, 100.0f, 60, true});
+        camera.addComponent(Core::Components::CameraComponent{Core::Components::CameraComponent::Projection::PERSPECTIVE, 0.1f, 100.0f, 60, true});
         camera.emplaceScript<CameraController>();
-        // camera.addScript(std::make_unique<CameraController>());
-        // getScene().addScriptToEntity<CameraController>(camera);
 
         auto floor = getScene().addEntity("Floor", Core::Components::TransformComponent{{0, 0, -5}, {0, 0, 0}, {2, 0.1, 5}});
         floor.emplaceComponent<Core::Components::MeshRenderer>(cubeMesh, texture);

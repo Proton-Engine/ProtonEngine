@@ -1,12 +1,12 @@
 /*
- * Copyright © 2023. Proton Engine
+ * Copyright © 2023-2025. Proton Engine
  * Licensed using the MIT license
  */
 
 #pragma once
 
-#include "../src/renderable_object.h"
 #include "protonengine/renderer/irenderer.h"
+#include "renderable_object.h"
 
 #include <glm/glm.hpp>
 
@@ -24,7 +24,7 @@ public:
 
     void addToRenderQueue(const Transform & transform, const Core::Components::MeshRenderer & meshRenderer) override;
     void renderAllInQueue() override;
-    void setCamera(const Transform & transform, const Core::Components::Camera & camera) override;
+    void setCamera(const Transform & transform, const Camera & camera) override;
     void update() override;
 
 private:

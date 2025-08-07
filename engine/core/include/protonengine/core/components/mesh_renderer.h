@@ -5,7 +5,6 @@
 
 #pragma once
 
-#include "protonengine/core/export.h"
 #include "protonengine/renderer/mesh.h"
 #include "protonengine/renderer/texture.h"
 
@@ -13,7 +12,7 @@
 namespace ProtonEngine::Core::Components
 {
 
-struct PROTONENGINE_CORE_EXPORT MeshRenderer
+struct MeshRenderer
 {
     Renderer::Mesh & mesh;
     Renderer::Texture & texture;
