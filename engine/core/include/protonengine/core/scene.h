@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "protonengine/core/components/transform.h"
+#include "protonengine/core/components/transform_component.h"
 #include "protonengine/core/export.h"
 
 #include <entt/entt.hpp>
@@ -29,7 +29,7 @@ public:
     Scene operator=(Scene &&) = delete;
 
     [[nodiscard]] auto addEntity(std::string_view name) noexcept -> Entity;
-    [[nodiscard]] auto addEntity(std::string_view name, Components::Transform transform) noexcept -> Entity;
+    [[nodiscard]] auto addEntity(std::string_view name, Components::TransformComponent transform) noexcept -> Entity;
     [[nodiscard]] auto getEntityWithName(std::string_view) -> Entity;
     [[nodiscard]] auto getEntityRegistry() noexcept -> entt::registry &;
 

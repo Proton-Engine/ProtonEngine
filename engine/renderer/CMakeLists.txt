@@ -32,6 +32,7 @@ target_link_libraries(ProtonEngineRenderer
         PRIVATE
         glad
         glm::glm
+        ProtonEngine::Common
 )
 
 if (WIN32)

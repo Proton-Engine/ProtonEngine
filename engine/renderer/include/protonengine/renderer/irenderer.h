@@ -9,7 +9,7 @@
 
 #include "protonengine/core/components/camera.h"
 #include "protonengine/core/components/mesh_renderer.h"
-#include "protonengine/core/components/transform.h"
+#include "protonengine/core/components/transform_component.h"
 
 namespace ProtonEngine::Renderer
 {
@@ -27,9 +27,9 @@ public:
 
     virtual void setWindowContext(ContextLoadFunction func) = 0;
 
-    virtual void addToRenderQueue(const Core::Components::Transform & transform, const Core::Components::MeshRenderer & meshRenderer) = 0;
+    virtual void addToRenderQueue(const Transform & transform, const Core::Components::MeshRenderer & meshRenderer) = 0;
     virtual void renderAllInQueue() = 0;
-    virtual void setCamera(const Core::Components::Transform & transform, const Core::Components::Camera & camera) = 0;
+    virtual void setCamera(const Transform & transform, const Core::Components::Camera & camera) = 0;
     virtual void update() = 0;
 
 protected:

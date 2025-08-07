@@ -5,8 +5,8 @@
 
 #include "opengl_renderer.h"
 
+#include "protonengine/common/logger.h"
 #include "protonengine/core/components/camera.h"
-#include "protonengine/core/logger.h"
 #include "protonengine/renderer/renderer.h"
 #include "protonengine/renderer/shader_program.h"
 
@@ -70,7 +70,7 @@ void OpenGLRenderer::setWindowContext(ContextLoadFunction func)
                                      }));
 }
 
-void OpenGLRenderer::addToRenderQueue(const Core::Components::Transform & transform, const Core::Components::MeshRenderer & meshRenderer)
+void OpenGLRenderer::addToRenderQueue(const Transform & transform, const Core::Components::MeshRenderer & meshRenderer)
 {
     m_renderableObjects.emplace_back(transform, meshRenderer);
 }
@@ -107,7 +107,7 @@ void OpenGLRenderer::renderAllInQueue()
     m_renderableObjects.clear();
 }
 
-void OpenGLRenderer::setCamera(const Core::Components::Transform & transform, const Core::Components::Camera & camera)
+void OpenGLRenderer::setCamera(const Transform & transform, const Core::Components::Camera & camera)
 {
     if (!camera.isMainCamera)
     {

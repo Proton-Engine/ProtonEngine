@@ -8,11 +8,11 @@
 #include "protonengine/core/components/camera.h"
 #include "protonengine/core/components/mesh_renderer.h"
 #include "protonengine/core/components/native_script.h"
-#include "protonengine/core/components/transform.h"
+#include "protonengine/core/components/transform_component.h"
 
 #include "delta_time.h"
+#include "protonengine/common/logger.h"
 #include "protonengine/core/input.h"
-#include "protonengine/core/logger.h"
 #include "protonengine/renderer/irenderer.h"
 #include "protonengine/renderer/renderer.h"
 #include "protonengine/ui/debug_layer.h"
@@ -52,9 +52,9 @@ void Application::run()
             component.nativeScript->onUpdate(deltaTimeSeconds);
         });
 
-        registry.view<Components::Transform, Components::Camera>().each([&renderer](auto & transform, auto & camera) { renderer.setCamera(transform, camera); });
-        registry.view<Components::Transform, Components::MeshRenderer>().each([&renderer](auto & transform, auto & meshRenderer) {
-            renderer.addToRenderQueue(transform, meshRenderer);
+        registry.view<Components::TransformComponent, Components::Camera>().each([&renderer](auto & transform, auto & camera) { renderer.setCamera(transform.transform, camera); });
+        registry.view<Components::TransformComponent, Components::MeshRenderer>().each([&renderer](auto & transform, auto & meshRenderer) {
+            renderer.addToRenderQueue(transform.transform, meshRenderer);
         });
         renderer.renderAllInQueue();
 
