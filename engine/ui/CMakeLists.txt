@@ -4,7 +4,7 @@ file(GLOB_RECURSE UI_HEADERS CONFIGURE_DEPENDS RELATIVE_PATH ${CMAKE_CURRENT_SOU
 source_group(src FILES ${UI_SOURCES})
 source_group(include FILES ${UI_HEADERS})
 
-add_library(ProtonEngineUi STATIC)
+add_library(ProtonEngineUi SHARED)
 add_library(ProtonEngine::Ui ALIAS ProtonEngineUi)
 generate_export_header(ProtonEngineUi BASE_NAME PROTONENGINE_UI EXPORT_FILE_NAME protonengine/ui/export.h)
 

@@ -20,7 +20,7 @@ void NativeScript::onUpdate(float /*timestep*/)
 {
 }
 
-Core::KeyState NativeScript::getKeyState(Core::Key key)
+Common::KeyState NativeScript::getKeyState(Common::Key key)
 {
     return Core::Input::getKeyState(key);
 }

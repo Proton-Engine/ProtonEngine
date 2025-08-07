@@ -4,7 +4,7 @@ file(GLOB_RECURSE CORE_HEADERS CONFIGURE_DEPENDS RELATIVE_PATH ${CMAKE_CURRENT_S
 source_group(src FILES ${CORE_SOURCES})
 source_group(include FILES ${CORE_HEADERS})
 
-add_library(ProtonEngineCore STATIC)
+add_library(ProtonEngineCore SHARED)
 add_library(ProtonEngine::Core ALIAS ProtonEngineCore)
 generate_export_header(ProtonEngineCore BASE_NAME PROTONENGINE_CORE EXPORT_FILE_NAME protonengine/core/export.h)
 
@@ -28,16 +28,15 @@ target_include_directories(ProtonEngineCore
 
 target_link_libraries(ProtonEngineCore
         PUBLIC
+        ProtonEngine::Common
         ProtonEngine::Assets
         ProtonEngine::Renderer
         ProtonEngine::Ui
         EnTT::EnTT
-        glfw
         glm
         PRIVATE
         stb_image
-        ImGui
-        ProtonEngine::Common
+        glfw
 )
 
 install(

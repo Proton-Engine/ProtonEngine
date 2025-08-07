@@ -9,7 +9,7 @@
 #include "protonengine/renderer/renderer.h"
 #include "protonengine/renderer/shader_program.h"
 
-#include "protonengine/core/event_bus.h"
+#include "protonengine/common/event_bus.h"
 
 #include "glad/glad.h"
 #include "glm/gtc/matrix_transform.hpp"
@@ -61,17 +61,17 @@ void OpenGLRenderer::setWindowContext(ContextLoadFunction func)
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
 
-    Core::EventBus::subscribeToEvent(Core::Event::WINDOW_RESIZE_EVENT, std::function([&](Core::Event, Core::WindowResizeEventContext context) {
-                                         windowWidth = static_cast<float>(context.width);
-                                         windowHeight = static_cast<float>(context.height);
+    Common::EventBus::subscribeToEvent(Common::Event::WINDOW_RESIZE_EVENT, std::function([&](Common::Event, Common::WindowResizeEventContext context) {
+                                           windowWidth = static_cast<float>(context.width);
+                                           windowHeight = static_cast<float>(context.height);
 
-                                         glViewport(0, 0, context.width, context.height);
-                                     }));
+                                           glViewport(0, 0, context.width, context.height);
+                                       }));
 }
 
-void OpenGLRenderer::addToRenderQueue(const Transform & transform, const Core::Components::MeshRenderer & meshRenderer)
+void OpenGLRenderer::addToRenderQueue(const Transform & transform, const Mesh & mesh, const Texture & texture)
 {
-    m_renderableObjects.emplace_back(transform, meshRenderer);
+    m_renderableObjects.emplace_back(transform, mesh, texture);
 }
 
 void OpenGLRenderer::renderAllInQueue()
@@ -80,7 +80,7 @@ void OpenGLRenderer::renderAllInQueue()
     {
         static ShaderProgram shaderProgram("shader");
         shaderProgram.enable();
-        renderableObject.meshRenderer.texture.activate();
+        renderableObject.texture.activate();
 
         glm::mat4 model = glm::translate(glm::mat4(1.0f), renderableObject.transform.position);
         model = glm::scale(model, renderableObject.transform.scale);
@@ -95,12 +95,12 @@ void OpenGLRenderer::renderAllInQueue()
         shaderProgram.setUniformValue("viewMatrix", view);
         shaderProgram.setUniformValue("normalModelMatrix", normalModelMatrix);
 
-        renderableObject.meshRenderer.mesh.enableForDrawing();
-        glDrawArrays(GL_TRIANGLES, 0, renderableObject.meshRenderer.mesh.verticesCount());
-        renderableObject.meshRenderer.mesh.disableForDrawing();
+        renderableObject.mesh.enableForDrawing();
+        glDrawArrays(GL_TRIANGLES, 0, renderableObject.mesh.verticesCount());
+        renderableObject.mesh.disableForDrawing();
 
         shaderProgram.disable();
-        renderableObject.meshRenderer.texture.deactivate();
+        renderableObject.texture.deactivate();
     }
 
     m_renderableObjects.clear();

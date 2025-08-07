@@ -3,13 +3,12 @@
  * Licensed using the MIT license
  */
 
-#include "protonengine/core/event_bus.h"
-
+#include "protonengine/common/event_bus.h"
 #include "protonengine/common/logger.h"
 
 #include <format>
 
-namespace ProtonEngine::Core
+namespace ProtonEngine::Common
 {
 
 std::map<Event, std::vector<std::function<void(Event, EventContext)>>> EventBus::m_eventListeners{};
@@ -56,4 +55,4 @@ void EventBus::subscribeToEventGeneric(Event event, std::function<void(Event, Ev
     m_eventListeners[event].emplace_back(callback);
 }
 
-} // namespace ProtonEngine::Core
+} // namespace ProtonEngine::Common

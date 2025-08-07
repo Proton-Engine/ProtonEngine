@@ -54,7 +54,7 @@ void Application::run()
 
         registry.view<Components::TransformComponent, Components::CameraComponent>().each([&renderer](auto & transform, auto & camera) { renderer.setCamera(transform.transform, camera.camera); });
         registry.view<Components::TransformComponent, Components::MeshRenderer>().each([&renderer](auto & transform, auto & meshRenderer) {
-            renderer.addToRenderQueue(transform.transform, meshRenderer);
+            renderer.addToRenderQueue(transform.transform, meshRenderer.mesh, meshRenderer.texture);
         });
         renderer.renderAllInQueue();
 
@@ -77,7 +77,7 @@ auto Application::getScene() noexcept -> Scene &
     return m_scene;
 }
 
-void Application::addLayer(std::unique_ptr<UserInterface::Layer> layer)
+void Application::addLayer(std::unique_ptr<Ui::Layer> layer)
 {
     layer->onAttach();
     m_layers.emplace_back(std::move(layer));
