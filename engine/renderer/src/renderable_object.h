@@ -1,20 +1,22 @@
 /*
- * Copyright © 2022 Tim Herreijgers
+ * Copyright © 2022-2025. Proton Engine
  * Licensed using the MIT license
  */
- 
+
 #pragma once
 
-#include "protonengine/components/transform.h"
-#include "protonengine/components/mesh_renderer.h"
+#include "protonengine/renderer/mesh.h"
+#include "protonengine/renderer/texture.h"
+#include "protonengine/renderer/transform.h"
 
 namespace ProtonEngine::Renderer
 {
 
 struct RenderableObject
 {
-    const Components::Transform & transform;
-    const Components::MeshRenderer & meshRenderer;
+    const Transform & transform;
+    const Mesh & mesh;
+    const Texture & texture;
 };
 
 } // namespace ProtonEngine::Renderer

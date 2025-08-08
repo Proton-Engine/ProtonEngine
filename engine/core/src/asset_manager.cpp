@@ -4,7 +4,7 @@
  */
 
 #include "protonengine/core/asset_manager.h"
-#include "protonengine/core/logger.h"
+#include "protonengine/common/logger.h"
 
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>

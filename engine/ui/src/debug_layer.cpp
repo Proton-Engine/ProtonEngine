@@ -1,5 +1,5 @@
 /*
- * Copyright © 2023. Proton Engine
+ * Copyright © 2023-2025. Proton Engine
  * Licensed using the MIT license
  */
 
@@ -7,7 +7,7 @@
 
 #include "imgui.h"
 
-namespace ProtonEngine::UserInterface
+namespace ProtonEngine::Ui
 {
 
 void DebugLayer::onAttach()
@@ -57,4 +57,4 @@ void DebugLayer::onUpdate(float timeStep)
     }
 }
 
-} // namespace ProtonEngine::UserInterface
+} // namespace ProtonEngine::Ui

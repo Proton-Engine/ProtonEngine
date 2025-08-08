@@ -5,16 +5,15 @@
 
 #pragma once
 
-#include "protonengine/core/export.h"
-#include "protonengine/core/key_codes.h"
-#include "protonengine/core/key_state.h"
+#include "protonengine/common/key_codes.h"
+#include "protonengine/common/key_state.h"
 
 #include <functional>
 #include <map>
 #include <variant>
 #include <vector>
 
-namespace ProtonEngine::Core
+namespace ProtonEngine::Common
 {
 
 enum class Event
@@ -45,7 +44,7 @@ struct WindowResizeEventContext
 
 using EventContext = std::variant<KeyEventEventContext, MouseMoveEventContext, WindowResizeEventContext>;
 
-class PROTONENGINE_CORE_EXPORT EventBus
+class EventBus
 {
 public:
     template <typename T>
@@ -64,4 +63,4 @@ private:
     static void subscribeToEventGeneric(Event event, std::function<void(Event, EventContext)> callback);
 };
 
-} // namespace ProtonEngine::Core
+} // namespace ProtonEngine::Common

@@ -1,12 +1,12 @@
 /*
- * Copyright © 2023. Proton Engine
+ * Copyright © 2023-2025. Proton Engine
  * Licensed using the MIT license
  */
- 
+
 #pragma once
 
-#include "../src/renderable_object.h"
 #include "protonengine/renderer/irenderer.h"
+#include "renderable_object.h"
 
 #include <glm/glm.hpp>
 
@@ -22,10 +22,11 @@ public:
 
     void setWindowContext(ContextLoadFunction func) override;
 
-    void addToRenderQueue(const Components::Transform & transform, const Components::MeshRenderer & meshRenderer) override;
+    void addToRenderQueue(const Transform & transform, const Mesh & mesh, const Texture & texture) override;
     void renderAllInQueue() override;
-    void setCamera(const Components::Transform & transform, const Components::Camera & camera) override;
+    void setCamera(const Transform & transform, const Camera & camera) override;
     void update() override;
+
 private:
     glm::mat4 projection{};
     glm::mat4 view{};

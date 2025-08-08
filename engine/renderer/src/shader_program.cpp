@@ -4,7 +4,7 @@
  */
 
 #include "protonengine/renderer/shader_program.h"
-#include "protonengine/core/logger.h"
+#include "protonengine/common/logger.h"
 
 #include "glad/glad.h"
 

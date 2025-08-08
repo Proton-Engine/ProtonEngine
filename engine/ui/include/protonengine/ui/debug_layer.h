@@ -10,7 +10,7 @@
 
 #include <chrono>
 
-namespace ProtonEngine::UserInterface
+namespace ProtonEngine::Ui
 {
 
 class PROTONENGINE_UI_EXPORT DebugLayer final : public Layer
@@ -27,4 +27,4 @@ private:
     std::chrono::time_point<std::chrono::high_resolution_clock> m_nextTimePoint;
 };
 
-} // namespace ProtonEngine::UserInterface
+} // namespace ProtonEngine::Ui

@@ -29,6 +29,7 @@ public:
     [[nodiscard]] int32_t verticesCount() const noexcept;
 
 private:
+    // TODO: Remove these ID's :D
     uint32_t m_vertexArrayId{};
     uint32_t m_vertexBufferId{};
     uint32_t m_normalBufferId{};

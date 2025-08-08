@@ -4,7 +4,7 @@ file(GLOB_RECURSE ASSET_HEADERS CONFIGURE_DEPENDS RELATIVE_PATH ${CMAKE_CURRENT_
 source_group(src FILES ${ASSET_SOURCES})
 source_group(include FILES ${ASSET_HEADERS})
 
-add_library(ProtonEngineAssets STATIC)
+add_library(ProtonEngineAssets SHARED)
 add_library(ProtonEngine::Assets ALIAS ProtonEngineAssets)
 generate_export_header(ProtonEngineAssets BASE_NAME PROTONENGINE_ASSETS EXPORT_FILE_NAME protonengine/assets/export.h)
 

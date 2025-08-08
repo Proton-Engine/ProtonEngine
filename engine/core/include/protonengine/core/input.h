@@ -7,9 +7,9 @@
 
 #include "protonengine/core/export.h"
 
-#include "protonengine/core/event_bus.h"
-#include "protonengine/core/key_codes.h"
-#include "protonengine/core/key_state.h"
+#include "protonengine/common/event_bus.h"
+#include "protonengine/common/key_codes.h"
+#include "protonengine/common/key_state.h"
 
 // TODO: Remove GLFW here
 #include <GLFW/glfw3.h>
@@ -26,14 +26,14 @@ public:
 
     static void connectToEventBus();
 
-    static void onKeyBoardEvent(Event event, KeyEventEventContext eventContext) noexcept;
-    static void onMouseMoveEvent(Event event, MouseMoveEventContext eventContext) noexcept;
-    static void onWindowResize(Event event, WindowResizeEventContext eventContext) noexcept;
+    static void onKeyBoardEvent(Common::Event event, Common::KeyEventEventContext eventContext) noexcept;
+    static void onMouseMoveEvent(Common::Event event, Common::MouseMoveEventContext eventContext) noexcept;
+    static void onWindowResize(Common::Event event, Common::WindowResizeEventContext eventContext) noexcept;
 
-    [[nodiscard]] static KeyState getKeyState(Key key) noexcept;
+    [[nodiscard]] static Common::KeyState getKeyState(Common::Key key) noexcept;
 
 private:
-    static std::array<KeyState, GLFW_KEY_LAST> m_keyStates;
+    static std::array<Common::KeyState, GLFW_KEY_LAST> m_keyStates;
 };
 
 } // namespace ProtonEngine::Core

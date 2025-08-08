@@ -5,11 +5,11 @@
 
 #pragma once
 
+#include "protonengine/renderer/camera.h"
 #include "protonengine/renderer/export.h"
-
-#include "protonengine/components/camera.h"
-#include "protonengine/components/mesh_renderer.h"
-#include "protonengine/components/transform.h"
+#include "protonengine/renderer/mesh.h"
+#include "protonengine/renderer/texture.h"
+#include "protonengine/renderer/transform.h"
 
 namespace ProtonEngine::Renderer
 {
@@ -27,9 +27,9 @@ public:
 
     virtual void setWindowContext(ContextLoadFunction func) = 0;
 
-    virtual void addToRenderQueue(const Components::Transform & transform, const Components::MeshRenderer & meshRenderer) = 0;
+    virtual void addToRenderQueue(const Transform & transform, const Mesh & mesh, const Texture & texture) = 0;
     virtual void renderAllInQueue() = 0;
-    virtual void setCamera(const Components::Transform & transform, const Components::Camera & camera) = 0;
+    virtual void setCamera(const Transform & transform, const Camera & camera) = 0;
     virtual void update() = 0;
 
 protected:

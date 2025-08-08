@@ -21,7 +21,7 @@ enum class RendererBackend
     OPENGL
 };
 
-[[nodiscard]] PROTONENGINE_COMPONENTS_EXPORT auto initializeRenderer(RendererBackend rendererBackend) -> IRenderer &;
+[[nodiscard]] PROTONENGINE_RENDERER_EXPORT auto initializeRenderer(RendererBackend rendererBackend) -> IRenderer &;
 [[nodiscard]] PROTONENGINE_RENDERER_EXPORT Texture createTextureFromImage(const Assets::Image & image);
 
 } // namespace ProtonEngine::Renderer

@@ -1,11 +1,11 @@
 /*
- * Copyright © 2022-2023. Proton Engine
+ * Copyright © 2022-2025. Proton Engine
  * Licensed using the MIT license
  */
 
 #pragma once
 
-namespace ProtonEngine::Core
+namespace ProtonEngine::Common
 {
 
 enum class KeyState
@@ -14,4 +14,4 @@ enum class KeyState
     PRESSED
 };
 
-} // namespace ProtonEngine::Core
+} // namespace ProtonEngine::Common

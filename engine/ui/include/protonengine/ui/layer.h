@@ -7,7 +7,7 @@
 
 #include "protonengine/ui/export.h"
 
-namespace ProtonEngine::UserInterface
+namespace ProtonEngine::Ui
 {
 
 class PROTONENGINE_UI_EXPORT Layer
@@ -28,4 +28,4 @@ public:
     void end();
 };
 
-} // namespace ProtonEngine::UserInterface
+} // namespace ProtonEngine::Ui

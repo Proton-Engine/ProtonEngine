@@ -4,9 +4,9 @@
  */
 
 #include "protonengine/renderer/renderer.h"
-#include "protonengine/core/logger.h"
+#include "protonengine/common/logger.h"
 
-#include "protonengine/core/event_bus.h"
+#include "protonengine/common/event_bus.h"
 
 #include "opengl/opengl_renderer.h"
 

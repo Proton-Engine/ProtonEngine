@@ -1,15 +1,15 @@
 /*
- * Copyright © 2022-2023. Proton Engine
+ * Copyright © 2022-2025. Proton Engine
  * Licensed using the MIT license
  */
 
 #include "rotator.h"
 
-#include <protonengine/components/transform.h>
+#include <protonengine/core/components/transform_component.h>
 
 void Rotator::onUpdate(float timestep)
 {
-    auto * transform = getComponent<ProtonEngine::Components::Transform>();
+    auto transform = getComponent<ProtonEngine::Core::Components::TransformComponent>();
 
-    transform->rotation.y += 90.0f * timestep;
+    transform->transform.rotation.y += 90.0f * timestep;
 }
