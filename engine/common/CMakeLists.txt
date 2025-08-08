@@ -26,8 +26,15 @@ target_include_directories(ProtonEngineCommon
         PRIVATE src ${CMAKE_CURRENT_BINARY_DIR}
 )
 
+target_link_libraries(ProtonEngineCommon
+        PUBLIC
+        # TODO: Add local wrappers around the glm objects we use. This can temporary be something like: using ProtonEngine::Math::Vec2 = glm::vec2
+        # This will allow us to hide glm in the future
+        glm::glm
+)
+
 install(
-        TARGETS ProtonEngineAssets
+        TARGETS ProtonEngineCommon
         FILE_SET HEADERS
         FILE_SET generated_headers
 )

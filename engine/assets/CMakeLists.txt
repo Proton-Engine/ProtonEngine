@@ -26,8 +26,23 @@ target_include_directories(ProtonEngineAssets
         PRIVATE src ${CMAKE_CURRENT_BINARY_DIR}
 )
 
+target_link_libraries(ProtonEngineAssets
+        PRIVATE
+        ProtonEngine::Common
+        stb_image
+)
+
 install(
         TARGETS ProtonEngineAssets
         FILE_SET HEADERS
         FILE_SET generated_headers
 )
+
+# TODO: Use these functions at some point to generate the config cmake files :)
+#include(CMakePackageConfigHelpers)
+#write_basic_package_version_file(
+#        "${CMAKE_INSTALL_PREFIX}/cmake/ProtonEngineAssetsConfig.cmake"
+#        COMPATIBILITY AnyNewerVersion
+#)
+#
+#configure_package_config_file()

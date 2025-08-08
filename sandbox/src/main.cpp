@@ -6,8 +6,8 @@
 #include "scripts/camera_controller.h"
 // #include "scripts/rotator.h"
 
+#include "protonengine/assets/asset_manager.h"
 #include "protonengine/core/application.h"
-#include "protonengine/core/asset_manager.h"
 #include "protonengine/core/entity.h"
 #include "protonengine/core/entrypoint.h"
 
@@ -26,10 +26,10 @@ public:
 
         addLayer(std::make_unique<Ui::DebugLayer>());
 
-        static const auto cubeModel = Core::AssetManager::loadModel("assets/models/cube.obj");
+        static const auto cubeModel = Assets::AssetManager::loadModel("assets/models/cube.obj");
         static Renderer::Mesh cubeMesh{cubeModel.getVertices(), cubeModel.getNormals(), cubeModel.getTextureCoordinates()};
 
-        static auto image = Core::AssetManager::readImageFromFile("assets/textures/checkerboard.png");
+        static auto image = Assets::AssetManager::readImageFromFile("assets/textures/checkerboard.png");
         static auto texture = Renderer::createTextureFromImage(image);
 
         auto camera = getScene().addEntity("MainCamera", Core::Components::TransformComponent{{0, 2, 5}, {0, 0, 0}, {1, 1, 1}});
