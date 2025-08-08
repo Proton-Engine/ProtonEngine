@@ -3,7 +3,7 @@
  * Licensed using the MIT license
  */
 
-#include "protonengine/core/asset_manager.h"
+#include "protonengine/assets/asset_manager.h"
 #include "protonengine/common/logger.h"
 
 #include <glm/vec2.hpp>
@@ -15,7 +15,7 @@
 #include <sstream>
 #include <stdexcept>
 
-namespace ProtonEngine::Core
+namespace ProtonEngine::Assets
 {
 
 static auto splitString(std::string_view input, char delimiter = ' ') -> std::vector<std::string>
@@ -178,4 +178,4 @@ Assets::Model AssetManager::loadObjModel(std::string_view path)
     return Assets::Model{std::move(modelVertices), std::move(modelNormals), modelTextureCoords};
 }
 
-} // namespace ProtonEngine::Core
+} // namespace ProtonEngine::Assets

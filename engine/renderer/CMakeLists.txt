@@ -29,7 +29,6 @@ target_include_directories(ProtonEngineRenderer
 target_link_libraries(ProtonEngineRenderer
         PUBLIC
         ProtonEngine::Assets
-        glm::glm
         PRIVATE
         glad
         ProtonEngine::Common

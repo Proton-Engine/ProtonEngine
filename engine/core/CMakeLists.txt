@@ -33,9 +33,7 @@ target_link_libraries(ProtonEngineCore
         ProtonEngine::Renderer
         ProtonEngine::Ui
         EnTT::EnTT
-        glm
         PRIVATE
-        stb_image
         glfw
 )
 
