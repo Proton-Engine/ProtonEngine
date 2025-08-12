@@ -5,9 +5,10 @@
 
 #include "opengl_renderer.h"
 
+#include "buffer.h"
 #include "protonengine/common/logger.h"
 #include "protonengine/renderer/irenderer.h"
-#include "protonengine/renderer/shader_program.h"
+#include "shader_program.h"
 
 #include "protonengine/common/event_bus.h"
 
@@ -76,9 +77,10 @@ void OpenGLRenderer::addToRenderQueue(const Transform & transform, const Mesh & 
 
 void OpenGLRenderer::renderAllInQueue()
 {
+    static ShaderProgram shaderProgram("shader");
+
     for (const auto & renderableObject : m_renderableObjects)
     {
-        static ShaderProgram shaderProgram("shader");
         shaderProgram.enable();
         renderableObject.texture.activate();
 
@@ -138,6 +140,11 @@ void OpenGLRenderer::setCamera(const Transform & transform, const Camera & camer
 void OpenGLRenderer::update()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+auto OpenGLRenderer::createBuffer(const std::vector<Vertex> & vertices, const std::vector<uint32_t> & indices) const noexcept -> std::unique_ptr<IBuffer>
+{
+    return std::make_unique<Buffer>(vertices, indices);
 }
 
 } // namespace ProtonEngine::Renderer::OpenGL

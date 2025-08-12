@@ -1,9 +1,7 @@
-/*
- * Copyright © 2022-2025. Proton Engine
- * Licensed using the MIT license
- */
+// Copyright © 2022-2025. Proton Engine
+// Licensed using the MIT license
 
-#include "protonengine/renderer/shader_program.h"
+#include "shader_program.h"
 #include "protonengine/common/logger.h"
 
 #include "glad/glad.h"
@@ -14,7 +12,7 @@
 #include <sstream>
 #include <string>
 
-namespace ProtonEngine::Renderer
+namespace ProtonEngine::Renderer::OpenGL
 {
 
 [[nodiscard]] static GLint loadShader(const std::string & filename, ShaderType type);
@@ -148,4 +146,4 @@ void ShaderProgram::setUniformValue(std::string_view name, glm::mat4 matrix) noe
     return shaderSource.str();
 }
 
-} // namespace ProtonEngine::Renderer
+} // namespace ProtonEngine::Renderer::OpenGL

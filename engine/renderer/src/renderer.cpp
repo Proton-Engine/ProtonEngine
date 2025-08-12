@@ -12,7 +12,6 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include "opengl/buffer.h"
 
-
 #include <glm/gtx/hash.hpp>
 
 #include <stdexcept>
@@ -35,16 +34,31 @@ struct hash<ProtonEngine::Renderer::Vertex>
 namespace ProtonEngine::Renderer
 {
 
+namespace
+{
+std::unique_ptr<IRenderer> g_renderer;
+IRendererInternal * g_rendererInternal;
+} // namespace
+
 auto initializeRenderer(RendererBackend rendererBackend) -> IRenderer &
 {
+    if (g_renderer)
+    {
+        PROTON_LOG_ERROR("Renderer already initialized");
+        throw std::runtime_error("Renderer already initialized");
+    }
+
     if (rendererBackend != RendererBackend::OPENGL)
     {
         PROTON_LOG_ERROR("Renderer backend other than OpenGL are not supported");
         throw std::runtime_error("Renderer backend other than OpenGL are not supported");
     }
 
-    static OpenGL::OpenGLRenderer renderer;
-    return renderer;
+    PROTON_LOG_DEBUG("Initializing renderer");
+    g_renderer = std::make_unique<OpenGL::OpenGLRenderer>();
+    g_rendererInternal = dynamic_cast<IRendererInternal *>(g_renderer.get());
+    assert(g_rendererInternal && "Renderer backend should implement IRendererInternal");
+    return *g_renderer;
 }
 
 Texture createTextureFromImage(const Assets::Image & image)
@@ -82,7 +96,7 @@ Mesh createMeshFromModel(const Assets::Model & model)
         }
     }
 
-    return Mesh(std::make_unique<OpenGL::Buffer>(rendererVertices, indices));
+    return Mesh(g_rendererInternal->createBuffer(rendererVertices, indices));
 }
 
 } // namespace ProtonEngine::Renderer

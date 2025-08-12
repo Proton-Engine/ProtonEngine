@@ -12,19 +12,20 @@
 #include <string>
 #include <string_view>
 
-namespace ProtonEngine::Renderer {
+namespace ProtonEngine::Renderer::OpenGL
+{
 
 enum class ShaderType;
 
-class PROTONENGINE_RENDERER_EXPORT ShaderProgram
+class ShaderProgram
 {
 public:
     explicit ShaderProgram(std::string_view shaderName);
     ~ShaderProgram() noexcept;
     ShaderProgram(const ShaderProgram & other) = delete;
-    ShaderProgram& operator =(const ShaderProgram & other) = delete;
+    ShaderProgram & operator=(const ShaderProgram & other) = delete;
     ShaderProgram(ShaderProgram && other) noexcept = default;
-    ShaderProgram& operator =(ShaderProgram && other) = default;
+    ShaderProgram & operator=(ShaderProgram && other) = default;
 
     void enable() const noexcept;
     void disable() const noexcept;
@@ -42,4 +43,4 @@ private:
     uint32_t m_fragmentShaderID;
 };
 
-}
+} // namespace ProtonEngine::Renderer::OpenGL
