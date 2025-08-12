@@ -14,20 +14,14 @@
 #include "protonengine/common/logger.h"
 #include "protonengine/core/input.h"
 #include "protonengine/renderer/irenderer.h"
-#include "protonengine/renderer/renderer.h"
 #include "protonengine/ui/debug_layer.h"
 #include "window.h"
 
 namespace ProtonEngine::Core
 {
 
-Application::Application()
-{
-}
-
-Application::~Application()
-{
-}
+Application::Application() = default;
+Application::~Application() = default;
 
 void Application::run()
 {

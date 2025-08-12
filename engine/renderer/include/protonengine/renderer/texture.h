@@ -5,11 +5,8 @@
 
 #pragma once
 
-#include "protonengine/renderer/export.h"
 #include "protonengine/assets/image.h"
-
-#include <cinttypes>
-#include <string_view>
+#include "protonengine/renderer/export.h"
 
 namespace ProtonEngine::Renderer
 {
@@ -20,10 +17,10 @@ public:
     explicit Texture(const Assets::Image & image);
 
     virtual ~Texture() = default;
-    Texture(Texture&) = delete;
-    Texture(Texture&&) = default;
-    Texture operator=(Texture&) = delete;
-    Texture& operator=(Texture&&) = default;
+    Texture(Texture &) = delete;
+    Texture(Texture &&) = default;
+    Texture operator=(Texture &) = delete;
+    Texture & operator=(Texture &&) = default;
 
     void activate() const;
     void deactivate() const;

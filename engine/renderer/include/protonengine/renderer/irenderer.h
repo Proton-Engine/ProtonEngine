@@ -5,6 +5,7 @@
 
 #pragma once
 
+#include "protonengine/assets/model.h"
 #include "protonengine/renderer/camera.h"
 #include "protonengine/renderer/export.h"
 #include "protonengine/renderer/mesh.h"
@@ -13,6 +14,11 @@
 
 namespace ProtonEngine::Renderer
 {
+
+enum class RendererBackend
+{
+    OPENGL
+};
 
 using ContextLoadFunction = void * (*)(const char * name);
 
@@ -35,5 +41,9 @@ public:
 protected:
     IRenderer() = default;
 };
+
+[[nodiscard]] PROTONENGINE_RENDERER_EXPORT auto initializeRenderer(RendererBackend rendererBackend) -> IRenderer &;
+[[nodiscard]] PROTONENGINE_RENDERER_EXPORT auto createTextureFromImage(const Assets::Image & image) -> Texture;
+[[nodiscard]] PROTONENGINE_RENDERER_EXPORT auto createMeshFromModel(const Assets::Model & model) -> Mesh;
 
 } // namespace ProtonEngine::Renderer

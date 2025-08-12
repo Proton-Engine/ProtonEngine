@@ -6,7 +6,7 @@
 #include "opengl_renderer.h"
 
 #include "protonengine/common/logger.h"
-#include "protonengine/renderer/renderer.h"
+#include "protonengine/renderer/irenderer.h"
 #include "protonengine/renderer/shader_program.h"
 
 #include "protonengine/common/event_bus.h"
@@ -96,7 +96,7 @@ void OpenGLRenderer::renderAllInQueue()
         shaderProgram.setUniformValue("normalModelMatrix", normalModelMatrix);
 
         renderableObject.mesh.enableForDrawing();
-        glDrawArrays(GL_TRIANGLES, 0, renderableObject.mesh.verticesCount());
+        glDrawElements(GL_TRIANGLES, renderableObject.mesh.indicesCount(), GL_UNSIGNED_INT, nullptr);
         renderableObject.mesh.disableForDrawing();
 
         shaderProgram.disable();
