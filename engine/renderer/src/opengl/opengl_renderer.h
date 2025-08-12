@@ -6,6 +6,8 @@
 #pragma once
 
 #include "protonengine/renderer/irenderer.h"
+
+#include "irenderer_internal.h"
 #include "renderable_object.h"
 
 #include <glm/glm.hpp>
@@ -15,7 +17,7 @@
 namespace ProtonEngine::Renderer::OpenGL
 {
 
-class OpenGLRenderer final : public IRenderer
+class OpenGLRenderer final : public IRenderer, public IRendererInternal
 {
 public:
     ~OpenGLRenderer() override = default;
@@ -26,6 +28,7 @@ public:
     void renderAllInQueue() override;
     void setCamera(const Transform & transform, const Camera & camera) override;
     void update() override;
+    [[nodiscard]] auto createBuffer(const std::vector<Vertex> & vertices, const std::vector<uint32_t> & indices) const noexcept -> std::unique_ptr<IBuffer> override;
 
 private:
     glm::mat4 projection{};
