@@ -10,6 +10,9 @@
 #include "opengl/opengl_renderer.h"
 
 #define GLM_ENABLE_EXPERIMENTAL
+#include "opengl/buffer.h"
+
+
 #include <glm/gtx/hash.hpp>
 
 #include <stdexcept>
@@ -79,7 +82,7 @@ Mesh createMeshFromModel(const Assets::Model & model)
         }
     }
 
-    return Mesh(rendererVertices, indices);
+    return Mesh(std::make_unique<OpenGL::Buffer>(rendererVertices, indices));
 }
 
 } // namespace ProtonEngine::Renderer

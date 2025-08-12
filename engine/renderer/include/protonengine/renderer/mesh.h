@@ -6,10 +6,10 @@
 #pragma once
 
 #include "protonengine/renderer/export.h"
-#include "vertex.h"
+#include "protonengine/renderer/ibuffer.h"
 
 #include <cinttypes>
-#include <vector>
+#include <memory>
 
 namespace ProtonEngine::Renderer
 {
@@ -17,8 +17,8 @@ namespace ProtonEngine::Renderer
 class PROTONENGINE_RENDERER_EXPORT Mesh
 {
 public:
-    explicit Mesh(const std::vector<Vertex> & vertices, const std::vector<uint32_t> & indices);
-    ~Mesh();
+    explicit Mesh(std::unique_ptr<IBuffer> buffer);
+    ~Mesh() = default;
 
     Mesh(Mesh &) = delete;
     Mesh(Mesh &&) = delete;
@@ -31,12 +31,7 @@ public:
     [[nodiscard]] int32_t indicesCount() const noexcept;
 
 private:
-    // TODO: Remove these ID's :D
-    uint32_t m_vertexArrayObject{};
-    uint32_t m_vertexBufferObject{};
-    uint32_t m_indexBufferObject{};
-    int32_t m_verticesCount{};
-    int32_t m_indicesCount{};
+    std::unique_ptr<IBuffer> m_buffer;
 };
 
 } // namespace ProtonEngine::Renderer

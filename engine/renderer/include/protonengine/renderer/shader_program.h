@@ -9,7 +9,6 @@
 
 #include <glm/mat4x4.hpp>
 
-#include <cinttypes>
 #include <string>
 #include <string_view>
 
