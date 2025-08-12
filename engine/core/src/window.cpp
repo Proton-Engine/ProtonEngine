@@ -9,7 +9,6 @@
 
 #include "protonengine/common/logger.h"
 #include "protonengine/renderer/irenderer.h"
-#include "protonengine/renderer/renderer.h"
 
 #include <GLFW/glfw3.h>
 

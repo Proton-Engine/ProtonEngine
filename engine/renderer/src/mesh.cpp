@@ -6,47 +6,46 @@
 #include "protonengine/renderer/mesh.h"
 
 #include "glad/glad.h"
+#include "protonengine/assets/model.h"
+#include "protonengine/renderer/vertex.h"
 
-namespace ProtonEngine::Renderer {
-
-Mesh::Mesh(const std::vector<float> & meshData, const std::vector<float> & normals, const std::vector<float> & textureCoordinates)
+namespace ProtonEngine::Renderer
 {
-    glGenVertexArrays(1, &m_vertexArrayId);
-    glBindVertexArray(m_vertexArrayId);
+
+Mesh::Mesh(const std::vector<Vertex> & vertices, const std::vector<uint32_t> & indices)
+{
+    glGenVertexArrays(1, &m_vertexArrayObject);
+    glGenBuffers(1, &m_vertexBufferObject);
+    glGenBuffers(1, &m_indexBufferObject);
+
+    glBindVertexArray(m_vertexArrayObject);
+    glBindBuffer(GL_ARRAY_BUFFER, m_vertexBufferObject);
+    glBufferData(GL_ARRAY_BUFFER, static_cast<int64_t>(vertices.size() * sizeof(Vertex)), &vertices[0], GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_indexBufferObject);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
+
     glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<void *>(offsetof(Vertex, position)));
     glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<void *>(offsetof(Vertex, normal)));
     glEnableVertexAttribArray(2);
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<void *>(offsetof(Vertex, texture)));
 
-    glGenBuffers(1, &m_vertexBufferId);
-    glBindBuffer(GL_ARRAY_BUFFER, m_vertexBufferId);
-    glBufferData(GL_ARRAY_BUFFER, meshData.size() * sizeof(float), meshData.data(), GL_STATIC_DRAW);
+    glBindVertexArray(0);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE,0,nullptr);
-
-    glGenBuffers(1, &m_normalBufferId);
-    glBindBuffer(GL_ARRAY_BUFFER, m_normalBufferId);
-    glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(float), normals.data(), GL_STATIC_DRAW);
-
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE,0,nullptr);
-
-    glGenBuffers(1, &m_textureBufferId);
-    glBindBuffer(GL_ARRAY_BUFFER, m_textureBufferId);
-    glBufferData(GL_ARRAY_BUFFER, textureCoordinates.size() * sizeof(float), textureCoordinates.data(), GL_STATIC_DRAW);
-
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE,0,nullptr);
-
-    m_verticesCount = meshData.size();
-
+    m_verticesCount = static_cast<int32_t>(vertices.size());
+    m_indicesCount = static_cast<int32_t>(indices.size());
 }
 
 Mesh::~Mesh()
 {
-    glDeleteVertexArrays(1, &m_vertexArrayId);
+    glDeleteVertexArrays(1, &m_vertexArrayObject);
 }
 
 void Mesh::enableForDrawing() const noexcept
 {
-    glBindVertexArray(m_vertexArrayId);
+    glBindVertexArray(m_vertexArrayObject);
 }
 
 void Mesh::disableForDrawing() const noexcept
@@ -59,4 +58,9 @@ int32_t Mesh::verticesCount() const noexcept
     return m_verticesCount;
 }
 
+int32_t Mesh::indicesCount() const noexcept
+{
+    return m_indicesCount;
 }
+
+} // namespace ProtonEngine::Renderer

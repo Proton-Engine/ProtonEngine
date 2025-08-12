@@ -13,8 +13,8 @@
 
 #include "protonengine/core/components/camera_component.h"
 #include "protonengine/core/components/mesh_renderer.h"
+#include "protonengine/renderer/irenderer.h"
 
-#include "protonengine/renderer/renderer.h"
 #include "protonengine/ui/debug_layer.h"
 
 class SandboxApplication final : public ProtonEngine::Core::Application
@@ -27,7 +27,7 @@ public:
         addLayer(std::make_unique<Ui::DebugLayer>());
 
         static const auto cubeModel = Assets::AssetManager::loadModel("assets/models/cube.obj");
-        static Renderer::Mesh cubeMesh{cubeModel.getVertices(), cubeModel.getNormals(), cubeModel.getTextureCoordinates()};
+        static Renderer::Mesh cubeMesh = Renderer::createMeshFromModel(cubeModel);
 
         static auto image = Assets::AssetManager::readImageFromFile("assets/textures/checkerboard.png");
         static auto texture = Renderer::createTextureFromImage(image);

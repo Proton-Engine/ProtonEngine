@@ -7,24 +7,37 @@
 
 #include "protonengine/assets/export.h"
 
+#include <glm/vec2.hpp>
+#include <glm/vec3.hpp>
+
 #include <vector>
 
 namespace ProtonEngine::Assets
 {
 
+struct Face
+{
+    std::array<int32_t, 3> vertexIndex;
+    std::array<int32_t, 3> normalIndex;
+    std::array<int32_t, 3> textureIndex;
+};
+
 class PROTONENGINE_ASSETS_EXPORT Model
 {
 public:
-    Model(std::vector<float> vertices, std::vector<float> normals, std::vector<float> textureCoordinates);
+    Model(std::vector<Face> && indices, std::vector<glm::vec3> && vertices,
+          std::vector<glm::vec3> && normals, std::vector<glm::vec2> && textureCoordinates);
 
-    [[nodiscard]] const std::vector<float> & getVertices() const noexcept;
-    [[nodiscard]] const std::vector<float> & getNormals() const noexcept;
-    [[nodiscard]] const std::vector<float> & getTextureCoordinates() const noexcept;
+    [[nodiscard]] const std::vector<Face> & getFaces() const noexcept;
+    [[nodiscard]] const std::vector<glm::vec3> & getVertices() const noexcept;
+    [[nodiscard]] const std::vector<glm::vec3> & getNormals() const noexcept;
+    [[nodiscard]] const std::vector<glm::vec2> & getTextureCoordinates() const noexcept;
 
 private:
-    std::vector<float> m_vertices;
-    std::vector<float> m_normals;
-    std::vector<float> m_textureCoordinates;
+    std::vector<Face> m_indices;
+    std::vector<glm::vec3> m_vertices;
+    std::vector<glm::vec3> m_normals;
+    std::vector<glm::vec2> m_textureCoordinates;
 };
 
 } // namespace ProtonEngine::Assets

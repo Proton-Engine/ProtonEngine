@@ -37,7 +37,7 @@ static auto splitString(std::string_view input, char delimiter = ' ') -> std::ve
     return substrings;
 }
 
-Assets::Image AssetManager::readImageFromFile(std::string_view path)
+Image AssetManager::readImageFromFile(std::string_view path)
 {
     PROTON_LOG_INFO(std::format("Loading image file: {}", path));
     int width;
@@ -50,14 +50,14 @@ Assets::Image AssetManager::readImageFromFile(std::string_view path)
     if (data == nullptr)
         throw std::runtime_error(std::format("Something went wrong when loading image at :{}\n", path));
 
-    const auto image = Assets::Image(data, width, height, channels);
+    const auto image = Image(data, width, height, channels);
 
     stbi_image_free(data);
 
     return image;
 }
 
-Assets::Model AssetManager::loadModel(std::string_view path)
+Model AssetManager::loadModel(std::string_view path)
 {
     PROTON_LOG_INFO(std::format("Loading model file: {}", path));
 
@@ -66,10 +66,11 @@ Assets::Model AssetManager::loadModel(std::string_view path)
         return loadObjModel(path);
     }
 
+    PROTON_LOG_ERROR("Only obj models are currently supported");
     throw std::runtime_error("Only obj models are currently supported");
 }
 
-Assets::Model AssetManager::loadObjModel(std::string_view path)
+Model AssetManager::loadObjModel(std::string_view path)
 {
     const auto fileContents = [&]() -> std::string {
         std::ifstream inputFile(path.data());
@@ -81,10 +82,12 @@ Assets::Model AssetManager::loadObjModel(std::string_view path)
     std::vector<glm::vec3> vertices;
     std::vector<glm::vec3> normals;
     std::vector<glm::vec2> textureCoords;
+    std::vector<Face> faces;
 
     std::vector<float> modelVertices;
     std::vector<float> modelNormals;
     std::vector<float> modelTextureCoords;
+    std::vector<float> modelIndices;
 
     std::ifstream inputFile(path.data());
     std::string line;
@@ -129,44 +132,12 @@ Assets::Model AssetManager::loadObjModel(std::string_view path)
             const auto splitPoint2Data = splitString(splittedFaceData[2], '/');
             const auto splitPoint3Data = splitString(splittedFaceData[3], '/');
 
-            const auto vertex1 = vertices[std::stoi(splitPoint1Data[0]) - 1];
-            const auto vertex2 = vertices[std::stoi(splitPoint2Data[0]) - 1];
-            const auto vertex3 = vertices[std::stoi(splitPoint3Data[0]) - 1];
+            Face face = {
+                .vertexIndex = {std::stoi(splitPoint1Data[0]) - 1, std::stoi(splitPoint2Data[0]) - 1, std::stoi(splitPoint3Data[0]) - 1},
+                .normalIndex = {std::stoi(splitPoint1Data[2]) - 1, std::stoi(splitPoint2Data[2]) - 1, std::stoi(splitPoint3Data[2]) - 1},
+                .textureIndex = {std::stoi(splitPoint1Data[1]) - 1, std::stoi(splitPoint2Data[1]) - 1, std::stoi(splitPoint3Data[1]) - 1}};
 
-            const auto texture1 = textureCoords[std::stoi(splitPoint1Data[1]) - 1];
-            const auto texture2 = textureCoords[std::stoi(splitPoint2Data[1]) - 1];
-            const auto texture3 = textureCoords[std::stoi(splitPoint3Data[1]) - 1];
-
-            const auto normal1 = normals[std::stoi(splitPoint1Data[2]) - 1];
-            const auto normal2 = normals[std::stoi(splitPoint2Data[2]) - 1];
-            const auto normal3 = normals[std::stoi(splitPoint3Data[2]) - 1];
-
-            modelVertices.emplace_back(vertex1.x);
-            modelVertices.emplace_back(vertex1.y);
-            modelVertices.emplace_back(vertex1.z);
-            modelVertices.emplace_back(vertex2.x);
-            modelVertices.emplace_back(vertex2.y);
-            modelVertices.emplace_back(vertex2.z);
-            modelVertices.emplace_back(vertex3.x);
-            modelVertices.emplace_back(vertex3.y);
-            modelVertices.emplace_back(vertex3.z);
-
-            modelNormals.emplace_back(normal1.x);
-            modelNormals.emplace_back(normal1.y);
-            modelNormals.emplace_back(normal1.z);
-            modelNormals.emplace_back(normal2.x);
-            modelNormals.emplace_back(normal2.y);
-            modelNormals.emplace_back(normal2.z);
-            modelNormals.emplace_back(normal3.x);
-            modelNormals.emplace_back(normal3.y);
-            modelNormals.emplace_back(normal3.z);
-
-            modelTextureCoords.emplace_back(texture1.x);
-            modelTextureCoords.emplace_back(texture1.y);
-            modelTextureCoords.emplace_back(texture2.x);
-            modelTextureCoords.emplace_back(texture2.y);
-            modelTextureCoords.emplace_back(texture3.x);
-            modelTextureCoords.emplace_back(texture3.y);
+            faces.emplace_back(face);
 
             continue;
         }
@@ -175,7 +146,7 @@ Assets::Model AssetManager::loadObjModel(std::string_view path)
         throw std::runtime_error(std::format("Unsupported line: {}", line));
     }
 
-    return Assets::Model{std::move(modelVertices), std::move(modelNormals), modelTextureCoords};
+    return Model{std::move(faces), std::move(vertices), std::move(normals), std::move(textureCoords)};
 }
 
 } // namespace ProtonEngine::Assets
