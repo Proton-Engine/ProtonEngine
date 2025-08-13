@@ -10,6 +10,7 @@
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 
+#include <array>
 #include <vector>
 
 namespace ProtonEngine::Assets
