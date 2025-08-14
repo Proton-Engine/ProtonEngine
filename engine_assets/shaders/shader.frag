@@ -14,7 +14,7 @@ vec3 lightPosition = vec3(1.5, 2, -5);
 vec3 lightColor = vec3(1, 1, 1);
 float specularStrength = 0.2;
 
-void main(){
+void main() {
     vec3 norm = normalize(normal);
     vec3 lightDir = normalize(lightPosition - fragPos);
     float diff = max(dot(norm, lightDir), 0.0);
