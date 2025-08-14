@@ -32,8 +32,8 @@ ShaderProgram::ShaderProgram(std::string_view shaderName) :
     PROTON_LOG_INFO(std::format("Creating shader from file: {}", shaderName));
     m_shaderProgramID = glCreateProgram();
 
-    m_vertexShaderID = loadShader(std::format("./assets/shaders/{}.vertex", shaderName), ShaderType::Vertex);
-    m_fragmentShaderID = loadShader(std::format("./assets/shaders/{}.fragment", shaderName), ShaderType::Fragment);
+    m_vertexShaderID = loadShader(std::format("./assets/shaders/{}.vert", shaderName), ShaderType::Vertex);
+    m_fragmentShaderID = loadShader(std::format("./assets/shaders/{}.frag", shaderName), ShaderType::Fragment);
 
     glAttachShader(m_shaderProgramID, m_vertexShaderID);
     glAttachShader(m_shaderProgramID, m_fragmentShaderID);
