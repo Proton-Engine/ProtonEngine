@@ -14,7 +14,6 @@ set(CMAKE_INSTALL_PREFIX "install")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${BINARY_DIRECTORY})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${BINARY_DIRECTORY})
 
-include(cmake/copy_assets.cmake)
 include(cmake/CPM.cmake)
 include(cmake/download_dependencies.cmake)
 include(GenerateExportHeader)
@@ -25,8 +24,7 @@ find_package(OpenGL REQUIRED)
 
 # Engine includes
 add_subdirectory(engine)
+add_subdirectory(engine_assets)
 add_subdirectory(graphviz)
-
-copy_assets("engine_assets")
 
 add_subdirectory(sandbox)

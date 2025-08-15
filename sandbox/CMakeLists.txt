@@ -9,6 +9,6 @@ target_link_libraries(Sandbox PRIVATE
 
 add_dependencies(Sandbox ProtonEngine)
 
-set_property(TARGET Sandbox PROPERTY VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
+add_subdirectory(assets)
 
-copy_assets(assets)
+set_property(TARGET Sandbox PROPERTY VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
