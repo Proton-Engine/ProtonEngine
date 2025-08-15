@@ -30,7 +30,6 @@ target_link_libraries(ProtonEngineAssets
         PRIVATE
         ProtonEngine::Common
         stb_image
-        assimp::assimp
 )
 
 install(
