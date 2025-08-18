@@ -48,6 +48,8 @@ Window::Window(int32_t width, int32_t height, std::string_view title, Renderer::
     m_uiContext = std::make_unique<Ui::UiContext>(m_windowHandle);
     registerCallbacks();
 
+    glfwSwapInterval(0); // Disable vsync
+
     Common::EventBus::fireEvent(Common::Event::WINDOW_RESIZE_EVENT, Common::WindowResizeEventContext{width, height});
 }
 
