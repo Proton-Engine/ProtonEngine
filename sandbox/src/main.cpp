@@ -35,7 +35,7 @@ public:
         static auto checkerboardImage = Assets::AssetManager::readImageFromFile("assets/textures/checkerboard.png");
         static auto checkerboardTexture = Renderer::createTextureFromImage(checkerboardImage);
 
-        auto camera = getScene().addEntity("MainCamera", Core::Components::TransformComponent{{0, 2, 5}, {0, 0, 0}, {1, 1, 1}});
+        auto camera = getScene().addEntity("MainCamera", Core::Components::TransformComponent{{0, 0, 5}, {0, 0, 0}, {1, 1, 1}});
         camera.addComponent(Core::Components::CameraComponent{Core::Components::CameraComponent::Projection::PERSPECTIVE, 0.1f, 100.0f, 60, true});
         camera.emplaceScript<CameraController>();
 
