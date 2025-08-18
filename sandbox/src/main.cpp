@@ -32,6 +32,9 @@ public:
         static auto image = Assets::AssetManager::readImageFromFile("assets/textures/box.png");
         static auto texture = Renderer::createTextureFromImage(image);
 
+        static auto checkerboardImage = Assets::AssetManager::readImageFromFile("assets/textures/checkerboard.png");
+        static auto checkerboardTexture = Renderer::createTextureFromImage(checkerboardImage);
+
         auto camera = getScene().addEntity("MainCamera", Core::Components::TransformComponent{{0, 2, 5}, {0, 0, 0}, {1, 1, 1}});
         camera.addComponent(Core::Components::CameraComponent{Core::Components::CameraComponent::Projection::PERSPECTIVE, 0.1f, 100.0f, 60, true});
         camera.emplaceScript<CameraController>();
@@ -61,6 +64,11 @@ public:
                 }
             }
         }
+
+        auto light = getScene().addEntity("Light", Core::Components::TransformComponent{{0, 2, -10},
+                                                                                        {0, 0, 0},
+                                                                                        {0.5, 0.5, 0.5}});
+        light.emplaceComponent<Core::Components::MeshRenderer>(cubeMesh, checkerboardTexture);
     }
 };
 
