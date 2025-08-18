@@ -82,6 +82,7 @@ void OpenGLRenderer::renderAllInQueue()
     for (const auto & renderableObject : m_renderableObjects)
     {
         shaderProgram.enable();
+        shaderProgram.setUniformValue("lightPosition", glm::vec3(0, 2, -10));
         renderableObject.texture.activate();
 
         glm::mat4 model = glm::translate(glm::mat4(1.0f), renderableObject.transform.position);
