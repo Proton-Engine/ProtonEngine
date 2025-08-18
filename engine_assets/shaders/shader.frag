@@ -1,31 +1,11 @@
 #version 410 core
 
 in vec2 textureCoordinate;
-in vec3 normal;
-in vec3 fragPos;
 
 out vec3 color;
 
 uniform sampler2D textureSampler;
-uniform mat4 viewMatrix;
-
-float ambientLight = 0.1;
-vec3 lightPosition = vec3(1.5, 2, -5);
-vec3 lightColor = vec3(1, 1, 1);
-float specularStrength = 0.2;
 
 void main() {
-    vec3 norm = normalize(normal);
-    vec3 lightDir = normalize(lightPosition - fragPos);
-    float diff = max(dot(norm, lightDir), 0.0);
-    vec3 diffuse = diff * lightColor;
-
-    vec3 fragPosView = vec3(viewMatrix * vec4(fragPos, 1.0));
-    vec3 viewDir = normalize(-fragPosView);
-    vec3 reflectDir = reflect(-lightDir, norm);
-
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
-    vec3 specular = specularStrength * spec * lightColor;
-
-    color = texture(textureSampler, textureCoordinate).rgb * (diffuse + ambientLight + specular);
+    color = texture(textureSampler, textureCoordinate).rgb;
 }
