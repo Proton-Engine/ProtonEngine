@@ -4,7 +4,7 @@
  */
 
 #include "scripts/camera_controller.h"
-// #include "scripts/rotator.h"
+#include "scripts/rotator.h"
 
 #include "protonengine/assets/asset_manager.h"
 #include "protonengine/core/application.h"
@@ -29,27 +29,38 @@ public:
         static const auto cubeModel = Assets::AssetManager::loadModel("assets/models/cube.obj");
         static Renderer::Mesh cubeMesh = Renderer::createMeshFromModel(cubeModel);
 
-        static auto image = Assets::AssetManager::readImageFromFile("assets/textures/checkerboard.png");
+        static auto image = Assets::AssetManager::readImageFromFile("assets/textures/box.png");
         static auto texture = Renderer::createTextureFromImage(image);
 
         auto camera = getScene().addEntity("MainCamera", Core::Components::TransformComponent{{0, 2, 5}, {0, 0, 0}, {1, 1, 1}});
         camera.addComponent(Core::Components::CameraComponent{Core::Components::CameraComponent::Projection::PERSPECTIVE, 0.1f, 100.0f, 60, true});
         camera.emplaceScript<CameraController>();
 
-        auto floor = getScene().addEntity("Floor", Core::Components::TransformComponent{{0, 0, -5}, {0, 0, 0}, {2, 0.1, 5}});
-        floor.emplaceComponent<Core::Components::MeshRenderer>(cubeMesh, texture);
+        static constexpr auto distance = 4;
 
-        auto leftWall = getScene().addEntity("leftWall", Core::Components::TransformComponent{{-2, 2, -5}, {0, 0, 0}, {0.1, 2, 5}});
-        leftWall.emplaceComponent<Core::Components::MeshRenderer>(cubeMesh, texture);
+        static constexpr auto gridWidth = 3;
+        static constexpr auto gridHeight = 3;
+        static constexpr auto gridDepth = 3;
 
-        auto rightWall = getScene().addEntity("rightWall", Core::Components::TransformComponent{{2, 2, -5}, {0, 0, 0}, {0.1, 2, 5}});
-        rightWall.emplaceComponent<Core::Components::MeshRenderer>(cubeMesh, texture);
+        static constexpr auto xStart = (gridWidth / 2) * distance * -1;
+        static constexpr auto yStart = (gridHeight / 2) * distance * -1;
+        static constexpr auto zStart = (gridDepth / 2) * distance - (gridDepth * distance + 5);
 
-        auto backWall = getScene().addEntity("backWall", Core::Components::TransformComponent{{0, 2, -10}, {0, 0, 0}, {2, 2, 0.1}});
-        backWall.emplaceComponent<Core::Components::MeshRenderer>(cubeMesh, texture);
-
-        auto light = getScene().addEntity("light", Core::Components::TransformComponent{{1.5, 2, -5}, {0, 0, 0}, {0.1, 0.1, 0.1}});
-        light.emplaceComponent<Core::Components::MeshRenderer>(cubeMesh, texture);
+        for (auto x = 0; x < gridWidth; x++)
+        {
+            for (auto y = 0; y < gridHeight; y++)
+            {
+                for (auto z = 0; z < gridDepth; z++)
+                {
+                    auto cube = getScene().addEntity(std::format("Cube-{}-{}-{}", x, y, z),
+                                                     Core::Components::TransformComponent{{xStart + distance * x, yStart + distance * y, zStart + distance * z},
+                                                                                          {0, 0, 0},
+                                                                                          {0.5, 0.5, 0.5}});
+                    cube.emplaceComponent<Core::Components::MeshRenderer>(cubeMesh, texture);
+                    cube.emplaceScript<Rotator>((x + y + z + 1) * 10);
+                }
+            }
+        }
     }
 };
 
