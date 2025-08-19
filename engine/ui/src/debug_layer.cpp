@@ -26,6 +26,11 @@ void DebugLayer::onImGuiRender()
     ImGui::Text("%i", m_fps);
     ImGui::NextColumn();
 
+    ImGui::Text("Frametime");
+    ImGui::NextColumn();
+    ImGui::Text("%i us", m_frametime.count());
+    ImGui::NextColumn();
+
     ImGui::Text("Meshes");
     ImGui::NextColumn();
     ImGui::Text("n/a");
@@ -48,11 +53,12 @@ void DebugLayer::onUpdate(float timeStep)
     const auto currentTime = high_resolution_clock::now();
     if (currentTime > m_nextTimePoint)
     {
-        const auto sampleDuration = duration_cast<milliseconds>(currentTime - m_lastTimePoint);
+        const auto sampleDuration = duration_cast<microseconds>(currentTime - m_lastTimePoint);
         m_lastTimePoint = currentTime;
         m_nextTimePoint = currentTime + seconds(1);
 
-        m_fps = static_cast<int>(static_cast<double>(m_totalFrames) / (sampleDuration.count() / 1'000.));
+        m_fps = static_cast<int>(static_cast<double>(m_totalFrames) / (sampleDuration.count() / 1'000'000.0));
+        m_frametime = microseconds(1'000'000) / m_fps;
         m_totalFrames = 0;
     }
 }
