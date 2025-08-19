@@ -97,7 +97,6 @@ void OpenGLRenderer::renderAllInQueue()
         shaderProgram.setUniformValue("projectionMatrix", projection);
         shaderProgram.setUniformValue("viewMatrix", view);
         shaderProgram.setUniformValue("normalModelMatrix", normalModelMatrix);
-        shaderProgram.setUniformValue("cameraPosition", cameraPosition);
 
         renderableObject.mesh.enableForDrawing();
         glDrawElements(GL_TRIANGLES, renderableObject.mesh.indicesCount(), GL_UNSIGNED_INT, nullptr);
@@ -125,8 +124,6 @@ void OpenGLRenderer::setCamera(const Transform & transform, const Camera & camer
     view = glm::rotate(view, transform.rotation.y * std::numbers::pi_v<float> / 180.0f, glm::vec3{0, 1, 0});
     view = glm::rotate(view, transform.rotation.x * std::numbers::pi_v<float> / 180.0f, glm::vec3{1, 0, 0});
     view = glm::rotate(view, transform.rotation.z * std::numbers::pi_v<float> / 180.0f, glm::vec3{0, 0, 1});
-
-    cameraPosition = transform.position;
 
     if (camera.projection == Camera::Projection::PERSPECTIVE)
     {
