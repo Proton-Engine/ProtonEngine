@@ -33,6 +33,7 @@ public:
 private:
     glm::mat4 projection{};
     glm::mat4 view{};
+    glm::vec3 cameraPosition{};
 
     std::vector<RenderableObject> m_renderableObjects;
 };

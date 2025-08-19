@@ -8,9 +8,11 @@ out vec3 color;
 
 uniform sampler2D textureSampler;
 uniform vec3 lightPosition;
+uniform vec3 cameraPosition;
 
 vec3 calculatePhongLighting();
 vec3 calculatePhoneLightingDiffuseComponent(vec3 lightColor);
+vec3 calculatePhongLightingSpecularComponent(vec3 lightColor);
 
 void main() {
     color = texture(textureSampler, textureCoordinate).rgb * calculatePhongLighting();
@@ -24,8 +26,9 @@ vec3 calculatePhongLighting()
     float ambient = 0.1f;
 
     vec3 diffuse = calculatePhoneLightingDiffuseComponent(lightColor);
+    vec3 specular = calculatePhongLightingSpecularComponent(lightColor);
 
-    return ambient + diffuse;
+    return ambient + diffuse + specular;
 }
 
 vec3 calculatePhoneLightingDiffuseComponent(vec3 lightColor)
@@ -36,4 +39,17 @@ vec3 calculatePhoneLightingDiffuseComponent(vec3 lightColor)
     float diffuseMultiplier = max(dot(normalize(fragNormal), directionToLight), 0.0);
 
     return diffuseMultiplier * lightColor;
+}
+
+vec3 calculatePhongLightingSpecularComponent(vec3 lightColor)
+{
+    float specularStrength = 1;
+    vec3 directionToLight = normalize(lightPosition - worldPosition);
+
+    vec3 viewDir = normalize(cameraPosition - worldPosition);
+    vec3 reflectDir = reflect(-directionToLight, normalize(fragNormal));
+
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
+
+    return specularStrength * spec * lightColor;
 }
