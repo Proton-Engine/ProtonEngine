@@ -81,6 +81,12 @@ void ShaderProgram::setUniformValue(std::string_view name, float value) noexcept
     glUniform1f(uniformID, value);
 }
 
+void ShaderProgram::setUniformValue(std::string_view name, int value) noexcept
+{
+    GLint uniformID = glGetUniformLocation(m_shaderProgramID, name.data());
+    glUniform1i(uniformID, value);
+}
+
 void ShaderProgram::setUniformValue(std::string_view name, glm::vec3 vector) noexcept
 {
     GLint uniformID = glGetUniformLocation(m_shaderProgramID, name.data());

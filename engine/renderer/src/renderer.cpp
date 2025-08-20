@@ -99,4 +99,13 @@ Mesh createMeshFromModel(const Assets::Model & model)
     return Mesh(g_rendererInternal->createBuffer(rendererVertices, indices));
 }
 
+auto getDefaultTexture() -> Texture &
+{
+    // TODO: Remove the statics here:
+    static uint8_t data[3] = {255, 255, 255};
+    static Assets::Image image{data, 1, 1, 3};
+    static Texture texture(image);
+    return texture;
+}
+
 } // namespace ProtonEngine::Renderer

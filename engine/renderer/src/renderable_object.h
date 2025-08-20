@@ -17,7 +17,6 @@ struct RenderableObject
 {
     const Transform & transform;
     const Mesh & mesh;
-    const Texture & texture;
     const Material & material;
 };
 

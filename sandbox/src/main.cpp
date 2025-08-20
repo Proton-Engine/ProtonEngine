@@ -32,11 +32,14 @@ public:
         static auto image = Assets::AssetManager::readImageFromFile("assets/textures/box.png");
         static auto texture = Renderer::createTextureFromImage(image);
 
+        static auto imageSpecular = Assets::AssetManager::readImageFromFile("assets/textures/box-specular.png");
+        static auto textureSpecular = Renderer::createTextureFromImage(imageSpecular);
+
         static auto checkerboardImage = Assets::AssetManager::readImageFromFile("assets/textures/checkerboard.png");
         static auto checkerboardTexture = Renderer::createTextureFromImage(checkerboardImage);
 
-        static Renderer::Material materialLight;
-        static Renderer::Material materialCube;
+        static Renderer::Material materialLight{.baseTexture = checkerboardTexture};
+        static Renderer::Material materialCube{.baseTexture = texture, .specularColor = glm::vec3(1.0f), .specularMap = textureSpecular, .shininess = 32};
 
         auto camera = getScene().addEntity("MainCamera", Core::Components::TransformComponent{{0, 0, 25}, {0, 0, 0}, {1, 1, 1}});
         camera.addComponent(Core::Components::CameraComponent{Core::Components::CameraComponent::Projection::PERSPECTIVE, 0.1f, 100.0f, 60, true});
@@ -62,8 +65,8 @@ public:
         //                                              Core::Components::TransformComponent{{xStart + distance * x, yStart + distance * y, zStart + distance * z},
         //                                                                                   {0, 0, 0},
         //                                                                                   {0.5, 0.5, 0.5}});
-        //             cube.emplaceComponent<Core::Components::MeshRenderer>(cubeMesh, texture);
-        //             // cube.emplaceScript<Rotator>((x + y + z + 1) * 10);
+        //             cube.emplaceComponent<Core::Components::MeshRenderer>(cubeMesh, materialCube);
+        //             cube.emplaceScript<Rotator>((x + y + z + 1) * 10);
         //         }
         //     }
         // }
@@ -72,12 +75,12 @@ public:
                                          Core::Components::TransformComponent{{0, -5, 0},
                                                                               {0, 0, 0},
                                                                               {10, 0.5, 10}});
-        cube.emplaceComponent<Core::Components::MeshRenderer>(cubeMesh, texture, materialCube);
+        cube.emplaceComponent<Core::Components::MeshRenderer>(cubeMesh, materialCube);
 
         auto light = getScene().addEntity("Light", Core::Components::TransformComponent{{0, 2, -10},
                                                                                         {0, 0, 0},
                                                                                         {0.5, 0.5, 0.5}});
-        light.emplaceComponent<Core::Components::MeshRenderer>(cubeMesh, checkerboardTexture, materialLight);
+        light.emplaceComponent<Core::Components::MeshRenderer>(cubeMesh, materialLight);
     }
 };
 

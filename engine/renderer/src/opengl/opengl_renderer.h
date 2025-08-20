@@ -24,7 +24,7 @@ public:
 
     void setWindowContext(ContextLoadFunction func) override;
 
-    void addToRenderQueue(const Transform & transform, const Mesh & mesh, const Texture & texture, const Material & material) override;
+    void addToRenderQueue(const Transform & transform, const Mesh & mesh, const Material & material) override;
     void renderAllInQueue() override;
     void setCamera(const Transform & transform, const Camera & camera) override;
     void update() override;

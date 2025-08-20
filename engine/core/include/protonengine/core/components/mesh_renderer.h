@@ -16,12 +16,10 @@ namespace ProtonEngine::Core::Components
 struct MeshRenderer
 {
     Renderer::Mesh & mesh;
-    Renderer::Texture & texture;
     Renderer::Material & material;
 
-    MeshRenderer(Renderer::Mesh & mesh, Renderer::Texture & texture, Renderer::Material & material) :
+    MeshRenderer(Renderer::Mesh & mesh, Renderer::Material & material) :
         mesh(mesh),
-        texture(texture),
         material(material)
     {
     }
