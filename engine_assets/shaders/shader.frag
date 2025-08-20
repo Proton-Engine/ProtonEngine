@@ -1,8 +1,7 @@
 #version 410 core
 
 struct Material {
-    vec3 ambientColor;
-    vec3 diffuseColor;
+    vec3 baseColor;
     vec3 specularColor;
     float shininess;
 };
@@ -30,7 +29,7 @@ vec3 calculatePhongLighting()
     // TODO: Fix this light color input thingy
     vec3 lightColor = vec3(1.0f, 1.0f, 1.0f);
 
-    vec3 ambient = 0.1f * material.ambientColor;
+    vec3 ambient = 0.1f * material.baseColor;
 
     vec3 diffuse = calculatePhoneLightingDiffuseComponent(lightColor);
     vec3 specular = calculatePhongLightingSpecularComponent(lightColor);
@@ -45,7 +44,7 @@ vec3 calculatePhoneLightingDiffuseComponent(vec3 lightColor)
     // The closer the direction to the light is to the normal, the more effect diffuse lighting has
     float diffuseMultiplier = max(dot(normalize(fragNormal), directionToLight), 0.0);
 
-    return diffuseMultiplier * lightColor * material.diffuseColor;
+    return diffuseMultiplier * lightColor * material.baseColor;
 }
 
 vec3 calculatePhongLightingSpecularComponent(vec3 lightColor)
