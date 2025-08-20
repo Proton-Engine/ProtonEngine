@@ -48,7 +48,7 @@ void Application::run()
 
         registry.view<Components::TransformComponent, Components::CameraComponent>().each([&renderer](auto & transform, auto & camera) { renderer.setCamera(transform.transform, camera.camera); });
         registry.view<Components::TransformComponent, Components::MeshRenderer>().each([&renderer](auto & transform, auto & meshRenderer) {
-            renderer.addToRenderQueue(transform.transform, meshRenderer.mesh, meshRenderer.texture);
+            renderer.addToRenderQueue(transform.transform, meshRenderer.mesh, meshRenderer.texture, meshRenderer.material);
         });
         renderer.renderAllInQueue();
 
