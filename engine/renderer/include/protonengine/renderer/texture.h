@@ -18,9 +18,9 @@ public:
 
     virtual ~Texture() = default;
     Texture(Texture &) = delete;
-    Texture(Texture &&) = default;
+    Texture(Texture &&) = delete;
     Texture operator=(Texture &) = delete;
-    Texture & operator=(Texture &&) = default;
+    Texture & operator=(Texture &&) = delete;
 
     void activate() const;
     void deactivate() const;

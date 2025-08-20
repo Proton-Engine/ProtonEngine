@@ -70,9 +70,9 @@ void OpenGLRenderer::setWindowContext(ContextLoadFunction func)
                                        }));
 }
 
-void OpenGLRenderer::addToRenderQueue(const Transform & transform, const Mesh & mesh, const Texture & texture, const Material & material)
+void OpenGLRenderer::addToRenderQueue(const Transform & transform, const Mesh & mesh, const Material & material)
 {
-    m_renderableObjects.emplace_back(transform, mesh, texture, material);
+    m_renderableObjects.emplace_back(transform, mesh, material);
 }
 
 void OpenGLRenderer::renderAllInQueue()
@@ -83,7 +83,11 @@ void OpenGLRenderer::renderAllInQueue()
     {
         shaderProgram.enable();
         shaderProgram.setUniformValue("lightPosition", glm::vec3(0, 2, -10));
-        renderableObject.texture.activate();
+
+        glActiveTexture(GL_TEXTURE0);
+        renderableObject.material.baseTexture.activate();
+        glActiveTexture(GL_TEXTURE1);
+        renderableObject.material.specularMap.activate();
 
         glm::mat4 model = glm::translate(glm::mat4(1.0f), renderableObject.transform.position);
         model = glm::scale(model, renderableObject.transform.scale);
@@ -99,7 +103,9 @@ void OpenGLRenderer::renderAllInQueue()
         shaderProgram.setUniformValue("normalModelMatrix", normalModelMatrix);
 
         shaderProgram.setUniformValue("material.baseColor", renderableObject.material.baseColor);
+        shaderProgram.setUniformValue("material.baseTexture", 0);
         shaderProgram.setUniformValue("material.specularColor", renderableObject.material.specularColor);
+        shaderProgram.setUniformValue("material.specularMap", 1);
         shaderProgram.setUniformValue("material.shininess", renderableObject.material.shininess);
 
         renderableObject.mesh.enableForDrawing();
@@ -107,7 +113,11 @@ void OpenGLRenderer::renderAllInQueue()
         renderableObject.mesh.disableForDrawing();
 
         shaderProgram.disable();
-        renderableObject.texture.deactivate();
+
+        glActiveTexture(GL_TEXTURE0);
+        renderableObject.material.baseTexture.deactivate();
+        glActiveTexture(GL_TEXTURE1);
+        renderableObject.material.specularMap.deactivate();
     }
 
     m_renderableObjects.clear();

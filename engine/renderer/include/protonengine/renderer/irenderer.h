@@ -34,7 +34,7 @@ public:
 
     virtual void setWindowContext(ContextLoadFunction func) = 0;
 
-    virtual void addToRenderQueue(const Transform & transform, const Mesh & mesh, const Texture & texture, const Material & material) = 0;
+    virtual void addToRenderQueue(const Transform & transform, const Mesh & mesh, const Material & material) = 0;
     virtual void renderAllInQueue() = 0;
     virtual void setCamera(const Transform & transform, const Camera & camera) = 0;
     virtual void update() = 0;
