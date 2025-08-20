@@ -98,8 +98,7 @@ void OpenGLRenderer::renderAllInQueue()
         shaderProgram.setUniformValue("viewMatrix", view);
         shaderProgram.setUniformValue("normalModelMatrix", normalModelMatrix);
 
-        shaderProgram.setUniformValue("material.ambientColor", renderableObject.material.ambientColor);
-        shaderProgram.setUniformValue("material.diffuseColor", renderableObject.material.diffuseColor);
+        shaderProgram.setUniformValue("material.baseColor", renderableObject.material.baseColor);
         shaderProgram.setUniformValue("material.specularColor", renderableObject.material.specularColor);
         shaderProgram.setUniformValue("material.shininess", renderableObject.material.shininess);
 
