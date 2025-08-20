@@ -30,6 +30,7 @@ public:
     void enable() const noexcept;
     void disable() const noexcept;
 
+    void setUniformValue(std::string_view name, float value) noexcept;
     void setUniformValue(std::string_view name, glm::vec3 vector) noexcept;
     void setUniformValue(std::string_view name, glm::mat4 matrix) noexcept;
 

@@ -5,6 +5,7 @@
 
 #pragma once
 
+#include "protonengine/renderer/material.h"
 #include "protonengine/renderer/mesh.h"
 #include "protonengine/renderer/texture.h"
 #include "protonengine/renderer/transform.h"
@@ -17,6 +18,7 @@ struct RenderableObject
     const Transform & transform;
     const Mesh & mesh;
     const Texture & texture;
+    const Material & material;
 };
 
 } // namespace ProtonEngine::Renderer

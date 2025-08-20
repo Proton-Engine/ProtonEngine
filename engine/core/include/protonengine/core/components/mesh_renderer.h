@@ -5,6 +5,7 @@
 
 #pragma once
 
+#include "protonengine/renderer/material.h"
 #include "protonengine/renderer/mesh.h"
 #include "protonengine/renderer/texture.h"
 
@@ -16,10 +17,14 @@ struct MeshRenderer
 {
     Renderer::Mesh & mesh;
     Renderer::Texture & texture;
+    Renderer::Material & material;
 
-    MeshRenderer(Renderer::Mesh & mesh, Renderer::Texture & texture) :
+    MeshRenderer(Renderer::Mesh & mesh, Renderer::Texture & texture, Renderer::Material & material) :
         mesh(mesh),
-        texture(texture) {}
+        texture(texture),
+        material(material)
+    {
+    }
 };
 
 } // namespace ProtonEngine::Core::Components

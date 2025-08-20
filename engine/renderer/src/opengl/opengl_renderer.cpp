@@ -70,9 +70,9 @@ void OpenGLRenderer::setWindowContext(ContextLoadFunction func)
                                        }));
 }
 
-void OpenGLRenderer::addToRenderQueue(const Transform & transform, const Mesh & mesh, const Texture & texture)
+void OpenGLRenderer::addToRenderQueue(const Transform & transform, const Mesh & mesh, const Texture & texture, const Material & material)
 {
-    m_renderableObjects.emplace_back(transform, mesh, texture);
+    m_renderableObjects.emplace_back(transform, mesh, texture, material);
 }
 
 void OpenGLRenderer::renderAllInQueue()
@@ -97,6 +97,11 @@ void OpenGLRenderer::renderAllInQueue()
         shaderProgram.setUniformValue("projectionMatrix", projection);
         shaderProgram.setUniformValue("viewMatrix", view);
         shaderProgram.setUniformValue("normalModelMatrix", normalModelMatrix);
+
+        shaderProgram.setUniformValue("material.ambientColor", renderableObject.material.ambientColor);
+        shaderProgram.setUniformValue("material.diffuseColor", renderableObject.material.diffuseColor);
+        shaderProgram.setUniformValue("material.specularColor", renderableObject.material.specularColor);
+        shaderProgram.setUniformValue("material.shininess", renderableObject.material.shininess);
 
         renderableObject.mesh.enableForDrawing();
         glDrawElements(GL_TRIANGLES, renderableObject.mesh.indicesCount(), GL_UNSIGNED_INT, nullptr);

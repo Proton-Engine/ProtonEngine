@@ -35,7 +35,10 @@ public:
         static auto checkerboardImage = Assets::AssetManager::readImageFromFile("assets/textures/checkerboard.png");
         static auto checkerboardTexture = Renderer::createTextureFromImage(checkerboardImage);
 
-        auto camera = getScene().addEntity("MainCamera", Core::Components::TransformComponent{{0, 0, 5}, {0, 0, 0}, {1, 1, 1}});
+        static Renderer::Material materialLight;
+        static Renderer::Material materialCube;
+
+        auto camera = getScene().addEntity("MainCamera", Core::Components::TransformComponent{{0, 0, 25}, {0, 0, 0}, {1, 1, 1}});
         camera.addComponent(Core::Components::CameraComponent{Core::Components::CameraComponent::Projection::PERSPECTIVE, 0.1f, 100.0f, 60, true});
         camera.emplaceScript<CameraController>();
 
@@ -49,26 +52,32 @@ public:
         static constexpr auto yStart = (gridHeight / 2) * distance * -1;
         static constexpr auto zStart = (gridDepth / 2) * distance - (gridDepth * distance + 5);
 
-        for (auto x = 0; x < gridWidth; x++)
-        {
-            for (auto y = 0; y < gridHeight; y++)
-            {
-                for (auto z = 0; z < gridDepth; z++)
-                {
-                    auto cube = getScene().addEntity(std::format("Cube-{}-{}-{}", x, y, z),
-                                                     Core::Components::TransformComponent{{xStart + distance * x, yStart + distance * y, zStart + distance * z},
-                                                                                          {0, 0, 0},
-                                                                                          {0.5, 0.5, 0.5}});
-                    cube.emplaceComponent<Core::Components::MeshRenderer>(cubeMesh, texture);
-                    cube.emplaceScript<Rotator>((x + y + z + 1) * 10);
-                }
-            }
-        }
+        // for (auto x = 0; x < gridWidth; x++)
+        // {
+        //     for (auto y = 0; y < gridHeight; y++)
+        //     {
+        //         for (auto z = 0; z < gridDepth; z++)
+        //         {
+        //             auto cube = getScene().addEntity(std::format("Cube-{}-{}-{}", x, y, z),
+        //                                              Core::Components::TransformComponent{{xStart + distance * x, yStart + distance * y, zStart + distance * z},
+        //                                                                                   {0, 0, 0},
+        //                                                                                   {0.5, 0.5, 0.5}});
+        //             cube.emplaceComponent<Core::Components::MeshRenderer>(cubeMesh, texture);
+        //             // cube.emplaceScript<Rotator>((x + y + z + 1) * 10);
+        //         }
+        //     }
+        // }
+
+        auto cube = getScene().addEntity(std::format("Cube"),
+                                         Core::Components::TransformComponent{{0, -5, 0},
+                                                                              {0, 0, 0},
+                                                                              {10, 0.5, 10}});
+        cube.emplaceComponent<Core::Components::MeshRenderer>(cubeMesh, texture, materialCube);
 
         auto light = getScene().addEntity("Light", Core::Components::TransformComponent{{0, 2, -10},
                                                                                         {0, 0, 0},
                                                                                         {0.5, 0.5, 0.5}});
-        light.emplaceComponent<Core::Components::MeshRenderer>(cubeMesh, checkerboardTexture);
+        light.emplaceComponent<Core::Components::MeshRenderer>(cubeMesh, checkerboardTexture, materialLight);
     }
 };
 
