@@ -17,7 +17,7 @@ struct Light {
 in vec2 textureCoordinate;
 in vec3 fragNormal;
 in vec3 worldPosition;
-//in vec3 lightPositionFrag;
+in Light pointLightFrag;
 
 out vec3 color;
 
@@ -35,15 +35,13 @@ void main() {
 
 vec3 calculatePhongLighting()
 {
-    // TODO: Fix this light color input thingy
-    //    vec3 lightColor = vec3(1.0f, 1.0f, 1.0f);
-    vec3 lightColor = directionalLight.color;
-
     vec3 ambient = 0.1f * material.baseColor;
 
-    //    vec3 diffuse = calculatePhoneLightingDiffuseComponent(lightPositionFrag - worldPosition, lightColor);
-    vec3 diffuse = calculatePhoneLightingDiffuseComponent(-directionalLight.direction, lightColor);
-    vec3 specular = calculatePhongLightingSpecularComponent(-directionalLight.direction, lightColor);
+    vec3 diffuse = calculatePhoneLightingDiffuseComponent(-directionalLight.direction, directionalLight.color);
+    vec3 specular = calculatePhongLightingSpecularComponent(-directionalLight.direction, directionalLight.color);
+
+    diffuse += calculatePhoneLightingDiffuseComponent(pointLightFrag.position - worldPosition, pointLightFrag.color);
+    specular += calculatePhongLightingSpecularComponent(pointLightFrag.position - worldPosition, pointLightFrag.color);
 
     return ambient + diffuse + specular;
 }
