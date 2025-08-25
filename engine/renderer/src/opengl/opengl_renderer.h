@@ -8,6 +8,7 @@
 #include "protonengine/renderer/irenderer.h"
 
 #include "irenderer_internal.h"
+#include "renderable_light.h"
 #include "renderable_object.h"
 
 #include <glm/glm.hpp>
@@ -25,6 +26,7 @@ public:
     void setWindowContext(ContextLoadFunction func) override;
 
     void addToRenderQueue(const Transform & transform, const Mesh & mesh, const Material & material) override;
+    void addLight(const Transform & transform, const Light & light) override;
     void renderAllInQueue() override;
     void setCamera(const Transform & transform, const Camera & camera) override;
     void update() override;
@@ -35,6 +37,7 @@ private:
     glm::mat4 view{};
 
     std::vector<RenderableObject> m_renderableObjects;
+    std::vector<RenderableLight> m_lights;
 };
 
 } // namespace ProtonEngine::Renderer::OpenGL
