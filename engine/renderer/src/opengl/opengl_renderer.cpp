@@ -126,6 +126,17 @@ void OpenGLRenderer::renderAllInQueue()
             shaderProgram.setUniformValue("directionalLight.color", directionalLight->light.color);
         }
 
+        for (const auto & light : m_lights)
+        {
+            if (light.light.type != LightType::POINT)
+            {
+                continue;
+            }
+
+            shaderProgram.setUniformValue("pointLight.position", light.transform.position);
+            shaderProgram.setUniformValue("pointLight.color", light.light.color);
+        }
+
         renderableObject.mesh.enableForDrawing();
         glDrawElements(GL_TRIANGLES, renderableObject.mesh.indicesCount(), GL_UNSIGNED_INT, nullptr);
         renderableObject.mesh.disableForDrawing();
@@ -139,6 +150,7 @@ void OpenGLRenderer::renderAllInQueue()
     }
 
     m_renderableObjects.clear();
+    m_lights.clear();
 }
 
 void OpenGLRenderer::setCamera(const Transform & transform, const Camera & camera)
