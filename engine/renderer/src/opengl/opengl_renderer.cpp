@@ -120,10 +120,10 @@ void OpenGLRenderer::renderAllInQueue()
             auto rot = glm::rotate(glm::mat4(1.0f), directionalLight->transform.rotation.y * std::numbers::pi_v<float> / 180.0f, glm::vec3{0, 1, 0});
             rot = glm::rotate(rot, directionalLight->transform.rotation.x * std::numbers::pi_v<float> / 180.0f, glm::vec3{1, 0, 0});
             rot = glm::rotate(rot, directionalLight->transform.rotation.z * std::numbers::pi_v<float> / 180.0f, glm::vec3{0, 0, 1});
-            const auto lightDirection = glm::vec3(rot * glm::vec4(0, 1, 0, 0));
-            // const auto lightDirection = glm::vec3(view * model * glm::vec4(directionalLight->transform.rotation));
+            const auto lightDirection = glm::vec3(view * rot * glm::vec4(0, 1, 0, 0));
+
             shaderProgram.setUniformValue("directionalLight.direction", lightDirection);
-            shaderProgram.setUniformValue("directionalLight.color", glm::vec3(1, 1, 1));
+            shaderProgram.setUniformValue("directionalLight.color", directionalLight->light.color);
         }
 
         renderableObject.mesh.enableForDrawing();
