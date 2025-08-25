@@ -55,27 +55,27 @@ public:
         static constexpr auto yStart = (gridHeight / 2) * distance * -1;
         static constexpr auto zStart = (gridDepth / 2) * distance - (gridDepth * distance + 5);
 
-        // for (auto x = 0; x < gridWidth; x++)
-        // {
-        //     for (auto y = 0; y < gridHeight; y++)
-        //     {
-        //         for (auto z = 0; z < gridDepth; z++)
-        //         {
-        //             auto cube = getScene().addEntity(std::format("Cube-{}-{}-{}", x, y, z),
-        //                                              Core::Components::TransformComponent{{xStart + distance * x, yStart + distance * y, zStart + distance * z},
-        //                                                                                   {0, 0, 0},
-        //                                                                                   {0.5, 0.5, 0.5}});
-        //             cube.emplaceComponent<Core::Components::MeshRenderer>(cubeMesh, materialCube);
-        //             cube.emplaceScript<Rotator>((x + y + z + 1) * 10);
-        //         }
-        //     }
-        // }
+        for (auto x = 0; x < gridWidth; x++)
+        {
+            for (auto y = 0; y < gridHeight; y++)
+            {
+                for (auto z = 0; z < gridDepth; z++)
+                {
+                    auto cube = getScene().addEntity(std::format("Cube-{}-{}-{}", x, y, z),
+                                                     Core::Components::TransformComponent{{xStart + distance * x, yStart + distance * y, zStart + distance * z},
+                                                                                          {0, 0, 0},
+                                                                                          {0.5, 0.5, 0.5}});
+                    cube.emplaceComponent<Core::Components::MeshRenderer>(cubeMesh, materialCube);
+                    // cube.emplaceScript<Rotator>((x + y + z + 1) * 10);
+                }
+            }
+        }
 
-        auto cube = getScene().addEntity(std::format("Cube"),
-                                         Core::Components::TransformComponent{{0, -5, 0},
-                                                                              {0, 0, 0},
-                                                                              {10, 0.5, 10}});
-        cube.emplaceComponent<Core::Components::MeshRenderer>(cubeMesh, materialCube);
+        // auto cube = getScene().addEntity(std::format("Cube"),
+        //                                  Core::Components::TransformComponent{{0, -5, 0},
+        //                                                                       {0, 0, 0},
+        //                                                                       {10, 0.5, 10}});
+        // cube.emplaceComponent<Core::Components::MeshRenderer>(cubeMesh, materialCube);
 
         auto light = getScene().addEntity("Light", Core::Components::TransformComponent{{0, 2, -10},
                                                                                         {0, 0, 0},
