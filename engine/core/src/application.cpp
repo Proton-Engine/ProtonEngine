@@ -12,6 +12,7 @@
 
 #include "delta_time.h"
 #include "protonengine/common/logger.h"
+#include "protonengine/core/components/light_component.h"
 #include "protonengine/core/input.h"
 #include "protonengine/renderer/irenderer.h"
 #include "protonengine/ui/debug_layer.h"
@@ -49,6 +50,9 @@ void Application::run()
         registry.view<Components::TransformComponent, Components::CameraComponent>().each([&renderer](auto & transform, auto & camera) { renderer.setCamera(transform.transform, camera.camera); });
         registry.view<Components::TransformComponent, Components::MeshRenderer>().each([&renderer](auto & transform, auto & meshRenderer) {
             renderer.addToRenderQueue(transform.transform, meshRenderer.mesh, meshRenderer.material);
+        });
+        registry.view<Components::TransformComponent, Components::LightComponent>().each([&renderer](auto & transform, auto & light) {
+            renderer.addLight(transform.transform, light.light);
         });
         renderer.renderAllInQueue();
 

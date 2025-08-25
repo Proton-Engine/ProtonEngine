@@ -8,6 +8,7 @@
 #include "protonengine/assets/model.h"
 #include "protonengine/renderer/camera.h"
 #include "protonengine/renderer/export.h"
+#include "protonengine/renderer/light.h"
 #include "protonengine/renderer/material.h"
 #include "protonengine/renderer/mesh.h"
 #include "protonengine/renderer/texture.h"
@@ -35,6 +36,7 @@ public:
     virtual void setWindowContext(ContextLoadFunction func) = 0;
 
     virtual void addToRenderQueue(const Transform & transform, const Mesh & mesh, const Material & material) = 0;
+    virtual void addLight(const Transform & transform, const Light & light) = 0;
     virtual void renderAllInQueue() = 0;
     virtual void setCamera(const Transform & transform, const Camera & camera) = 0;
     virtual void update() = 0;

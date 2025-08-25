@@ -16,6 +16,7 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/quaternion.hpp"
 
+#include <algorithm>
 #include <format>
 #include <functional>
 #include <numbers>
@@ -74,6 +75,10 @@ void OpenGLRenderer::addToRenderQueue(const Transform & transform, const Mesh & 
 {
     m_renderableObjects.emplace_back(transform, mesh, material);
 }
+void OpenGLRenderer::addLight(const Transform & transform, const Light & light)
+{
+    m_lights.emplace_back(transform, light);
+}
 
 void OpenGLRenderer::renderAllInQueue()
 {
@@ -108,9 +113,18 @@ void OpenGLRenderer::renderAllInQueue()
         shaderProgram.setUniformValue("material.specularMap", 1);
         shaderProgram.setUniformValue("material.shininess", renderableObject.material.shininess);
 
-        const auto lightDirection = glm::vec3(view * model * glm::vec4(1, -1, 0, 0));
-        shaderProgram.setUniformValue("directionalLight.direction", lightDirection);
-        shaderProgram.setUniformValue("directionalLight.color", glm::vec3(1, 1, 1));
+        const auto directionalLight =
+            std::ranges::find_if(m_lights, [&](const auto & light) { return light.light.type == LightType::DIRECTIONAL; });
+        if (directionalLight != m_lights.end())
+        {
+            auto rot = glm::rotate(glm::mat4(1.0f), directionalLight->transform.rotation.y * std::numbers::pi_v<float> / 180.0f, glm::vec3{0, 1, 0});
+            rot = glm::rotate(rot, directionalLight->transform.rotation.x * std::numbers::pi_v<float> / 180.0f, glm::vec3{1, 0, 0});
+            rot = glm::rotate(rot, directionalLight->transform.rotation.z * std::numbers::pi_v<float> / 180.0f, glm::vec3{0, 0, 1});
+            const auto lightDirection = glm::vec3(rot * glm::vec4(0, 1, 0, 0));
+            // const auto lightDirection = glm::vec3(view * model * glm::vec4(directionalLight->transform.rotation));
+            shaderProgram.setUniformValue("directionalLight.direction", lightDirection);
+            shaderProgram.setUniformValue("directionalLight.color", glm::vec3(1, 1, 1));
+        }
 
         renderableObject.mesh.enableForDrawing();
         glDrawElements(GL_TRIANGLES, renderableObject.mesh.indicesCount(), GL_UNSIGNED_INT, nullptr);
@@ -134,14 +148,18 @@ void OpenGLRenderer::setCamera(const Transform & transform, const Camera & camer
         return;
     }
 
+    const auto yaw = transform.rotation.y - 90;
+    const auto pitch = transform.rotation.x;
+
+    glm::vec3 cameraRotationOffset;
+    cameraRotationOffset.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+    cameraRotationOffset.y = sin(glm::radians(pitch));
+    cameraRotationOffset.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+
     view = glm::lookAt(
         transform.position,
-        transform.position + glm::vec3{0, 0, -1},
+        transform.position + glm::normalize(cameraRotationOffset),
         glm::vec3(0, 1, 0));
-
-    view = glm::rotate(view, transform.rotation.y * std::numbers::pi_v<float> / 180.0f, glm::vec3{0, 1, 0});
-    view = glm::rotate(view, transform.rotation.x * std::numbers::pi_v<float> / 180.0f, glm::vec3{1, 0, 0});
-    view = glm::rotate(view, transform.rotation.z * std::numbers::pi_v<float> / 180.0f, glm::vec3{0, 0, 1});
 
     if (camera.projection == Camera::Projection::PERSPECTIVE)
     {
