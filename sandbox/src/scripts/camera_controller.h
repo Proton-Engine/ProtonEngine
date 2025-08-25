@@ -14,4 +14,7 @@ public:
 
 protected:
     void onUpdate(float timestep) override;
+
+private:
+    [[nodiscard]] static glm::vec3 rotateVector(glm::vec3 vector, glm::vec3 rotation) noexcept;
 };

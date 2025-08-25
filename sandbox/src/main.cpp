@@ -12,6 +12,7 @@
 #include "protonengine/core/entrypoint.h"
 
 #include "protonengine/core/components/camera_component.h"
+#include "protonengine/core/components/light_component.h"
 #include "protonengine/core/components/mesh_renderer.h"
 #include "protonengine/renderer/irenderer.h"
 
@@ -26,10 +27,10 @@ public:
 
         addLayer(std::make_unique<Ui::DebugLayer>());
 
-        static const auto cubeModel = Assets::AssetManager::loadModel("assets/models/cube.obj");
+        static const auto cubeModel = Assets::AssetManager::loadModel("assets/models/sphere.obj");
         static Renderer::Mesh cubeMesh = Renderer::createMeshFromModel(cubeModel);
 
-        static auto image = Assets::AssetManager::readImageFromFile("assets/textures/box.png");
+        static auto image = Assets::AssetManager::readImageFromFile("assets/textures/cube.png");
         static auto texture = Renderer::createTextureFromImage(image);
 
         static auto imageSpecular = Assets::AssetManager::readImageFromFile("assets/textures/box-specular.png");
@@ -66,7 +67,7 @@ public:
                                                                                           {0, 0, 0},
                                                                                           {0.5, 0.5, 0.5}});
                     cube.emplaceComponent<Core::Components::MeshRenderer>(cubeMesh, materialCube);
-                    // cube.emplaceScript<Rotator>((x + y + z + 1) * 10);
+                    cube.emplaceScript<Rotator>((x + y + z + 1) * 10);
                 }
             }
         }
@@ -81,6 +82,13 @@ public:
                                                                                         {0, 0, 0},
                                                                                         {0.5, 0.5, 0.5}});
         light.emplaceComponent<Core::Components::MeshRenderer>(cubeMesh, materialLight);
+
+        auto directionalLight = getScene().addEntity("DirectionalLight",
+                                                     Core::Components::TransformComponent{{0, 0, 0},
+                                                                                          {0, 0, -90},
+                                                                                          {1, 1, 1}});
+        directionalLight.emplaceComponent<Core::Components::LightComponent>(
+            Renderer::Light{Renderer::LightType::DIRECTIONAL, glm::vec3(1, 1, 1)});
     }
 };
 
