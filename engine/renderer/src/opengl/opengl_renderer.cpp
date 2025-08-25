@@ -108,6 +108,10 @@ void OpenGLRenderer::renderAllInQueue()
         shaderProgram.setUniformValue("material.specularMap", 1);
         shaderProgram.setUniformValue("material.shininess", renderableObject.material.shininess);
 
+        const auto lightDirection = glm::vec3(view * model * glm::vec4(1, -1, 0, 0));
+        shaderProgram.setUniformValue("directionalLight.direction", lightDirection);
+        shaderProgram.setUniformValue("directionalLight.color", glm::vec3(1, 1, 1));
+
         renderableObject.mesh.enableForDrawing();
         glDrawElements(GL_TRIANGLES, renderableObject.mesh.indicesCount(), GL_UNSIGNED_INT, nullptr);
         renderableObject.mesh.disableForDrawing();

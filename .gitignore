@@ -2,5 +2,5 @@ cmake-*
 build
 .idea
 third-party/cpm
-*/.DS_Store
+.DS_Store
 ProtonEngine.svg
