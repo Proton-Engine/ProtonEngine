@@ -72,12 +72,6 @@ public:
             }
         }
 
-        // auto cube = getScene().addEntity(std::format("Cube"),
-        //                                  Core::Components::TransformComponent{{0, -5, 0},
-        //                                                                       {0, 0, 0},
-        //                                                                       {10, 0.5, 10}});
-        // cube.emplaceComponent<Core::Components::MeshRenderer>(cubeMesh, materialCube);
-
         auto light = getScene().addEntity("Light", Core::Components::TransformComponent{{0, 2, -10},
                                                                                         {0, 0, 0},
                                                                                         {0.5, 0.5, 0.5}});
