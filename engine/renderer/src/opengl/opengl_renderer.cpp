@@ -135,6 +135,7 @@ void OpenGLRenderer::renderAllInQueue()
 
             shaderProgram.setUniformValue("pointLight.position", light.transform.position);
             shaderProgram.setUniformValue("pointLight.color", light.light.color);
+            shaderProgram.setUniformValue("pointLight.intensity", light.light.intensity);
         }
 
         renderableObject.mesh.enableForDrawing();
