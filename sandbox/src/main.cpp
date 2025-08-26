@@ -42,6 +42,25 @@ private:
     float m_speed;
 };
 
+class DirectionalLightMover final : public ProtonEngine::Core::Components::NativeScript
+{
+public:
+    explicit DirectionalLightMover(const ProtonEngine::Core::Entity & entity, float speed) :
+        NativeScript(entity), m_speed(speed) {}
+
+
+protected:
+    void onUpdate(float timestep) override
+    {
+        auto transform = getComponent<ProtonEngine::Core::Components::TransformComponent>();
+
+        transform->transform.rotation.z -= m_speed * timestep;
+    }
+
+private:
+    float m_speed;
+};
+
 class SandboxApplication final : public ProtonEngine::Core::Application
 {
 public:
@@ -51,7 +70,7 @@ public:
 
         addLayer(std::make_unique<Ui::DebugLayer>());
 
-        static const auto cubeModel = Assets::AssetManager::loadModel("assets/models/sphere.obj");
+        static const auto cubeModel = Assets::AssetManager::loadModel("assets/models/cube.obj");
         static Renderer::Mesh cubeMesh = Renderer::createMeshFromModel(cubeModel);
 
         static auto image = Assets::AssetManager::readImageFromFile("assets/textures/box.png");
@@ -98,7 +117,7 @@ public:
                                                                                         {0.5, 0.5, 0.5}});
         light.emplaceComponent<Core::Components::MeshRenderer>(cubeMesh, materialLight);
         light.emplaceComponent<Core::Components::LightComponent>(
-            Renderer::Light{Renderer::LightType::POINT, glm::vec3(0, 0, 1)});
+            Renderer::Light{Renderer::LightType::POINT, glm::vec3(0, 0, 1), 32});
         light.emplaceScript<Mover>(2.5f);
 
         auto directionalLight = getScene().addEntity("DirectionalLight",
@@ -107,6 +126,7 @@ public:
                                                                                           {1, 1, 1}});
         directionalLight.emplaceComponent<Core::Components::LightComponent>(
             Renderer::Light{Renderer::LightType::DIRECTIONAL, glm::vec3(1, 0, 0)});
+        directionalLight.emplaceScript<DirectionalLightMover>(10.0f);
     }
 };
 

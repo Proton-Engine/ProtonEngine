@@ -8,6 +8,7 @@ struct Light {
     vec3 position;
     vec3 direction;
     vec3 color;
+    float intensity;
 };
 
 out vec2 textureCoordinate;
@@ -30,5 +31,5 @@ void main() {
     textureCoordinate = vertexTextureCoordinate;
     // TODO: Calculate this outside the vertex shader (in the renderer :))
     fragNormal = mat3(transpose(inverse(viewMatrix * modelMatrix))) * modelNormal;
-    pointLightFrag = Light(vec3(viewMatrix * vec4(pointLight.position, 1)), pointLight.direction, pointLight.color);
+    pointLightFrag = Light(vec3(viewMatrix * vec4(pointLight.position, 1)), pointLight.direction, pointLight.color, pointLight.intensity);
 }
