@@ -28,7 +28,7 @@ void DebugLayer::onImGuiRender()
 
     ImGui::Text("Frametime");
     ImGui::NextColumn();
-    ImGui::Text("%i us", m_frametime.count());
+    ImGui::Text("%llu us", m_frametime.count());
     ImGui::NextColumn();
 
     ImGui::Text("Meshes");
