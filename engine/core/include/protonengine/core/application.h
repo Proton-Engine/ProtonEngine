@@ -7,7 +7,8 @@
 
 #include "protonengine/core/export.h"
 #include "protonengine/core/scene.h"
-#include "protonengine/ui/layer.h"
+#include "protonengine/ui/frame.h"
+#include "protonengine/ui/ilayer.h"
 
 #include <memory>
 #include <vector>
@@ -37,7 +38,7 @@ protected:
 
 private:
     std::unique_ptr<Window> m_window;
-    std::vector<std::unique_ptr<Ui::Layer>> m_layers;
+    Ui::Frame m_uiFrame;
     Scene m_scene;
 };
 

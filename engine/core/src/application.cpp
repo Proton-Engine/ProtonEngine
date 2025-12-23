@@ -56,17 +56,8 @@ void Application::run()
         });
         renderer.renderAllInQueue();
 
-        for (const auto & layer : m_layers)
-        {
-            layer->onUpdate(deltaTimeSeconds);
-        }
-
-        for (const auto & layer : m_layers)
-        {
-            layer->begin();
-            layer->onImGuiRender();
-            layer->end();
-        }
+        m_uiFrame.onUpdate(deltaTimeSeconds);
+        m_uiFrame.render();
     }
 }
 
@@ -77,8 +68,7 @@ auto Application::getScene() noexcept -> Scene &
 
 void Application::addLayer(std::unique_ptr<Ui::Layer> layer)
 {
-    layer->onAttach();
-    m_layers.emplace_back(std::move(layer));
+    m_uiFrame.addLayer(std::move(layer));
 }
 
 } // namespace ProtonEngine::Core
