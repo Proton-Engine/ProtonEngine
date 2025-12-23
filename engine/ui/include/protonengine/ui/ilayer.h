@@ -23,9 +23,6 @@ public:
     virtual void onAttach() = 0;
     virtual void onImGuiRender() = 0;
     virtual void onUpdate(float timeStep) = 0;
-
-    void begin();
-    void end();
 };
 
 } // namespace ProtonEngine::Ui

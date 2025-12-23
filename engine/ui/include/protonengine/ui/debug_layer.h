@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "layer.h"
+#include "ilayer.h"
 #include "protonengine/ui/export.h"
 
 #include <chrono>
