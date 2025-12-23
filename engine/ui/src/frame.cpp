@@ -44,6 +44,6 @@ void Frame::endFrame()
 {
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-    ImGui::EndFrame();
 }
+
 } // namespace ProtonEngine::Ui
