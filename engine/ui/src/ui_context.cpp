@@ -1,12 +1,12 @@
 /*
- * Copyright © 2025. Proton Engine
+ * Copyright © 2025-2026. Proton Engine
  * Licensed using the MIT license
  */
 
 #include "protonengine/ui/ui_context.h"
 
-#include "backends/imgui_impl_opengl3.h"
-#include <backends/imgui_impl_glfw.h>
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_opengl3.h>
 
 namespace ProtonEngine::Ui
 {

@@ -1,14 +1,17 @@
 /*
- * Copyright © 2022-2025. Proton Engine
+ * Copyright © 2022-2026. Proton Engine
  * Licensed using the MIT license
  */
+
+// TODO: Move this define to a different compilation unit
+#define STB_IMAGE_IMPLEMENTATION
 
 #include "protonengine/assets/asset_manager.h"
 #include "protonengine/common/logger.h"
 
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
-#include <stb_image/stb_image.h>
+#include <stb_image.h>
 
 #include <format>
 #include <fstream>

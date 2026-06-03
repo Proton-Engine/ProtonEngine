@@ -1,9 +1,11 @@
-// Copyright © 2025. Proton Engine
-// Licensed using the MIT license
+/*
+ * Copyright © 2025-2026. Proton Engine
+ * Licensed using the MIT license
+ */
 
 #include "buffer.h"
 
-#include <glad/glad.h>
+#include <glad/gl.h>
 
 namespace ProtonEngine::Renderer::OpenGL
 {

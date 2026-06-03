@@ -29,7 +29,7 @@ target_include_directories(ProtonEngineAssets
 target_link_libraries(ProtonEngineAssets
         PRIVATE
         ProtonEngine::Common
-        stb_image
+        stb::stb
 )
 
 install(

@@ -1,5 +1,5 @@
 /*
- * Copyright © 2023-2025. Proton Engine
+ * Copyright © 2023-2026. Proton Engine
  * Licensed using the MIT license
  */
 
@@ -12,9 +12,10 @@
 
 #include "protonengine/common/event_bus.h"
 
-#include "glad/glad.h"
-#include "glm/gtc/matrix_transform.hpp"
-#include "glm/gtc/quaternion.hpp"
+#include <glad/gl.h>
+
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/quaternion.hpp>
 
 #include <algorithm>
 #include <format>
@@ -49,7 +50,12 @@ void GLAPIENTRY
 
 void OpenGLRenderer::setWindowContext(ContextLoadFunction func)
 {
-    gladLoadGLLoader(func);
+    const auto version = gladLoadGL(func);
+    if (version == 0)
+    {
+        PROTON_LOG_ERROR("Failed to initialize OpenGL context");
+        throw std::runtime_error("Failed to initialize OpenGL context");
+    }
 
     // TODO: Move to an initialize for the renderer
 #ifndef __APPLE__

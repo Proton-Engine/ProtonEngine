@@ -30,7 +30,7 @@ target_link_libraries(ProtonEngineRenderer
         PUBLIC
         ProtonEngine::Assets
         PRIVATE
-        glad
+        glad::glad
         ProtonEngine::Common
 )
 
