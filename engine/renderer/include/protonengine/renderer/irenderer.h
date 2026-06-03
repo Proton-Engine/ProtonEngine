@@ -1,5 +1,5 @@
 /*
- * Copyright © 2023-2025. Proton Engine
+ * Copyright © 2023-2026. Proton Engine
  * Licensed using the MIT license
  */
 
@@ -22,7 +22,8 @@ enum class RendererBackend
     OPENGL
 };
 
-using ContextLoadFunction = void * (*)(const char * name);
+using ContextLoadFunction = void (*(*)(const char *))(void);
+// using ContextLoadFunction = void * (*)(const char * name);
 
 class PROTONENGINE_RENDERER_EXPORT IRenderer
 {

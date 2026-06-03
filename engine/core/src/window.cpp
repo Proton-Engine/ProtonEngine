@@ -1,5 +1,5 @@
 /*
- * Copyright © 2022-2025. Proton Engine
+ * Copyright © 2022-2026. Proton Engine
  * Licensed using the MIT license
  */
 
@@ -43,7 +43,7 @@ Window::Window(int32_t width, int32_t height, std::string_view title, Renderer::
     m_windowHandle = glfwCreateWindow(width, height, title.data(), nullptr, nullptr);
     glfwMakeContextCurrent(m_windowHandle);
 
-    renderer.setWindowContext([](const char * proc_name) { return (void *)glfwGetProcAddress(proc_name); });
+    renderer.setWindowContext(glfwGetProcAddress);
 
     m_uiContext = std::make_unique<Ui::UiContext>(m_windowHandle);
     registerCallbacks();

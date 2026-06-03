@@ -1,12 +1,12 @@
 /*
- * Copyright © 2022-2025. Proton Engine
+ * Copyright © 2022-2026. Proton Engine
  * Licensed using the MIT license
  */
 
 #include "protonengine/renderer/texture.h"
 #include "protonengine/common/logger.h"
 
-#include "glad/glad.h"
+#include <glad/gl.h>
 
 #include <format>
 

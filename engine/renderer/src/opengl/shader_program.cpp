@@ -1,10 +1,12 @@
-// Copyright © 2022-2025. Proton Engine
-// Licensed using the MIT license
+/*
+ * Copyright © 2022-2026. Proton Engine
+ * Licensed using the MIT license
+ */
 
 #include "shader_program.h"
 #include "protonengine/common/logger.h"
 
-#include "glad/glad.h"
+#include <glad/gl.h>
 
 #include <filesystem>
 #include <fstream>

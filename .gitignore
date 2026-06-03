@@ -3,4 +3,5 @@ build
 .idea
 third-party/cpm
 .DS_Store
+.junie
 ProtonEngine.svg

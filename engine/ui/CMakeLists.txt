@@ -28,7 +28,8 @@ target_include_directories(ProtonEngineUi
 
 target_link_libraries(ProtonEngineUi
         PRIVATE
-        ImGui
+        imgui::imgui
+        imgui_backends
         glfw
 )
 
