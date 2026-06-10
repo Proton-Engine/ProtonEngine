@@ -10,6 +10,10 @@
 namespace ProtonEngine::Ui
 {
 
+DebugLayer::DebugLayer() : Layer("Renderer debug")
+{
+}
+
 void DebugLayer::onAttach()
 {
     m_lastTimePoint = std::chrono::high_resolution_clock::now();
@@ -18,7 +22,6 @@ void DebugLayer::onAttach()
 
 void DebugLayer::onImGuiRender()
 {
-    ImGui::Begin("Renderer debug");
     ImGui::Columns(2);
 
     ImGui::Text("Fps");
@@ -40,8 +43,6 @@ void DebugLayer::onImGuiRender()
     ImGui::NextColumn();
     ImGui::Text("n/a");
     ImGui::NextColumn();
-
-    ImGui::End();
 }
 
 void DebugLayer::onUpdate(float timeStep)

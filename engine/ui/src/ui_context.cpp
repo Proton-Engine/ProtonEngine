@@ -16,6 +16,7 @@ UiContext::UiContext(GLFWwindow * window)
     ImGui::CreateContext();
     ImGuiIO & io = ImGui::GetIO();
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 410");
 }

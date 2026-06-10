@@ -16,6 +16,7 @@ namespace ProtonEngine::Ui
 class PROTONENGINE_EXPORT DebugLayer final : public Layer
 {
 public:
+    DebugLayer();
     void onAttach() override;
     void onImGuiRender() override;
     void onUpdate(float timeStep) override;
@@ -24,8 +25,8 @@ private:
     int m_totalFrames{};
     int m_fps{};
     std::chrono::microseconds m_frametime{};
-    std::chrono::time_point<std::chrono::high_resolution_clock> m_lastTimePoint;
-    std::chrono::time_point<std::chrono::high_resolution_clock> m_nextTimePoint;
+    std::chrono::time_point<std::chrono::high_resolution_clock> m_lastTimePoint{};
+    std::chrono::time_point<std::chrono::high_resolution_clock> m_nextTimePoint{};
 };
 
 } // namespace ProtonEngine::Ui

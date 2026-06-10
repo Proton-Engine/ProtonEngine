@@ -22,7 +22,7 @@ class Window;
 class PROTONENGINE_EXPORT Application
 {
 public:
-    Application();
+    Application(std::string_view windowTitle = "Proton Engine Application");
     virtual ~Application();
     Application(const Application &) = delete;
     Application(Application &&) = delete;
@@ -45,6 +45,8 @@ private:
 
     Ui::Frame m_uiFrame;
     Scene m_scene;
+
+    std::string_view m_windowTitle;
 };
 
 } // namespace ProtonEngine::Core

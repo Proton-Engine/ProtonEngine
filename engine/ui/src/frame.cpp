@@ -5,6 +5,7 @@
 
 #include "protonengine/ui/frame.h"
 
+#include <imgui.h>
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
 
@@ -30,7 +31,15 @@ void Frame::render() const
     beginFrame();
     for (const auto & layer : m_layers)
     {
+        if (layer->wantsWindow())
+        {
+            ImGui::Begin(layer->layerName().c_str());
+        }
         layer->onImGuiRender();
+        if (layer->wantsWindow())
+        {
+            ImGui::End();
+        }
     }
     endFrame();
 }
@@ -40,6 +49,8 @@ void Frame::beginFrame()
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
+
+    ImGui::DockSpaceOverViewport();
 }
 
 void Frame::endFrame()

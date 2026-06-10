@@ -33,4 +33,5 @@ add_subdirectory(engine)
 add_subdirectory(engine_assets)
 add_subdirectory(graphviz)
 
+add_subdirectory(editor)
 add_subdirectory(sandbox)

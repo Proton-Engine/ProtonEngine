@@ -22,7 +22,10 @@
 namespace ProtonEngine::Core
 {
 
-Application::Application() = default;
+Application::Application(std::string_view windowTitle) : m_windowTitle(windowTitle)
+{
+}
+
 Application::~Application() = default;
 
 void Application::run()
