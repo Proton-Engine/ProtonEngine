@@ -11,7 +11,7 @@ class ProtonEngineRecipe(ConanFile):
         self.requires("entt/3.16.0")
         self.requires("glfw/3.4")
         self.requires("glm/1.0.1")
-        self.requires("imgui/1.92.8")
+        self.requires("imgui/1.92.8-docking")
         self.requires("stb/cci.20240531")
 
     def build_requirements(self):
