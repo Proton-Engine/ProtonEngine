@@ -1,5 +1,5 @@
 /*
- * Copyright © 2023-2025. Proton Engine
+ * Copyright © 2023-2026. Proton Engine
  * Licensed using the MIT license
  */
 
@@ -7,7 +7,6 @@
 
 #include "protonengine/renderer/irenderer.h"
 
-#include "irenderer_internal.h"
 #include "renderable_light.h"
 #include "renderable_object.h"
 
@@ -18,7 +17,7 @@
 namespace ProtonEngine::Renderer::OpenGL
 {
 
-class OpenGLRenderer final : public IRenderer, public IRendererInternal
+class OpenGLRenderer : public IRenderer
 {
 public:
     ~OpenGLRenderer() override = default;
@@ -30,7 +29,8 @@ public:
     void renderAllInQueue() override;
     void setCamera(const Transform & transform, const Camera & camera) override;
     void update() override;
-    [[nodiscard]] auto createBuffer(const std::vector<Vertex> & vertices, const std::vector<uint32_t> & indices) const noexcept -> std::unique_ptr<IBuffer> override;
+
+    [[nodiscard]] auto createBuffer(const BufferDescriptor & descriptor) -> std::unique_ptr<IBuffer> override;
 
 private:
     glm::mat4 projection{};

@@ -5,7 +5,7 @@
 
 #include "opengl_renderer.h"
 
-#include "buffer.h"
+#include "opengl_buffer.h"
 #include "protonengine/common/logger.h"
 #include "protonengine/renderer/irenderer.h"
 #include "shader_program.h"
@@ -198,9 +198,9 @@ void OpenGLRenderer::update()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-auto OpenGLRenderer::createBuffer(const std::vector<Vertex> & vertices, const std::vector<uint32_t> & indices) const noexcept -> std::unique_ptr<IBuffer>
+auto OpenGLRenderer::createBuffer(const BufferDescriptor & descriptor) -> std::unique_ptr<IBuffer>
 {
-    return std::make_unique<Buffer>(vertices, indices);
+    return std::make_unique<Buffer>(descriptor.vertices, descriptor.indices);
 }
 
 } // namespace ProtonEngine::Renderer::OpenGL

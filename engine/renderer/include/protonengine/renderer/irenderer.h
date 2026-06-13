@@ -42,6 +42,8 @@ public:
     virtual void setCamera(const Transform & transform, const Camera & camera) = 0;
     virtual void update() = 0;
 
+    [[nodiscard]] virtual auto createBuffer(const BufferDescriptor & descriptor) -> std::unique_ptr<IBuffer> = 0;
+
 protected:
     IRenderer() = default;
 };

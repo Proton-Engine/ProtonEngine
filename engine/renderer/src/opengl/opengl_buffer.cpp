@@ -3,7 +3,7 @@
  * Licensed using the MIT license
  */
 
-#include "buffer.h"
+#include "opengl_buffer.h"
 
 #include <glad/gl.h>
 

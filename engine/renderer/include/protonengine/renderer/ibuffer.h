@@ -1,12 +1,22 @@
-// Copyright © 2025. Proton Engine
-// Licensed using the MIT license
+/*
+ * Copyright © 2025-2026. Proton Engine
+ * Licensed using the MIT license
+ */
 
 #pragma once
 
-#include <cinttypes>
+#include "vertex.h"
+
+#include <vector>
 
 namespace ProtonEngine::Renderer
 {
+
+struct BufferDescriptor
+{
+    std::vector<Vertex> & vertices;
+    std::vector<uint32_t> & indices;
+};
 
 class IBuffer
 {
