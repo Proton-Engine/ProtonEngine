@@ -1,5 +1,5 @@
 /*
- * Copyright © 2022-2025. Proton Engine
+ * Copyright © 2022-2026. Proton Engine
  * Licensed using the MIT license
  */
 
@@ -10,7 +10,7 @@
 #include "opengl/opengl_renderer.h"
 
 #define GLM_ENABLE_EXPERIMENTAL
-#include "opengl/buffer.h"
+#include "opengl/opengl_buffer.h"
 
 #include <glm/gtx/hash.hpp>
 
@@ -37,7 +37,6 @@ namespace ProtonEngine::Renderer
 namespace
 {
 std::unique_ptr<IRenderer> g_renderer;
-IRendererInternal * g_rendererInternal;
 } // namespace
 
 auto initializeRenderer(RendererBackend rendererBackend) -> IRenderer &
@@ -56,8 +55,6 @@ auto initializeRenderer(RendererBackend rendererBackend) -> IRenderer &
 
     PROTON_LOG_DEBUG("Initializing renderer");
     g_renderer = std::make_unique<OpenGL::OpenGLRenderer>();
-    g_rendererInternal = dynamic_cast<IRendererInternal *>(g_renderer.get());
-    assert(g_rendererInternal && "Renderer backend should implement IRendererInternal");
     return *g_renderer;
 }
 
@@ -96,7 +93,8 @@ Mesh createMeshFromModel(const Assets::Model & model)
         }
     }
 
-    return Mesh(g_rendererInternal->createBuffer(rendererVertices, indices));
+
+    return Mesh(g_renderer->createBuffer({rendererVertices, indices}));
 }
 
 auto getDefaultTexture() -> Texture &
