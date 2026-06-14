@@ -5,6 +5,8 @@
 
 #pragma once
 
+#include "opengl_command_list.h"
+#include "opengl_upload_context.h"
 #include "protonengine/renderer/irenderer.h"
 
 #include "renderable_light.h"
@@ -31,6 +33,7 @@ public:
     void update() override;
 
     [[nodiscard]] auto createBuffer(const BufferDescriptor & descriptor) -> std::unique_ptr<IBuffer> override;
+    [[nodiscard]] auto getUploadContext() -> IUploadContext & override;
 
 private:
     glm::mat4 projection{};
@@ -38,6 +41,9 @@ private:
 
     std::vector<RenderableObject> m_renderableObjects;
     std::vector<RenderableLight> m_lights;
+
+    OpenGLUploadContext m_uploadContext;
+    std::unique_ptr<OpenGLCommandList> m_commandList;
 };
 
 } // namespace ProtonEngine::Renderer::OpenGL

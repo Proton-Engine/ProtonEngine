@@ -69,6 +69,8 @@ void OpenGLRenderer::setWindowContext(ContextLoadFunction func)
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
 
+    m_commandList = std::make_unique<OpenGLCommandList>();
+
     Common::EventBus::subscribeToEvent(Common::Event::WINDOW_RESIZE_EVENT, std::function([&](Common::Event, Common::WindowResizeEventContext context) {
                                            windowWidth = static_cast<float>(context.width);
                                            windowHeight = static_cast<float>(context.height);
@@ -89,6 +91,7 @@ void OpenGLRenderer::addLight(const Transform & transform, const Light & light)
 void OpenGLRenderer::renderAllInQueue()
 {
     static ShaderProgram shaderProgram("shader");
+    m_commandList->begin();
 
     for (const auto & renderableObject : m_renderableObjects)
     {
@@ -101,10 +104,10 @@ void OpenGLRenderer::renderAllInQueue()
         renderableObject.material.specularMap.activate();
 
         glm::mat4 model = glm::translate(glm::mat4(1.0f), renderableObject.transform.position);
-        model = glm::scale(model, renderableObject.transform.scale);
         model = glm::rotate(model, renderableObject.transform.rotation.y * std::numbers::pi_v<float> / 180.0f, glm::vec3{0, 1, 0});
         model = glm::rotate(model, renderableObject.transform.rotation.x * std::numbers::pi_v<float> / 180.0f, glm::vec3{1, 0, 0});
         model = glm::rotate(model, renderableObject.transform.rotation.z * std::numbers::pi_v<float> / 180.0f, glm::vec3{0, 0, 1});
+        model = glm::scale(model, renderableObject.transform.scale);
 
         const auto normalModelMatrix = glm::transpose(glm::inverse(model));
 
@@ -144,9 +147,10 @@ void OpenGLRenderer::renderAllInQueue()
             shaderProgram.setUniformValue("pointLight.intensity", light.light.intensity);
         }
 
-        renderableObject.mesh.enableForDrawing();
-        glDrawElements(GL_TRIANGLES, renderableObject.mesh.indicesCount(), GL_UNSIGNED_INT, nullptr);
-        renderableObject.mesh.disableForDrawing();
+        m_commandList->setVertexBuffer(renderableObject.mesh.vertexBuffer());
+        m_commandList->setPipeline();
+        m_commandList->setIndexBuffer(renderableObject.mesh.indexBuffer());
+        m_commandList->drawIndexed(renderableObject.mesh.indicesCount());
 
         shaderProgram.disable();
 
@@ -155,6 +159,8 @@ void OpenGLRenderer::renderAllInQueue()
         glActiveTexture(GL_TEXTURE1);
         renderableObject.material.specularMap.deactivate();
     }
+
+    m_commandList->end();
 
     m_renderableObjects.clear();
     m_lights.clear();
@@ -200,7 +206,12 @@ void OpenGLRenderer::update()
 
 auto OpenGLRenderer::createBuffer(const BufferDescriptor & descriptor) -> std::unique_ptr<IBuffer>
 {
-    return std::make_unique<Buffer>(descriptor.vertices, descriptor.indices);
+    return std::make_unique<Buffer>(descriptor);
+}
+
+auto OpenGLRenderer::getUploadContext() -> IUploadContext &
+{
+    return m_uploadContext;
 }
 
 } // namespace ProtonEngine::Renderer::OpenGL
