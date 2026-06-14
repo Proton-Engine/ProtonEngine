@@ -12,10 +12,18 @@
 namespace ProtonEngine::Renderer
 {
 
+enum class BufferType
+{
+    VERTEX,
+    INDEX
+};
+
 struct BufferDescriptor
 {
-    std::vector<Vertex> & vertices;
-    std::vector<uint32_t> & indices;
+    BufferType type;
+    // size_t bufferSize;
+    // std::vector<Vertex> & vertices;
+    // std::vector<uint32_t> & indices;
 };
 
 class IBuffer
@@ -25,13 +33,13 @@ public:
     virtual ~IBuffer() = default;
     IBuffer(const IBuffer &) = delete;
     IBuffer & operator=(const IBuffer &) = delete;
-    IBuffer(IBuffer &&) = delete;
-    IBuffer & operator=(IBuffer &&) = delete;
+    IBuffer(IBuffer &&) = default;
+    IBuffer & operator=(IBuffer &&) = default;
 
     virtual void bind() const noexcept = 0;
     virtual void unbind() const noexcept = 0;
-    [[nodiscard]] virtual int32_t verticesCount() const noexcept = 0;
-    [[nodiscard]] virtual int32_t indicesCount() const noexcept = 0;
+    // [[nodiscard]] virtual int32_t verticesCount() const noexcept = 0;
+    // [[nodiscard]] virtual int32_t indicesCount() const noexcept = 0;
 };
 
 } // namespace ProtonEngine::Renderer

@@ -10,57 +10,38 @@
 namespace ProtonEngine::Renderer::OpenGL
 {
 
-Buffer::Buffer(const std::vector<Vertex> & vertices, const std::vector<uint32_t> & indices)
+Buffer::Buffer(const BufferDescriptor & descriptor) : m_descriptor(descriptor)
 {
-    glGenVertexArrays(1, &m_vertexArrayObject);
-    glGenBuffers(1, &m_vertexBufferObject);
-    glGenBuffers(1, &m_indexBufferObject);
+    glGenBuffers(1, &m_bufferHandle);
 
-    glBindVertexArray(m_vertexArrayObject);
-    glBindBuffer(GL_ARRAY_BUFFER, m_vertexBufferObject);
-    glBufferData(GL_ARRAY_BUFFER, static_cast<int64_t>(vertices.size() * sizeof(Vertex)), &vertices[0], GL_STATIC_DRAW);
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_indexBufferObject);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
-
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<void *>(offsetof(Vertex, position)));
-
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<void *>(offsetof(Vertex, normal)));
-
-    glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<void *>(offsetof(Vertex, texture)));
-
-    glBindVertexArray(0);
-
-    m_verticesCount = static_cast<int32_t>(vertices.size());
-    m_indicesCount = static_cast<int32_t>(indices.size());
+    m_bindType = [&] {
+        switch (m_descriptor.type)
+        {
+        case BufferType::VERTEX: return GL_ARRAY_BUFFER;
+        case BufferType::INDEX: return GL_ELEMENT_ARRAY_BUFFER;
+        }
+        throw "Should never ever be reached!";
+    }();
 }
 
 Buffer::~Buffer()
 {
-    glDeleteVertexArrays(1, &m_vertexArrayObject);
+    glDeleteBuffers(1, &m_bufferHandle);
 }
 
 void Buffer::bind() const noexcept
 {
-    glBindVertexArray(m_vertexArrayObject);
+    glBindBuffer(m_bindType, m_bufferHandle);
 }
 
 void Buffer::unbind() const noexcept
 {
-    glBindVertexArray(0);
+    glBindBuffer(m_bindType, 0);
 }
 
-int32_t Buffer::verticesCount() const noexcept
+void Buffer::setData(std::span<const std::byte> data) const
 {
-    return m_verticesCount;
-}
-
-int32_t Buffer::indicesCount() const noexcept
-{
-    return m_indicesCount;
+    glBufferData(m_bindType, data.size(), data.data(), GL_STATIC_DRAW);
 }
 
 } // namespace ProtonEngine::Renderer::OpenGL

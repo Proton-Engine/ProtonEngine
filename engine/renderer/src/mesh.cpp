@@ -1,5 +1,5 @@
 /*
- * Copyright © 2022-2023. Proton Engine
+ * Copyright © 2022-2026. Proton Engine
  * Licensed using the MIT license
  */
 
@@ -11,29 +11,47 @@
 namespace ProtonEngine::Renderer
 {
 
-Mesh::Mesh(std::unique_ptr<IBuffer> buffer) :
-    m_buffer(std::move(buffer))
+Mesh::Mesh(std::unique_ptr<IBuffer> vertexBuffer, std::unique_ptr<IBuffer> indexBuffer, size_t indicesCount) :
+    m_vertexBuffer(std::move(vertexBuffer)),
+    m_indexBuffer(std::move(indexBuffer)),
+    m_indicesCount(indicesCount)
 {
 }
 
 void Mesh::enableForDrawing() const noexcept
 {
-    m_buffer->bind();
+    m_vertexBuffer->bind();
+    m_indexBuffer->bind();
 }
 
 void Mesh::disableForDrawing() const noexcept
 {
-    m_buffer->unbind();
+    m_vertexBuffer->unbind();
+    m_indexBuffer->unbind();
+}
+auto Mesh::vertexBuffer() const noexcept -> const IBuffer &
+{
+    return *m_vertexBuffer;
 }
 
-int32_t Mesh::verticesCount() const noexcept
+auto Mesh::indexBuffer() const noexcept -> const IBuffer &
 {
-    return m_buffer->verticesCount();
+    return *m_indexBuffer;
 }
 
-int32_t Mesh::indicesCount() const noexcept
+auto Mesh::indicesCount() const noexcept -> const size_t
 {
-    return m_buffer->indicesCount();
+    return m_indicesCount;
 }
+
+// int32_t Mesh::verticesCount() const noexcept
+// {
+//     return m_vertxBuffer->verticesCount();
+// }
+//
+// int32_t Mesh::indicesCount() const noexcept
+// {
+//     return m_indexBuffer->indicesCount();
+// }
 
 } // namespace ProtonEngine::Renderer

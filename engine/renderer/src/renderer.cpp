@@ -93,8 +93,14 @@ Mesh createMeshFromModel(const Assets::Model & model)
         }
     }
 
+    // TODO: write data using UploadContext and create a CommandList to actually do the rendering :)
+    auto vertexBuffer = g_renderer->createBuffer({BufferType::VERTEX});
+    auto indexBuffer = g_renderer->createBuffer({BufferType::INDEX});
 
-    return Mesh(g_renderer->createBuffer({rendererVertices, indices}));
+    g_renderer->getUploadContext().uploadBuffer(*vertexBuffer, std::as_bytes(std::span(rendererVertices)), 0);
+    g_renderer->getUploadContext().uploadBuffer(*indexBuffer, std::as_bytes(std::span(indices)), 0);
+
+    return Mesh{std::move(vertexBuffer), std::move(indexBuffer), indices.size()};
 }
 
 auto getDefaultTexture() -> Texture &

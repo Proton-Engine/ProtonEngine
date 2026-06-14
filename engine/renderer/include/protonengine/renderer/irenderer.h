@@ -5,6 +5,7 @@
 
 #pragma once
 
+#include "iupload_context.h"
 #include "protonengine/assets/model.h"
 #include "protonengine/renderer/camera.h"
 #include "protonengine/renderer/export.h"
@@ -43,6 +44,7 @@ public:
     virtual void update() = 0;
 
     [[nodiscard]] virtual auto createBuffer(const BufferDescriptor & descriptor) -> std::unique_ptr<IBuffer> = 0;
+    [[nodiscard]] virtual auto getUploadContext() -> IUploadContext & = 0;
 
 protected:
     IRenderer() = default;
