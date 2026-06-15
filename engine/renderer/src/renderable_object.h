@@ -7,7 +7,6 @@
 
 #include "protonengine/renderer/material.h"
 #include "protonengine/renderer/mesh.h"
-#include "protonengine/renderer/texture.h"
 #include "protonengine/renderer/transform.h"
 
 namespace ProtonEngine::Renderer

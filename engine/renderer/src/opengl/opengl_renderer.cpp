@@ -6,6 +6,7 @@
 #include "opengl_renderer.h"
 
 #include "opengl_buffer.h"
+#include "opengl_texture.h"
 #include "protonengine/common/logger.h"
 #include "protonengine/renderer/irenderer.h"
 #include "shader_program.h"
@@ -93,15 +94,43 @@ void OpenGLRenderer::renderAllInQueue()
     static ShaderProgram shaderProgram("shader");
     m_commandList->begin();
 
+    shaderProgram.enable();
+    shaderProgram.setUniformValue("lightPosition", glm::vec3(0, 2, -10));
+
+    const auto directionalLight =
+        std::ranges::find_if(m_lights, [&](const auto & light) { return light.light.type == LightType::DIRECTIONAL; });
+
+    if (directionalLight != m_lights.end())
+    {
+        auto rot = glm::rotate(glm::mat4(1.0f), directionalLight->transform.rotation.y * std::numbers::pi_v<float> / 180.0f, glm::vec3{0, 1, 0});
+        rot = glm::rotate(rot, directionalLight->transform.rotation.x * std::numbers::pi_v<float> / 180.0f, glm::vec3{1, 0, 0});
+        rot = glm::rotate(rot, directionalLight->transform.rotation.z * std::numbers::pi_v<float> / 180.0f, glm::vec3{0, 0, 1});
+        const auto lightDirection = glm::vec3(view * rot * glm::vec4(0, 1, 0, 0));
+
+        shaderProgram.setUniformValue("directionalLight.direction", lightDirection);
+        shaderProgram.setUniformValue("directionalLight.color", directionalLight->light.color);
+    }
+
+    for (const auto & light : m_lights)
+    {
+        if (light.light.type != LightType::POINT)
+        {
+            continue;
+        }
+
+        shaderProgram.setUniformValue("pointLight.position", light.transform.position);
+        shaderProgram.setUniformValue("pointLight.color", light.light.color);
+        shaderProgram.setUniformValue("pointLight.intensity", light.light.intensity);
+    }
+
     for (const auto & renderableObject : m_renderableObjects)
     {
-        shaderProgram.enable();
-        shaderProgram.setUniformValue("lightPosition", glm::vec3(0, 2, -10));
-
-        glActiveTexture(GL_TEXTURE0);
-        renderableObject.material.baseTexture.activate();
-        glActiveTexture(GL_TEXTURE1);
-        renderableObject.material.specularMap.activate();
+        renderableObject.material.baseTexture.bind(0);
+        renderableObject.material.specularMap.bind(1);
+        // glActiveTexture(GL_TEXTURE0);
+        // renderableObject.material.baseTexture.activate();
+        // glActiveTexture(GL_TEXTURE1);
+        // renderableObject.material.specularMap.activate();
 
         glm::mat4 model = glm::translate(glm::mat4(1.0f), renderableObject.transform.position);
         model = glm::rotate(model, renderableObject.transform.rotation.y * std::numbers::pi_v<float> / 180.0f, glm::vec3{0, 1, 0});
@@ -122,43 +151,21 @@ void OpenGLRenderer::renderAllInQueue()
         shaderProgram.setUniformValue("material.specularMap", 1);
         shaderProgram.setUniformValue("material.shininess", renderableObject.material.shininess);
 
-        const auto directionalLight =
-            std::ranges::find_if(m_lights, [&](const auto & light) { return light.light.type == LightType::DIRECTIONAL; });
-        if (directionalLight != m_lights.end())
-        {
-            auto rot = glm::rotate(glm::mat4(1.0f), directionalLight->transform.rotation.y * std::numbers::pi_v<float> / 180.0f, glm::vec3{0, 1, 0});
-            rot = glm::rotate(rot, directionalLight->transform.rotation.x * std::numbers::pi_v<float> / 180.0f, glm::vec3{1, 0, 0});
-            rot = glm::rotate(rot, directionalLight->transform.rotation.z * std::numbers::pi_v<float> / 180.0f, glm::vec3{0, 0, 1});
-            const auto lightDirection = glm::vec3(view * rot * glm::vec4(0, 1, 0, 0));
-
-            shaderProgram.setUniformValue("directionalLight.direction", lightDirection);
-            shaderProgram.setUniformValue("directionalLight.color", directionalLight->light.color);
-        }
-
-        for (const auto & light : m_lights)
-        {
-            if (light.light.type != LightType::POINT)
-            {
-                continue;
-            }
-
-            shaderProgram.setUniformValue("pointLight.position", light.transform.position);
-            shaderProgram.setUniformValue("pointLight.color", light.light.color);
-            shaderProgram.setUniformValue("pointLight.intensity", light.light.intensity);
-        }
-
         m_commandList->setVertexBuffer(renderableObject.mesh.vertexBuffer());
         m_commandList->setPipeline();
         m_commandList->setIndexBuffer(renderableObject.mesh.indexBuffer());
         m_commandList->drawIndexed(renderableObject.mesh.indicesCount());
 
-        shaderProgram.disable();
+        renderableObject.material.baseTexture.unbind(0);
+        renderableObject.material.specularMap.unbind(1);
 
-        glActiveTexture(GL_TEXTURE0);
-        renderableObject.material.baseTexture.deactivate();
-        glActiveTexture(GL_TEXTURE1);
-        renderableObject.material.specularMap.deactivate();
+        // glActiveTexture(GL_TEXTURE0);
+        // renderableObject.material.baseTexture.deactivate();
+        // glActiveTexture(GL_TEXTURE1);
+        // renderableObject.material.specularMap.deactivate();
     }
+
+    shaderProgram.disable();
 
     m_commandList->end();
 
@@ -207,6 +214,11 @@ void OpenGLRenderer::update()
 auto OpenGLRenderer::createBuffer(const BufferDescriptor & descriptor) -> std::unique_ptr<IBuffer>
 {
     return std::make_unique<Buffer>(descriptor);
+}
+
+auto OpenGLRenderer::createTexture(const TextureDescriptor & descriptor) -> std::unique_ptr<ITexture>
+{
+    return std::make_unique<OpenGLTexture>(descriptor);
 }
 
 auto OpenGLRenderer::getUploadContext() -> IUploadContext &

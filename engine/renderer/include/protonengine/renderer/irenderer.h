@@ -12,7 +12,6 @@
 #include "protonengine/renderer/light.h"
 #include "protonengine/renderer/material.h"
 #include "protonengine/renderer/mesh.h"
-#include "protonengine/renderer/texture.h"
 #include "protonengine/renderer/transform.h"
 
 namespace ProtonEngine::Renderer
@@ -44,6 +43,8 @@ public:
     virtual void update() = 0;
 
     [[nodiscard]] virtual auto createBuffer(const BufferDescriptor & descriptor) -> std::unique_ptr<IBuffer> = 0;
+    [[nodiscard]] virtual auto createTexture(const TextureDescriptor & descriptor) -> std::unique_ptr<ITexture> = 0;
+
     [[nodiscard]] virtual auto getUploadContext() -> IUploadContext & = 0;
 
 protected:
@@ -51,7 +52,7 @@ protected:
 };
 
 [[nodiscard]] PROTONENGINE_RENDERER_EXPORT auto initializeRenderer(RendererBackend rendererBackend) -> IRenderer &;
-[[nodiscard]] PROTONENGINE_RENDERER_EXPORT auto createTextureFromImage(const Assets::Image & image) -> Texture;
+[[nodiscard]] PROTONENGINE_RENDERER_EXPORT auto createTextureFromImage(const Assets::Image & image) -> std::unique_ptr<ITexture>;
 [[nodiscard]] PROTONENGINE_RENDERER_EXPORT auto createMeshFromModel(const Assets::Model & model) -> Mesh;
 
 } // namespace ProtonEngine::Renderer

@@ -80,7 +80,7 @@ public:
         static auto textureSpecular = Renderer::createTextureFromImage(imageSpecular);
 
         static Renderer::Material materialLight{};
-        static Renderer::Material materialCube{.baseTexture = texture, .specularColor = glm::vec3(1.0f), .specularMap = textureSpecular, .shininess = 32};
+        static Renderer::Material materialCube{.baseTexture = *texture, .specularColor = glm::vec3(1.0f), .specularMap = *textureSpecular, .shininess = 32};
 
         auto camera = getScene().addEntity("MainCamera", Core::Components::TransformComponent{{0, 0, 10}, {0, 0, 0}, {1, 1, 1}});
         camera.addComponent(Core::Components::CameraComponent{Core::Components::CameraComponent::Projection::PERSPECTIVE, 0.1f, 100.0f, 60, true});
