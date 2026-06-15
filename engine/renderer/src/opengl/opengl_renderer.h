@@ -33,6 +33,8 @@ public:
     void update() override;
 
     [[nodiscard]] auto createBuffer(const BufferDescriptor & descriptor) -> std::unique_ptr<IBuffer> override;
+    [[nodiscard]] auto createTexture(const TextureDescriptor & descriptor) -> std::unique_ptr<ITexture> override;
+
     [[nodiscard]] auto getUploadContext() -> IUploadContext & override;
 
 private:

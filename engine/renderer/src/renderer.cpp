@@ -58,9 +58,18 @@ auto initializeRenderer(RendererBackend rendererBackend) -> IRenderer &
     return *g_renderer;
 }
 
-Texture createTextureFromImage(const Assets::Image & image)
+std::unique_ptr<ITexture> createTextureFromImage(const Assets::Image & image)
 {
-    return Texture(image);
+    // TODO: Remove this hacky way of loading textures
+    const TextureDescriptor descriptor{
+        .width = static_cast<uint32_t>(image.getWidth()),
+        .height = static_cast<uint32_t>(image.getHeight()),
+        .format = image.getChannels() == 4 ? TextureFormat::RGBA8 : TextureFormat::RGB8,
+    };
+
+    auto texture = g_renderer->createTexture(descriptor);
+    g_renderer->getUploadContext().uploadTexture(*texture, image);
+    return texture;
 }
 
 Mesh createMeshFromModel(const Assets::Model & model)
@@ -103,13 +112,13 @@ Mesh createMeshFromModel(const Assets::Model & model)
     return Mesh{std::move(vertexBuffer), std::move(indexBuffer), indices.size()};
 }
 
-auto getDefaultTexture() -> Texture &
+auto getDefaultTexture() -> ITexture &
 {
     // TODO: Remove the statics here:
     static uint8_t data[3] = {255, 255, 255};
     static Assets::Image image{data, 1, 1, 3};
-    static Texture texture(image);
-    return texture;
+    static auto texture = createTextureFromImage(image);
+    return *texture;
 }
 
 } // namespace ProtonEngine::Renderer
