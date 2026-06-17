@@ -5,9 +5,9 @@
 
 #pragma once
 
-#include "ibuffer.h"
-#include "itexture.h"
 #include "protonengine/assets/image.h"
+#include "protonengine/renderer/ibuffer.h"
+#include "protonengine/renderer/itexture.h"
 
 #include <span>
 

@@ -34,6 +34,8 @@ public:
 
     [[nodiscard]] auto createBuffer(const BufferDescriptor & descriptor) -> std::unique_ptr<IBuffer> override;
     [[nodiscard]] auto createTexture(const TextureDescriptor & descriptor) -> std::unique_ptr<ITexture> override;
+    [[nodiscard]] auto createDescriptorSet(const DescriptorSetDescriptor & descriptor) -> std::unique_ptr<IDescriptorSet> override;
+    [[nodiscard]] auto createSampler(const SamplerDescriptor & descriptor) -> std::unique_ptr<ISampler> override;
 
     [[nodiscard]] auto getUploadContext() -> IUploadContext & override;
 

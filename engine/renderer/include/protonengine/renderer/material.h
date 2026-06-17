@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include "isampler.h"
 #include "itexture.h"
 
 #include "protonengine/renderer/export.h"

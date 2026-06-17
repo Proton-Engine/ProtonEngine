@@ -6,6 +6,8 @@
 #include "opengl_renderer.h"
 
 #include "opengl_buffer.h"
+#include "opengl_descriptor_set.h"
+#include "opengl_sampler.h"
 #include "opengl_texture.h"
 #include "protonengine/common/logger.h"
 #include "protonengine/renderer/irenderer.h"
@@ -125,13 +127,6 @@ void OpenGLRenderer::renderAllInQueue()
 
     for (const auto & renderableObject : m_renderableObjects)
     {
-        renderableObject.material.baseTexture.bind(0);
-        renderableObject.material.specularMap.bind(1);
-        // glActiveTexture(GL_TEXTURE0);
-        // renderableObject.material.baseTexture.activate();
-        // glActiveTexture(GL_TEXTURE1);
-        // renderableObject.material.specularMap.activate();
-
         glm::mat4 model = glm::translate(glm::mat4(1.0f), renderableObject.transform.position);
         model = glm::rotate(model, renderableObject.transform.rotation.y * std::numbers::pi_v<float> / 180.0f, glm::vec3{0, 1, 0});
         model = glm::rotate(model, renderableObject.transform.rotation.x * std::numbers::pi_v<float> / 180.0f, glm::vec3{1, 0, 0});
@@ -151,18 +146,17 @@ void OpenGLRenderer::renderAllInQueue()
         shaderProgram.setUniformValue("material.specularMap", 1);
         shaderProgram.setUniformValue("material.shininess", renderableObject.material.shininess);
 
+        const auto sampler = createSampler({ScalingMode::LINEAR, WrappingMode::REPEAT});
+
+        const auto descriptorSet = createDescriptorSet(
+            {.textures = {{0, renderableObject.material.baseTexture}, {1, renderableObject.material.specularMap}},
+             .samplers = {{0, *sampler}, {1, *sampler}}});
+
+        m_commandList->bindDescriptorSet(*descriptorSet);
         m_commandList->setVertexBuffer(renderableObject.mesh.vertexBuffer());
         m_commandList->setPipeline();
         m_commandList->setIndexBuffer(renderableObject.mesh.indexBuffer());
         m_commandList->drawIndexed(renderableObject.mesh.indicesCount());
-
-        renderableObject.material.baseTexture.unbind(0);
-        renderableObject.material.specularMap.unbind(1);
-
-        // glActiveTexture(GL_TEXTURE0);
-        // renderableObject.material.baseTexture.deactivate();
-        // glActiveTexture(GL_TEXTURE1);
-        // renderableObject.material.specularMap.deactivate();
     }
 
     shaderProgram.disable();
@@ -219,6 +213,16 @@ auto OpenGLRenderer::createBuffer(const BufferDescriptor & descriptor) -> std::u
 auto OpenGLRenderer::createTexture(const TextureDescriptor & descriptor) -> std::unique_ptr<ITexture>
 {
     return std::make_unique<OpenGLTexture>(descriptor);
+}
+
+auto OpenGLRenderer::createDescriptorSet(const DescriptorSetDescriptor & descriptor) -> std::unique_ptr<IDescriptorSet>
+{
+    return std::make_unique<OpenGLDescriptorSet>(descriptor);
+}
+
+auto OpenGLRenderer::createSampler(const SamplerDescriptor & descriptor) -> std::unique_ptr<ISampler>
+{
+    return std::make_unique<OpenGLSampler>(descriptor);
 }
 
 auto OpenGLRenderer::getUploadContext() -> IUploadContext &
