@@ -3,6 +3,7 @@
 
 #pragma once
 #include "ibuffer.h"
+#include "idescriptor_set.h"
 
 namespace ProtonEngine::Renderer
 {
@@ -24,7 +25,8 @@ public:
     virtual void setVertexBuffer(const IBuffer & buffer) = 0;
     virtual void setIndexBuffer(const IBuffer & buffer) = 0;
     virtual void drawIndexed(uint32_t indexCount) = 0;
-
+    virtual void bindDescriptorSet(const IDescriptorSet & descriptorSet) = 0;
+    
     // virtual void Draw(uint32_t vertexCount, uint32_t firstVertex = 0) = 0;
 };
 

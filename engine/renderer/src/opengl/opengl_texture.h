@@ -12,6 +12,7 @@ class OpenGLTexture : public ITexture
 {
 public:
     explicit OpenGLTexture(const TextureDescriptor & descriptor);
+    ~OpenGLTexture() override;
 
     [[nodiscard]] auto getDescriptor() const -> TextureDescriptor override;
     void bind(uint32_t slot) const noexcept override;
