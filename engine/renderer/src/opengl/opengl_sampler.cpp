@@ -1,9 +1,13 @@
-// Copyright © 2026. Proton Engine
-// Licensed using the MIT license
+/*
+ * Copyright © 2026. Proton Engine
+ * Licensed using the MIT license
+ */
 
 #include "opengl_sampler.h"
 
 #include <glad/gl.h>
+
+#include <stdexcept>
 
 namespace ProtonEngine::Renderer::OpenGL
 {
