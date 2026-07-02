@@ -19,6 +19,7 @@ Buffer::Buffer(const BufferDescriptor & descriptor) : m_descriptor(descriptor)
         {
         case BufferType::VERTEX: return GL_ARRAY_BUFFER;
         case BufferType::INDEX: return GL_ELEMENT_ARRAY_BUFFER;
+        case BufferType::UNIFORM: return GL_UNIFORM_BUFFER;
         }
         throw "Should never ever be reached!";
     }();
@@ -42,6 +43,11 @@ void Buffer::unbind() const noexcept
 void Buffer::setData(std::span<const std::byte> data) const
 {
     glBufferData(m_bindType, data.size(), data.data(), GL_STATIC_DRAW);
+}
+
+auto Buffer::id() const noexcept -> uint32_t
+{
+    return m_bufferHandle;
 }
 
 } // namespace ProtonEngine::Renderer::OpenGL

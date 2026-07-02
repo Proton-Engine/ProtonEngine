@@ -29,6 +29,7 @@ public:
     Application & operator=(Application &&) = delete;
 
     void run();
+    void setVSync(bool enabled) noexcept;
 
     [[nodiscard]] auto getScene() noexcept -> Scene &;
 

@@ -30,7 +30,6 @@ public:
     void addLight(const Transform & transform, const Light & light) override;
     void renderAllInQueue() override;
     void setCamera(const Transform & transform, const Camera & camera) override;
-    void update() override;
 
     [[nodiscard]] auto createBuffer(const BufferDescriptor & descriptor) -> std::unique_ptr<IBuffer> override;
     [[nodiscard]] auto createTexture(const TextureDescriptor & descriptor) -> std::unique_ptr<ITexture> override;

@@ -41,7 +41,6 @@ public:
     virtual void addLight(const Transform & transform, const Light & light) = 0;
     virtual void renderAllInQueue() = 0;
     virtual void setCamera(const Transform & transform, const Camera & camera) = 0;
-    virtual void update() = 0;
 
     [[nodiscard]] virtual auto createBuffer(const BufferDescriptor & descriptor) -> std::unique_ptr<IBuffer> = 0;
     [[nodiscard]] virtual auto createTexture(const TextureDescriptor & descriptor) -> std::unique_ptr<ITexture> = 0;

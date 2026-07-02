@@ -4,7 +4,7 @@ layout (location = 0) in vec3 vertexPosition_modelspace;
 layout (location = 1) in vec3 modelNormal;
 layout (location = 2) in vec2 vertexTextureCoordinate;
 
-struct Light {
+layout (std140) struct Light {
     vec3 position;
     vec3 direction;
     vec3 color;
@@ -16,11 +16,22 @@ out vec3 fragNormal;
 out vec3 worldPosition;
 out Light pointLightFrag;
 
-uniform Light pointLight;
-uniform mat4 modelMatrix;
-uniform mat4 viewMatrix;
-uniform mat4 projectionMatrix;
-uniform mat4 normalModelMatrix;
+layout (std140) uniform ModelDataBuffer
+{
+    mat4 modelMatrix;
+};
+
+layout (std140) uniform ViewDataBuffer
+{
+    mat4 viewMatrix;
+    mat4 projectionMatrix;
+};
+
+layout (std140) uniform LightsBuffer
+{
+    uniform Light pointLight;
+    uniform Light directionalLight;
+};
 
 void main() {
     mat4 modelViewProjectionMatrix = projectionMatrix * viewMatrix * modelMatrix;

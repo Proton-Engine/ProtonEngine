@@ -68,6 +68,8 @@ public:
     {
         using namespace ProtonEngine;
 
+        setVSync(false);
+
         addLayer(std::make_unique<Ui::DebugLayer>());
 
         static const auto cubeModel = Assets::AssetManager::loadModel("assets/models/cube.obj");

@@ -26,6 +26,7 @@ public:
 
     // TODO: Remove const
     void setData(std::span<const std::byte> data) const;
+    [[nodiscard]] auto id() const noexcept -> uint32_t;
     // [[nodiscard]] int32_t verticesCount() const noexcept override;
     // [[nodiscard]] int32_t indicesCount() const noexcept override;
 

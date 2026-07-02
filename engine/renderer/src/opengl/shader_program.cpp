@@ -77,6 +77,11 @@ std::string_view ShaderProgram::name() noexcept
     return m_name;
 }
 
+uint32_t ShaderProgram::id() const noexcept
+{
+    return m_shaderProgramID;
+}
+
 void ShaderProgram::setUniformValue(std::string_view name, float value) noexcept
 {
     GLint uniformID = glGetUniformLocation(m_shaderProgramID, name.data());

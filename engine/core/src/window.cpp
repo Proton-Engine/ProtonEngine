@@ -70,6 +70,11 @@ auto Window::update() noexcept -> bool
     return true;
 }
 
+void Window::setVSync(bool enabled) noexcept
+{
+    glfwSwapInterval(enabled ? 1 : 0);
+}
+
 void Window::registerCallbacks() const
 {
     glfwSetKeyCallback(m_windowHandle, [](GLFWwindow * /*window*/, int key, int /*scancode*/, int action, int /*mods*/) {

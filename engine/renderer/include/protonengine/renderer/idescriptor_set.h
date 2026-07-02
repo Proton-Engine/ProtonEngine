@@ -3,8 +3,8 @@
 
 #pragma once
 
-// #include "protonengine/renderer/ibuffer.h"
-#include "isampler.h"
+#include "protonengine/renderer/ibuffer.h"
+#include "protonengine/renderer/isampler.h"
 #include "protonengine/renderer/itexture.h"
 
 #include <cinttypes>
@@ -13,15 +13,14 @@
 namespace ProtonEngine::Renderer
 {
 
-// struct BufferBinding
-// {
-//     uint32_t binding;
-//
-//     IBuffer * buffer;
-//
-//     uint64_t offset;
-//     uint64_t size;
-// };
+struct BufferBinding
+{
+    uint32_t binding;
+    IBuffer & buffer;
+
+    // uint64_t offset;
+    // uint64_t size;
+};
 
 struct TextureBinding
 {
@@ -37,7 +36,7 @@ struct SamplerBinding
 
 struct DescriptorSetDescriptor
 {
-    // std::vector<BufferBinding> buffers;
+    std::vector<BufferBinding> buffers;
     std::vector<TextureBinding> textures;
     std::vector<SamplerBinding> samplers;
 };
