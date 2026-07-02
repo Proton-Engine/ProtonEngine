@@ -5,10 +5,11 @@
 
 #pragma once
 
-#include "opengl_command_list.h"
-#include "opengl_upload_context.h"
 #include "protonengine/renderer/irenderer.h"
 
+#include "irenderer_backend.h"
+#include "opengl_command_list.h"
+#include "opengl_upload_context.h"
 #include "renderable_light.h"
 #include "renderable_object.h"
 
@@ -19,7 +20,7 @@
 namespace ProtonEngine::Renderer::OpenGL
 {
 
-class OpenGLRenderer : public IRenderer
+class OpenGLRenderer : public IRendererBackend
 {
 public:
     ~OpenGLRenderer() override = default;
