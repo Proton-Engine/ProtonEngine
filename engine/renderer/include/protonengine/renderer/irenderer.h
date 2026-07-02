@@ -24,7 +24,6 @@ enum class RendererBackend
 };
 
 using ContextLoadFunction = void (*(*)(const char *))(void);
-// using ContextLoadFunction = void * (*)(const char * name);
 
 class PROTONENGINE_RENDERER_EXPORT IRenderer
 {
@@ -41,14 +40,6 @@ public:
     virtual void addLight(const Transform & transform, const Light & light) = 0;
     virtual void renderAllInQueue() = 0;
     virtual void setCamera(const Transform & transform, const Camera & camera) = 0;
-
-    [[nodiscard]] virtual auto createBuffer(const BufferDescriptor & descriptor) -> std::unique_ptr<IBuffer> = 0;
-    [[nodiscard]] virtual auto createTexture(const TextureDescriptor & descriptor) -> std::unique_ptr<ITexture> = 0;
-    [[nodiscard]] virtual auto createDescriptorSet(const DescriptorSetDescriptor & descriptor) -> std::unique_ptr<IDescriptorSet> = 0;
-    [[nodiscard]] virtual auto createSampler(const SamplerDescriptor & descriptor) -> std::unique_ptr<ISampler> = 0;
-
-
-    [[nodiscard]] virtual auto getUploadContext() -> IUploadContext & = 0;
 
 protected:
     IRenderer() = default;

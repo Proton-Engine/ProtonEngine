@@ -36,7 +36,7 @@ namespace ProtonEngine::Renderer
 
 namespace
 {
-std::unique_ptr<IRenderer> g_renderer;
+std::unique_ptr<IRendererBackend> g_renderer;
 } // namespace
 
 auto initializeRenderer(RendererBackend rendererBackend) -> IRenderer &
