@@ -15,15 +15,13 @@ namespace ProtonEngine::Renderer
 enum class BufferType
 {
     VERTEX,
-    INDEX
+    INDEX,
+    UNIFORM
 };
 
 struct BufferDescriptor
 {
     BufferType type;
-    // size_t bufferSize;
-    // std::vector<Vertex> & vertices;
-    // std::vector<uint32_t> & indices;
 };
 
 class IBuffer

@@ -13,10 +13,12 @@ public:
     explicit OpenGLDescriptorSet(const DescriptorSetDescriptor & descriptor);
     ~OpenGLDescriptorSet() override = default;
 
+    [[nodiscard]] auto buffers() const noexcept -> const std::vector<BufferBinding> &;
     [[nodiscard]] auto textures() const noexcept -> const std::vector<TextureBinding> &;
     [[nodiscard]] auto samplers() const noexcept -> const std::vector<SamplerBinding> &;
 
 private:
+    std::vector<BufferBinding> m_bufferBindings;
     std::vector<TextureBinding> m_textureBindings;
     std::vector<SamplerBinding> m_samplerBindings;
 };

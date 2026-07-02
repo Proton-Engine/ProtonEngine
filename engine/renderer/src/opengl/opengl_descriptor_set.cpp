@@ -6,8 +6,13 @@
 namespace ProtonEngine::Renderer::OpenGL
 {
 
-OpenGLDescriptorSet::OpenGLDescriptorSet(const DescriptorSetDescriptor & descriptor) : m_textureBindings(descriptor.textures), m_samplerBindings(descriptor.samplers)
+OpenGLDescriptorSet::OpenGLDescriptorSet(const DescriptorSetDescriptor & descriptor) : m_bufferBindings(descriptor.buffers), m_textureBindings(descriptor.textures), m_samplerBindings(descriptor.samplers)
 {
+}
+
+auto OpenGLDescriptorSet::buffers() const noexcept -> const std::vector<BufferBinding> &
+{
+    return m_bufferBindings;
 }
 
 auto OpenGLDescriptorSet::textures() const noexcept -> const std::vector<TextureBinding> &

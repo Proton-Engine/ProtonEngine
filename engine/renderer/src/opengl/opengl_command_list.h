@@ -19,6 +19,7 @@ public:
     void setPipeline() override;
     void setVertexBuffer(const IBuffer & buffer) override;
     void setIndexBuffer(const IBuffer & buffer) override;
+    void bindUniformBuffer(uint32_t slot, const IBuffer & buffer) override;
     void drawIndexed(uint32_t indexCount) override;
     void bindDescriptorSet(const IDescriptorSet & descriptorSet) override;
 

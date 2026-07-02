@@ -23,6 +23,7 @@ public:
     ~Window();
 
     [[nodiscard]] auto update() noexcept -> bool;
+    void setVSync(bool enabled) noexcept;
 
 private:
     GLFWwindow * m_windowHandle{};

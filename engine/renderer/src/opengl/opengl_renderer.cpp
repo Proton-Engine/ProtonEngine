@@ -29,6 +29,81 @@
 namespace ProtonEngine::Renderer::OpenGL
 {
 
+namespace
+{
+
+struct alignas(16) UniformViewData
+{
+    glm::mat4 viewMatrix;
+    glm::mat4 projectionMatrix;
+};
+
+struct alignas(16) OpenGlLight
+{
+    glm::vec4 position;
+    glm::vec4 direction;
+    glm::vec4 color;
+};
+
+struct alignas(16) Lights
+{
+    OpenGlLight pointLight;
+    OpenGlLight directionalLight;
+};
+
+// layout (std140) struct Material {
+//     vec3 baseColor;
+//     vec3 specularColor;
+//     float shininess;
+// };
+struct alignas(16) OpenGlMaterial
+{
+    glm::vec4 baseColor;
+    glm::vec4 specularColor;
+};
+
+[[nodiscard]] auto getDirectionalLight(const std::vector<RenderableLight> & lights, const glm::mat4 & view) -> OpenGlLight
+{
+    const auto directionalLight =
+        std::ranges::find_if(lights, [&](const auto & light) { return light.light.type == LightType::DIRECTIONAL; });
+
+    if (directionalLight == lights.end())
+    {
+        return {};
+    }
+
+    auto rot = glm::rotate(glm::mat4(1.0f), directionalLight->transform.rotation.y * std::numbers::pi_v<float> / 180.0f, glm::vec3{0, 1, 0});
+    rot = glm::rotate(rot, directionalLight->transform.rotation.x * std::numbers::pi_v<float> / 180.0f, glm::vec3{1, 0, 0});
+    rot = glm::rotate(rot, directionalLight->transform.rotation.z * std::numbers::pi_v<float> / 180.0f, glm::vec3{0, 0, 1});
+    const auto lightDirection = glm::vec3(view * rot * glm::vec4(0, 1, 0, 0));
+
+    return {
+        .position = glm::vec4(directionalLight->transform.position, 0),
+        .direction = glm::vec4(lightDirection, 0),
+        .color = glm::vec4(directionalLight->light.color, directionalLight->light.intensity)};
+}
+
+[[nodiscard]] auto getPointLight(const std::vector<RenderableLight> & lights, const glm::mat4 & view) -> OpenGlLight
+{
+    for (const auto & light : lights)
+    {
+        if (light.light.type != LightType::POINT)
+        {
+            continue;
+        }
+
+        return {
+            .position = glm::vec4(light.transform.position, 0),
+            .direction = view * glm::vec4(light.transform.position, 1.0f),
+            .color = glm::vec4(light.light.color, light.light.intensity)};
+    }
+    return {};
+}
+
+} // namespace
+
+uint32_t program;
+
 static float windowWidth;
 static float windowHeight;
 
@@ -86,6 +161,7 @@ void OpenGLRenderer::addToRenderQueue(const Transform & transform, const Mesh & 
 {
     m_renderableObjects.emplace_back(transform, mesh, material);
 }
+
 void OpenGLRenderer::addLight(const Transform & transform, const Light & light)
 {
     m_lights.emplace_back(transform, light);
@@ -94,36 +170,28 @@ void OpenGLRenderer::addLight(const Transform & transform, const Light & light)
 void OpenGLRenderer::renderAllInQueue()
 {
     static ShaderProgram shaderProgram("shader");
+    program = shaderProgram.id();
     m_commandList->begin();
-
     shaderProgram.enable();
-    shaderProgram.setUniformValue("lightPosition", glm::vec3(0, 2, -10));
 
-    const auto directionalLight =
-        std::ranges::find_if(m_lights, [&](const auto & light) { return light.light.type == LightType::DIRECTIONAL; });
+    auto & uploadContext = getUploadContext();
 
-    if (directionalLight != m_lights.end())
-    {
-        auto rot = glm::rotate(glm::mat4(1.0f), directionalLight->transform.rotation.y * std::numbers::pi_v<float> / 180.0f, glm::vec3{0, 1, 0});
-        rot = glm::rotate(rot, directionalLight->transform.rotation.x * std::numbers::pi_v<float> / 180.0f, glm::vec3{1, 0, 0});
-        rot = glm::rotate(rot, directionalLight->transform.rotation.z * std::numbers::pi_v<float> / 180.0f, glm::vec3{0, 0, 1});
-        const auto lightDirection = glm::vec3(view * rot * glm::vec4(0, 1, 0, 0));
+    Lights lights{
+        getPointLight(m_lights, view),
+        getDirectionalLight(m_lights, view)};
 
-        shaderProgram.setUniformValue("directionalLight.direction", lightDirection);
-        shaderProgram.setUniformValue("directionalLight.color", directionalLight->light.color);
-    }
+    const auto lightsBuffer = createBuffer({BufferType::UNIFORM});
+    uploadContext.uploadBuffer(*lightsBuffer, std::as_bytes(std::span{&lights, 1}), 0);
 
-    for (const auto & light : m_lights)
-    {
-        if (light.light.type != LightType::POINT)
-        {
-            continue;
-        }
+    const auto viewBuffer = createBuffer({BufferType::UNIFORM});
+    UniformViewData viewData{view, projection};
+    uploadContext.uploadBuffer(*viewBuffer, std::as_bytes(std::span{&viewData, 1}), 0);
 
-        shaderProgram.setUniformValue("pointLight.position", light.transform.position);
-        shaderProgram.setUniformValue("pointLight.color", light.light.color);
-        shaderProgram.setUniformValue("pointLight.intensity", light.light.intensity);
-    }
+    const auto frameDescriptorSet = createDescriptorSet(
+        {.buffers = {{1, *viewBuffer}, {3, *lightsBuffer}},
+         .textures = {},
+         .samplers = {}});
+    m_commandList->bindDescriptorSet(*frameDescriptorSet);
 
     for (const auto & renderableObject : m_renderableObjects)
     {
@@ -133,23 +201,21 @@ void OpenGLRenderer::renderAllInQueue()
         model = glm::rotate(model, renderableObject.transform.rotation.z * std::numbers::pi_v<float> / 180.0f, glm::vec3{0, 0, 1});
         model = glm::scale(model, renderableObject.transform.scale);
 
-        const auto normalModelMatrix = glm::transpose(glm::inverse(model));
+        OpenGlMaterial material{
+            .baseColor = glm::vec4(renderableObject.material.baseColor, 1.0f),
+            .specularColor = glm::vec4(renderableObject.material.specularColor, renderableObject.material.shininess)};
 
-        shaderProgram.setUniformValue("modelMatrix", model);
-        shaderProgram.setUniformValue("projectionMatrix", projection);
-        shaderProgram.setUniformValue("viewMatrix", view);
-        shaderProgram.setUniformValue("normalModelMatrix", normalModelMatrix);
-
-        shaderProgram.setUniformValue("material.baseColor", renderableObject.material.baseColor);
-        shaderProgram.setUniformValue("material.baseTexture", 0);
-        shaderProgram.setUniformValue("material.specularColor", renderableObject.material.specularColor);
-        shaderProgram.setUniformValue("material.specularMap", 1);
-        shaderProgram.setUniformValue("material.shininess", renderableObject.material.shininess);
+        const auto materialBuffer = createBuffer({BufferType::UNIFORM});
+        uploadContext.uploadBuffer(*materialBuffer, std::as_bytes(std::span{&material, 1}), 0);
 
         const auto sampler = createSampler({ScalingMode::LINEAR, WrappingMode::REPEAT});
 
+        const auto modelBuffer = createBuffer({BufferType::UNIFORM});
+        uploadContext.uploadBuffer(*modelBuffer, std::as_bytes(std::span{&model, 1}), 0);
+
         const auto descriptorSet = createDescriptorSet(
-            {.textures = {{0, renderableObject.material.baseTexture}, {1, renderableObject.material.specularMap}},
+            {.buffers = {{0, *modelBuffer}, {2, *materialBuffer}},
+             .textures = {{0, renderableObject.material.baseTexture}, {1, renderableObject.material.specularMap}},
              .samplers = {{0, *sampler}, {1, *sampler}}});
 
         m_commandList->bindDescriptorSet(*descriptorSet);
@@ -198,11 +264,6 @@ void OpenGLRenderer::setCamera(const Transform & transform, const Camera & camer
         PROTON_LOG_ERROR("Orthographic projection not supported yet");
         throw std::runtime_error("Orthographic projection not supported yet");
     }
-}
-
-void OpenGLRenderer::update()
-{
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 auto OpenGLRenderer::createBuffer(const BufferDescriptor & descriptor) -> std::unique_ptr<IBuffer>

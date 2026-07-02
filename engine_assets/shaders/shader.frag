@@ -1,14 +1,15 @@
 #version 410 core
 
-struct Material {
+uniform sampler2D baseTexture;
+uniform sampler2D specularMap;
+
+layout (std140) struct Material {
     vec3 baseColor;
-    sampler2D baseTexture;
     vec3 specularColor;
-    sampler2D specularMap;
     float shininess;
 };
 
-struct Light {
+layout (std140) struct Light {
     vec3 position;
     vec3 direction;
     vec3 color;
@@ -22,9 +23,17 @@ in Light pointLightFrag;
 
 out vec3 color;
 
-uniform Material material;
+layout (std140) uniform MaterialBuffer
+{
+    uniform Material material;
+};
+
 // The light parameters should be passed in view space (so multiplied by the view and model matrix)
-uniform Light directionalLight;
+layout (std140) uniform LightsBuffer
+{
+    uniform Light pointLight;
+    uniform Light directionalLight;
+};
 
 vec3 calculatePhongLighting();
 vec3 calculatePhongLightingDiffuseComponent(vec3 lightDirection, vec3 lightColor, float attenuation);
@@ -32,7 +41,7 @@ vec3 calculatePhongLightingSpecularComponent(vec3 lightDirection, vec3 lightColo
 float attenuatateCusp(float distance, float radius, float max_intensity, float falloff);
 
 void main() {
-    color = texture(material.baseTexture, textureCoordinate).rgb * calculatePhongLighting();
+    color = texture(baseTexture, textureCoordinate).rgb * calculatePhongLighting();
 }
 
 vec3 calculatePhongLighting()
@@ -70,7 +79,7 @@ vec3 calculatePhongLightingSpecularComponent(vec3 lightDirection, vec3 lightColo
 
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
 
-    return spec * lightColor * material.specularColor * texture(material.specularMap, textureCoordinate).rgb * attenuation;
+    return spec * lightColor * material.specularColor * texture(specularMap, textureCoordinate).rgb * attenuation;
 }
 
 // Attenuation function from here: https://lisyarus.github.io/blog/posts/point-light-attenuation.html

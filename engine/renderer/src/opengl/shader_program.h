@@ -36,6 +36,7 @@ public:
     void setUniformValue(std::string_view name, glm::mat4 matrix) noexcept;
 
     [[nodiscard]] std::string_view name() noexcept;
+    [[nodiscard]] uint32_t id() const noexcept;
 
 private:
     std::string m_name;

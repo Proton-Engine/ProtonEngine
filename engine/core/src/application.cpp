@@ -37,7 +37,6 @@ void Application::run()
     while (m_window->update())
     {
         DeltaTime::update();
-        renderer.update();
 
         const auto deltaTimeSeconds = static_cast<float>(DeltaTime::getDeltaTimeMicroSeconds().count()) / 1'000'000.0f;
 
@@ -64,6 +63,14 @@ void Application::run()
 auto Application::getScene() noexcept -> Scene &
 {
     return m_scene;
+}
+
+void Application::setVSync(bool enabled) noexcept
+{
+    if (m_window)
+    {
+        m_window->setVSync(enabled);
+    }
 }
 
 void Application::addLayer(std::unique_ptr<Ui::Layer> layer)
