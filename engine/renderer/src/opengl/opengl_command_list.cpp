@@ -11,6 +11,7 @@
 #include <glad/gl.h>
 
 #include <format>
+#include <array>
 
 namespace ProtonEngine::Renderer::OpenGL
 {
@@ -49,18 +50,22 @@ void OpenGLCommandList::setPipeline()
 {
     glBindVertexArray(m_vao);
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<void *>(offsetof(Vertex, position)));
+    glVertexAttribFormat(0, 3, GL_FLOAT, GL_FALSE, offsetof(Vertex, position));
+    glVertexAttribBinding(0, 0);
 
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<void *>(offsetof(Vertex, normal)));
+    glVertexAttribFormat(1, 3, GL_FLOAT, GL_FALSE, offsetof(Vertex, normal));
+    glVertexAttribBinding(1, 0);
 
     glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<void *>(offsetof(Vertex, texture)));
+    glVertexAttribFormat(2, 2, GL_FLOAT, GL_FALSE, offsetof(Vertex, texture));
+    glVertexAttribBinding(2, 0);
 }
 
 void OpenGLCommandList::setVertexBuffer(const IBuffer & buffer)
 {
-    buffer.bind();
+    const auto bufferHandle = static_cast<const OpenGL::Buffer *>(&buffer)->id();
+    glBindVertexBuffer(0, bufferHandle, 0, sizeof(Vertex));
 }
 
 void OpenGLCommandList::setIndexBuffer(const IBuffer & buffer)

@@ -169,9 +169,11 @@ void OpenGLRenderer::addLight(const Transform & transform, const Light & light)
 
 void OpenGLRenderer::renderAllInQueue()
 {
+    // TODO: Move this out into the setPipeline function
     static ShaderProgram shaderProgram("shader");
     program = shaderProgram.id();
     m_commandList->begin();
+    m_commandList->setPipeline();
     shaderProgram.enable();
 
     auto & uploadContext = getUploadContext();
@@ -220,7 +222,6 @@ void OpenGLRenderer::renderAllInQueue()
 
         m_commandList->bindDescriptorSet(*descriptorSet);
         m_commandList->setVertexBuffer(renderableObject.mesh.vertexBuffer());
-        m_commandList->setPipeline();
         m_commandList->setIndexBuffer(renderableObject.mesh.indexBuffer());
         m_commandList->drawIndexed(renderableObject.mesh.indicesCount());
     }
