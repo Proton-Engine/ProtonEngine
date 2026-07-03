@@ -4,7 +4,7 @@ layout (location = 0) in vec3 vertexPosition_modelspace;
 layout (location = 1) in vec3 modelNormal;
 layout (location = 2) in vec2 vertexTextureCoordinate;
 
-layout (std140) struct Light {
+struct Light {
     vec3 position;
     vec3 direction;
     vec3 color;

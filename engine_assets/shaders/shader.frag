@@ -3,13 +3,13 @@
 uniform sampler2D baseTexture;
 uniform sampler2D specularMap;
 
-layout (std140) struct Material {
+struct Material {
     vec3 baseColor;
     vec3 specularColor;
     float shininess;
 };
 
-layout (std140) struct Light {
+struct Light {
     vec3 position;
     vec3 direction;
     vec3 color;
