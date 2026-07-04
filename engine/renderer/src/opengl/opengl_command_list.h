@@ -1,5 +1,7 @@
-// Copyright © 2026. Proton Engine
-// Licensed using the MIT license
+/*
+ * Copyright © 2026. Proton Engine
+ * Licensed using the MIT license
+ */
 
 #pragma once
 
@@ -16,7 +18,7 @@ public:
 
     void begin() override;
     void end() override;
-    void setPipeline() override;
+    void setPipeline(const Pipeline & pipeline) override;
     void setVertexBuffer(const IBuffer & buffer) override;
     void setIndexBuffer(const IBuffer & buffer) override;
     void bindUniformBuffer(uint32_t slot, const IBuffer & buffer) override;
@@ -24,6 +26,7 @@ public:
     void bindDescriptorSet(const IDescriptorSet & descriptorSet) override;
 
 private:
+    uint32_t m_shaderProgram{};
     uint32_t m_vao{};
 };
 

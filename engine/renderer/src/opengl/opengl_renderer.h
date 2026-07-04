@@ -36,6 +36,7 @@ public:
     [[nodiscard]] auto createTexture(const TextureDescriptor & descriptor) -> std::unique_ptr<ITexture> override;
     [[nodiscard]] auto createDescriptorSet(const DescriptorSetDescriptor & descriptor) -> std::unique_ptr<IDescriptorSet> override;
     [[nodiscard]] auto createSampler(const SamplerDescriptor & descriptor) -> std::unique_ptr<ISampler> override;
+    [[nodiscard]] auto createShader(const ShaderDescriptor & descriptor) -> std::unique_ptr<IShader> override;
 
     [[nodiscard]] auto getUploadContext() -> IUploadContext & override;
 
@@ -48,6 +49,7 @@ private:
 
     OpenGLUploadContext m_uploadContext;
     std::unique_ptr<OpenGLCommandList> m_commandList;
+    Pipeline m_pipeline;
 };
 
 } // namespace ProtonEngine::Renderer::OpenGL
