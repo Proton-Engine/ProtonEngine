@@ -1,9 +1,13 @@
-// Copyright © 2026. Proton Engine
-// Licensed using the MIT license
+/*
+ * Copyright © 2026. Proton Engine
+ * Licensed using the MIT license
+ */
 
 #pragma once
-#include "ibuffer.h"
-#include "idescriptor_set.h"
+
+#include "protonengine/renderer/ibuffer.h"
+#include "protonengine/renderer/idescriptor_set.h"
+#include "protonengine/renderer/pipeline.h"
 
 namespace ProtonEngine::Renderer
 {
@@ -21,7 +25,8 @@ public:
     virtual void begin() = 0;
     virtual void end() = 0;
 
-    virtual void setPipeline() = 0;
+    // TODO: Change with pipeline abstraction
+    virtual void setPipeline(const Pipeline & pipeline) = 0;
     virtual void setVertexBuffer(const IBuffer & buffer) = 0;
     virtual void setIndexBuffer(const IBuffer & buffer) = 0;
     virtual void bindUniformBuffer(uint32_t slot, const IBuffer & buffer) = 0;

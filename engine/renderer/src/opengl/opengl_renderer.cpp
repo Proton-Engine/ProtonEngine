@@ -8,12 +8,13 @@
 #include "opengl_buffer.h"
 #include "opengl_descriptor_set.h"
 #include "opengl_sampler.h"
+#include "opengl_shader.h"
 #include "opengl_texture.h"
-#include "protonengine/common/logger.h"
-#include "protonengine/renderer/irenderer.h"
-#include "shader_program.h"
 
 #include "protonengine/common/event_bus.h"
+#include "protonengine/common/logger.h"
+#include "protonengine/renderer/irenderer.h"
+#include "protonengine/renderer/ishader.h"
 
 #include <glad/gl.h>
 
@@ -22,8 +23,10 @@
 
 #include <algorithm>
 #include <format>
+#include <fstream>
 #include <functional>
 #include <numbers>
+#include <sstream>
 #include <stdexcept>
 
 namespace ProtonEngine::Renderer::OpenGL
@@ -51,11 +54,6 @@ struct alignas(16) Lights
     OpenGlLight directionalLight;
 };
 
-// layout (std140) struct Material {
-//     vec3 baseColor;
-//     vec3 specularColor;
-//     float shininess;
-// };
 struct alignas(16) OpenGlMaterial
 {
     glm::vec4 baseColor;
@@ -98,6 +96,22 @@ struct alignas(16) OpenGlMaterial
             .color = glm::vec4(light.light.color, light.light.intensity)};
     }
     return {};
+}
+
+[[nodiscard]] auto loadShaderSourceFromDisk(const std::string & fileName) -> std::string
+{
+    PROTON_LOG_DEBUG(std::format("Loading shader source from file: {}", fileName));
+
+    std::ifstream fileStream(fileName);
+    std::stringstream shaderSource;
+    std::string line;
+
+    while (std::getline(fileStream, line))
+    {
+        shaderSource << line << "\n";
+    }
+
+    return shaderSource.str();
 }
 
 } // namespace
@@ -148,6 +162,12 @@ void OpenGLRenderer::setWindowContext(ContextLoadFunction func)
     glCullFace(GL_BACK);
 
     m_commandList = std::make_unique<OpenGLCommandList>();
+    const auto vertexSource = loadShaderSourceFromDisk("./assets/shaders/shader.vert");
+    const auto fragmentSource = loadShaderSourceFromDisk("./assets/shaders/shader.frag");
+    m_pipeline = Pipeline{createShader({"shader", {
+                                                      {ShaderType::Vertex, vertexSource},
+                                                      {ShaderType::Fragment, fragmentSource},
+                                                  }})};
 
     Common::EventBus::subscribeToEvent(Common::Event::WINDOW_RESIZE_EVENT, std::function([&](Common::Event, Common::WindowResizeEventContext context) {
                                            windowWidth = static_cast<float>(context.width);
@@ -170,11 +190,11 @@ void OpenGLRenderer::addLight(const Transform & transform, const Light & light)
 void OpenGLRenderer::renderAllInQueue()
 {
     // TODO: Move this out into the setPipeline function
-    static ShaderProgram shaderProgram("shader");
-    program = shaderProgram.id();
+    // static ShaderProgram shaderProgram("shader");
+    // program = shaderProgram.id();
     m_commandList->begin();
-    m_commandList->setPipeline();
-    shaderProgram.enable();
+    m_commandList->setPipeline(m_pipeline);
+    // shaderProgram.enable();
 
     auto & uploadContext = getUploadContext();
 
@@ -226,7 +246,7 @@ void OpenGLRenderer::renderAllInQueue()
         m_commandList->drawIndexed(renderableObject.mesh.indicesCount());
     }
 
-    shaderProgram.disable();
+    // shaderProgram.disable();
 
     m_commandList->end();
 
@@ -285,6 +305,11 @@ auto OpenGLRenderer::createDescriptorSet(const DescriptorSetDescriptor & descrip
 auto OpenGLRenderer::createSampler(const SamplerDescriptor & descriptor) -> std::unique_ptr<ISampler>
 {
     return std::make_unique<OpenGLSampler>(descriptor);
+}
+
+auto OpenGLRenderer::createShader(const ShaderDescriptor & descriptor) -> std::unique_ptr<IShader>
+{
+    return std::make_unique<OpenGLShader>(descriptor);
 }
 
 auto OpenGLRenderer::getUploadContext() -> IUploadContext &

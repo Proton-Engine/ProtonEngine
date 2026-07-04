@@ -1,17 +1,20 @@
-// Copyright © 2026. Proton Engine
-// Licensed using the MIT license
+/*
+ * Copyright © 2026. Proton Engine
+ * Licensed using the MIT license
+ */
 
 #include "opengl_command_list.h"
 
 #include "opengl_buffer.h"
 #include "opengl_descriptor_set.h"
 #include "opengl_sampler.h"
+#include "opengl_shader.h"
 #include "protonengine/common/logger.h"
 
 #include <glad/gl.h>
 
-#include <format>
 #include <array>
+#include <format>
 
 namespace ProtonEngine::Renderer::OpenGL
 {
@@ -26,9 +29,6 @@ constexpr std::array g_uniformBufferNames = {
     "LightsBuffer"};
 
 } // namespace
-
-// TODO: Remove this from here
-extern uint32_t program;
 
 OpenGLCommandList::OpenGLCommandList()
 {
@@ -46,8 +46,12 @@ void OpenGLCommandList::end()
     // Handle state?
 }
 
-void OpenGLCommandList::setPipeline()
+void OpenGLCommandList::setPipeline(const Pipeline & pipeline)
 {
+    const auto openglShader = static_cast<const OpenGLShader *>(pipeline.shader.get());
+    openglShader->enable();
+    m_shaderProgram = openglShader->programId();
+
     glBindVertexArray(m_vao);
     glEnableVertexAttribArray(0);
     glVertexAttribFormat(0, 3, GL_FLOAT, GL_FALSE, offsetof(Vertex, position));
@@ -76,14 +80,14 @@ void OpenGLCommandList::setIndexBuffer(const IBuffer & buffer)
 void OpenGLCommandList::bindUniformBuffer(uint32_t slot, const IBuffer & buffer)
 {
     const auto bufferId = static_cast<const OpenGL::Buffer *>(&buffer)->id();
-    const auto blockIndex = glGetUniformBlockIndex(program, g_uniformBufferNames[slot]);
+    const auto blockIndex = glGetUniformBlockIndex(m_shaderProgram, g_uniformBufferNames[slot]);
 
     if (blockIndex == GL_INVALID_INDEX)
     {
         PROTON_LOG_ERROR(std::format("Failed to get block index for name {}", g_uniformBufferNames[slot]));
     }
 
-    glUniformBlockBinding(program, blockIndex, slot);
+    glUniformBlockBinding(m_shaderProgram, blockIndex, slot);
     glBindBufferBase(GL_UNIFORM_BUFFER, slot, bufferId);
 }
 
