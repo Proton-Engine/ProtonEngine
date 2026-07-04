@@ -39,6 +39,7 @@ namespace
 std::unique_ptr<IRendererBackend> g_renderer;
 } // namespace
 
+// TODO: We should revisit the way we initialize the renderer
 auto initializeRenderer(RendererBackend rendererBackend) -> IRenderer &
 {
     if (g_renderer)

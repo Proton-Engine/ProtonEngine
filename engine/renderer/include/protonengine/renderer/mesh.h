@@ -25,14 +25,9 @@ public:
     Mesh operator=(Mesh &) = delete;
     Mesh operator=(Mesh &&) = delete;
 
-    void enableForDrawing() const noexcept;
-    void disableForDrawing() const noexcept;
-    // [[nodiscard]] int32_t verticesCount() const noexcept;
-    // [[nodiscard]] int32_t indicesCount() const noexcept;
-
     [[nodiscard]] auto vertexBuffer() const noexcept -> const IBuffer &;
     [[nodiscard]] auto indexBuffer() const noexcept -> const IBuffer &;
-    [[nodiscard]] auto indicesCount() const noexcept -> const size_t;
+    [[nodiscard]] auto indicesCount() const noexcept -> size_t;
 
 private:
     std::unique_ptr<IBuffer> m_vertexBuffer;

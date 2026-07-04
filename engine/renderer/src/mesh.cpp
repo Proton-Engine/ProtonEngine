@@ -18,17 +18,6 @@ Mesh::Mesh(std::unique_ptr<IBuffer> vertexBuffer, std::unique_ptr<IBuffer> index
 {
 }
 
-void Mesh::enableForDrawing() const noexcept
-{
-    m_vertexBuffer->bind();
-    m_indexBuffer->bind();
-}
-
-void Mesh::disableForDrawing() const noexcept
-{
-    m_vertexBuffer->unbind();
-    m_indexBuffer->unbind();
-}
 auto Mesh::vertexBuffer() const noexcept -> const IBuffer &
 {
     return *m_vertexBuffer;
@@ -39,19 +28,9 @@ auto Mesh::indexBuffer() const noexcept -> const IBuffer &
     return *m_indexBuffer;
 }
 
-auto Mesh::indicesCount() const noexcept -> const size_t
+auto Mesh::indicesCount() const noexcept -> size_t
 {
     return m_indicesCount;
 }
-
-// int32_t Mesh::verticesCount() const noexcept
-// {
-//     return m_vertxBuffer->verticesCount();
-// }
-//
-// int32_t Mesh::indicesCount() const noexcept
-// {
-//     return m_indexBuffer->indicesCount();
-// }
 
 } // namespace ProtonEngine::Renderer
