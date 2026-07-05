@@ -10,17 +10,17 @@
 
 #include <glad/gl.h>
 
-
 namespace ProtonEngine::Renderer::OpenGL
 {
 
-void OpenGLUploadContext::uploadBuffer(const IBuffer & destination, std::span<const std::byte> source, [[maybe_unused]] uint16_t offset)
+void OpenGLUploadContext::uploadBuffer(const IBuffer & destination, std::span<const std::byte> source, int32_t offset)
 {
     // TODO: Load into buffer with opengl here
     const auto & openglBuffer = static_cast<const Buffer &>(destination);
-    openglBuffer.bind();
-    openglBuffer.setData(source);
-    openglBuffer.unbind();
+    glBindBuffer(openglBuffer.bindType(), openglBuffer.id());
+    glBufferData(openglBuffer.bindType(), source.size() + offset, nullptr, GL_STATIC_DRAW);
+    glBufferSubData(openglBuffer.bindType(), offset, source.size(), source.data());
+    glBindBuffer(openglBuffer.bindType(), 0);
 }
 
 void OpenGLUploadContext::uploadTexture(const ITexture & texture, const Assets::Image & image)

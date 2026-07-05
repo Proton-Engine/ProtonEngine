@@ -16,7 +16,7 @@ public:
     OpenGLUploadContext() = default;
     ~OpenGLUploadContext() override = default;
 
-    void uploadBuffer(const IBuffer & destination, std::span<const std::byte> data, uint16_t offset) override;
+    void uploadBuffer(const IBuffer & destination, std::span<const std::byte> data, int32_t offset) override;
     void uploadTexture(const ITexture & texture, const Assets::Image & image) override;
 };
 

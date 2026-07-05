@@ -67,7 +67,8 @@ void OpenGLCommandList::setVertexBuffer(const IBuffer & buffer, uint32_t slot, u
 
 void OpenGLCommandList::setIndexBuffer(const IBuffer & buffer)
 {
-    static_cast<const OpenGL::Buffer *>(&buffer)->bind();
+    const auto & openglBuffer = static_cast<const OpenGL::Buffer &>(buffer);
+    glBindBuffer(openglBuffer.bindType(), openglBuffer.id());
 }
 
 void OpenGLCommandList::bindUniformBuffer(uint32_t slot, const IBuffer & buffer)
