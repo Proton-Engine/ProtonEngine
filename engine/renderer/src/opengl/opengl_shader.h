@@ -4,6 +4,7 @@
  */
 
 #pragma once
+
 #include "protonengine/renderer/ishader.h"
 
 #include <glm/fwd.hpp>

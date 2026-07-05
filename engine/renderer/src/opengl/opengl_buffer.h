@@ -8,9 +8,6 @@
 #include "protonengine/renderer/ibuffer.h"
 #include "protonengine/renderer/vertex.h"
 
-#include <span>
-#include <vector>
-
 namespace ProtonEngine::Renderer::OpenGL
 {
 
@@ -20,12 +17,8 @@ public:
     Buffer(const BufferDescriptor & descriptor);
     ~Buffer() override;
 
-    void bind() const noexcept;
-    void unbind() const noexcept;
-
-    // TODO: Remove const
-    void setData(std::span<const std::byte> data) const;
     [[nodiscard]] auto id() const noexcept -> uint32_t;
+    [[nodiscard]] auto bindType() const noexcept -> int32_t;
 
 private:
     uint32_t m_bufferHandle{};
