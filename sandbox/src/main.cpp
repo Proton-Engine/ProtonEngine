@@ -14,7 +14,7 @@
 #include "protonengine/core/components/camera_component.h"
 #include "protonengine/core/components/light_component.h"
 #include "protonengine/core/components/mesh_renderer.h"
-#include "protonengine/renderer/irenderer.h"
+#include "protonengine/renderer/irender_backend.h"
 
 #include "protonengine/ui/debug_layer.h"
 

@@ -1,5 +1,7 @@
-// Copyright © 2026. Proton Engine
-// Licensed using the MIT license
+/*
+ * Copyright © 2026. Proton Engine
+ * Licensed using the MIT license
+ */
 
 #pragma once
 
@@ -15,8 +17,8 @@ public:
     ~OpenGLTexture() override;
 
     [[nodiscard]] auto getDescriptor() const -> TextureDescriptor override;
-    void bind(uint32_t slot) const noexcept override;
-    void unbind(uint32_t slot) const noexcept override;
+    void bind(uint32_t slot) const noexcept;
+    void unbind(uint32_t slot) const noexcept;
 
     [[nodiscard]] auto getDataFormat() const noexcept -> uint32_t;
     [[nodiscard]] auto getInternalDataFormat() const noexcept -> uint32_t;

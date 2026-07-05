@@ -14,7 +14,7 @@
 #include "protonengine/common/logger.h"
 #include "protonengine/core/components/light_component.h"
 #include "protonengine/core/input.h"
-#include "protonengine/renderer/irenderer.h"
+#include "protonengine/renderer/irender_backend.h"
 #include "protonengine/renderer/renderer.h"
 #include "protonengine/ui/debug_layer.h"
 #include "window.h"

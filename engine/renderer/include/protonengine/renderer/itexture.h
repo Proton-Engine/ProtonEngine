@@ -1,5 +1,7 @@
-// Copyright © 2026. Proton Engine
-// Licensed using the MIT license
+/*
+ * Copyright © 2026. Proton Engine
+ * Licensed using the MIT license
+ */
 
 #pragma once
 
@@ -33,9 +35,6 @@ public:
     ITexture & operator=(ITexture &&) = delete;
 
     [[nodiscard]] virtual auto getDescriptor() const -> TextureDescriptor = 0;
-    virtual void bind(uint32_t slot) const noexcept = 0;
-    virtual void unbind(uint32_t slot) const noexcept = 0;
-    // virtual void bind(uint32_t slot) const = 0;
 };
 
 } // namespace ProtonEngine::Renderer

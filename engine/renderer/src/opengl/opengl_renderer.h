@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "protonengine/renderer/irenderer.h"
+#include "protonengine/renderer/irender_backend.h"
 
 #include "opengl_command_list.h"
 #include "opengl_upload_context.h"
@@ -13,7 +13,7 @@
 namespace ProtonEngine::Renderer::OpenGL
 {
 
-class OpenGLRenderer : public IRenderer
+class OpenGLRenderer : public IRenderBackend
 {
 public:
     ~OpenGLRenderer() override = default;

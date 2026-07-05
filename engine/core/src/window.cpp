@@ -8,7 +8,7 @@
 #include "protonengine/common/event_bus.h"
 
 #include "protonengine/common/logger.h"
-#include "protonengine/renderer/irenderer.h"
+#include "protonengine/renderer/irender_backend.h"
 
 #include <GLFW/glfw3.h>
 
@@ -53,7 +53,9 @@ Window::Window(int32_t width, int32_t height, std::string_view title, Renderer::
 
 Window::~Window()
 {
+    m_uiContext.reset();
     glfwDestroyWindow(m_windowHandle);
+    glfwTerminate();
 }
 
 auto Window::update() noexcept -> bool
@@ -61,7 +63,6 @@ auto Window::update() noexcept -> bool
     if (glfwWindowShouldClose(m_windowHandle) ||
         glfwGetKey(m_windowHandle, GLFW_KEY_ESCAPE))
     {
-        glfwTerminate();
         return false;
     }
 
