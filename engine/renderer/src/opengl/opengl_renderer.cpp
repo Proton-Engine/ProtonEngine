@@ -14,7 +14,7 @@
 
 #include "protonengine/common/event_bus.h"
 #include "protonengine/common/logger.h"
-#include "protonengine/renderer/irenderer.h"
+#include "protonengine/renderer/irender_backend.h"
 #include "protonengine/renderer/ishader.h"
 
 #include <glad/gl.h>

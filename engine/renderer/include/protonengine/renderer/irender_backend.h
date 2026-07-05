@@ -19,14 +19,14 @@ namespace ProtonEngine::Renderer
 
 using ContextLoadFunction = void (*(*)(const char *))(void);
 
-class PROTONENGINE_RENDERER_EXPORT IRenderer
+class PROTONENGINE_RENDERER_EXPORT IRenderBackend
 {
 public:
-    virtual ~IRenderer() = default;
-    IRenderer(IRenderer &) = delete;
-    IRenderer(IRenderer &&) = delete;
-    IRenderer & operator=(IRenderer &) = delete;
-    IRenderer & operator=(IRenderer &&) = delete;
+    virtual ~IRenderBackend() = default;
+    IRenderBackend(IRenderBackend &) = delete;
+    IRenderBackend(IRenderBackend &&) = delete;
+    IRenderBackend & operator=(IRenderBackend &) = delete;
+    IRenderBackend & operator=(IRenderBackend &&) = delete;
 
     virtual void setWindowContext(ContextLoadFunction func) = 0;
     virtual void setViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height) = 0;
@@ -42,7 +42,7 @@ public:
     [[nodiscard]] virtual auto getUploadContext() -> IUploadContext & = 0;
 
 protected:
-    IRenderer() = default;
+    IRenderBackend() = default;
 };
 
 } // namespace ProtonEngine::Renderer

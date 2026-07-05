@@ -10,6 +10,7 @@
 #include "opengl_pipeline.h"
 #include "opengl_sampler.h"
 #include "opengl_shader.h"
+#include "opengl_texture.h"
 #include "protonengine/common/logger.h"
 
 #include <glad/gl.h>
@@ -102,7 +103,7 @@ void OpenGLCommandList::bindDescriptorSet(const IDescriptorSet & descriptorSet)
 
     for (const auto & texture : textures)
     {
-        texture.texture.bind(texture.binding);
+        static_cast<const OpenGLTexture &>(texture.texture).bind(texture.binding);
     }
 
     for (const auto & sampler : samplers)

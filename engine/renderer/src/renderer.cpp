@@ -6,7 +6,7 @@
 #include "protonengine/renderer/renderer.h"
 #include "protonengine/common/event_bus.h"
 #include "protonengine/common/logger.h"
-#include "protonengine/renderer/irenderer.h"
+#include "protonengine/renderer/irender_backend.h"
 
 #include "opengl/opengl_renderer.h"
 
@@ -41,7 +41,7 @@ namespace ProtonEngine::Renderer
 namespace
 {
 
-[[nodiscard]] auto initializeRenderer(Renderer::RendererBackend rendererBackend) -> std::unique_ptr<IRenderer>
+[[nodiscard]] auto initializeRenderer(Renderer::RendererBackend rendererBackend) -> std::unique_ptr<IRenderBackend>
 {
     PROTON_LOG_DEBUG("Initializing renderer");
 
@@ -133,25 +133,14 @@ struct alignas(16) OpenGlMaterial
     return {};
 }
 
+constexpr uint8_t g_data[3] = {255, 255, 255};
+Assets::Image g_defaultTexture{g_data, 1, 1, 3};
+
 } // namespace
 
 Renderer::Renderer(RendererBackend rendererBackend) : m_renderer(initializeRenderer(rendererBackend)), m_uploadContext(m_renderer->getUploadContext())
 {
 }
-
-/*
-*    glEnableVertexAttribArray(0);
-    glVertexAttribFormat(0, 3, GL_FLOAT, GL_FALSE, offsetof(Vertex, position));
-    glVertexAttribBinding(0, 0);
-
-    glEnableVertexAttribArray(1);
-    glVertexAttribFormat(1, 3, GL_FLOAT, GL_FALSE, offsetof(Vertex, normal));
-    glVertexAttribBinding(1, 0);
-
-    glEnableVertexAttribArray(2);
-    glVertexAttribFormat(2, 2, GL_FLOAT, GL_FALSE, offsetof(Vertex, texture));
-    glVertexAttribBinding(2, 0);
- */
 
 void Renderer::setWindowContext(ContextLoadFunction func)
 {
@@ -189,6 +178,7 @@ void Renderer::setWindowContext(ContextLoadFunction func)
 
     m_pipeline = m_renderer->createPipeline(std::move(pipelineDescriptor));
     m_commandList = m_renderer->createCommandList();
+    m_defaultTexture = createTextureFromImage(g_defaultTexture);
 
     Common::EventBus::subscribeToEvent(Common::Event::WINDOW_RESIZE_EVENT, std::function([&](Common::Event, Common::WindowResizeEventContext context) {
                                            m_windowWidth = static_cast<float>(context.width);
@@ -355,11 +345,7 @@ Mesh Renderer::createMeshFromModel(const Assets::Model & model)
 
 auto Renderer::getDefaultTexture() -> ITexture &
 {
-    // TODO: Remove the statics here:
-    static uint8_t data[3] = {255, 255, 255};
-    static Assets::Image image{data, 1, 1, 3};
-    static auto texture = createTextureFromImage(image);
-    return *texture;
+    return *m_defaultTexture;
 }
 
 auto Renderer::getDefaultMaterial() -> Material

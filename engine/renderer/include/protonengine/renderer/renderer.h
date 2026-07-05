@@ -10,7 +10,7 @@
 #include "protonengine/renderer/camera.h"
 #include "protonengine/renderer/export.h"
 #include "protonengine/renderer/icommand_list.h"
-#include "protonengine/renderer/irenderer.h"
+#include "protonengine/renderer/irender_backend.h"
 #include "protonengine/renderer/itexture.h"
 #include "protonengine/renderer/light.h"
 #include "protonengine/renderer/material.h"
@@ -55,9 +55,10 @@ public:
     [[nodiscard]] auto getDefaultMaterial() -> Material;
 
 private:
-    std::unique_ptr<IRenderer> m_renderer;
+    std::unique_ptr<IRenderBackend> m_renderer;
     std::unique_ptr<ICommandList> m_commandList;
     std::unique_ptr<IPipeline> m_pipeline;
+    std::unique_ptr<ITexture> m_defaultTexture;
     IUploadContext & m_uploadContext;
 
     glm::mat4 m_projection{};
