@@ -7,31 +7,21 @@
 
 #include "protonengine/renderer/irenderer.h"
 
-#include "irenderer_backend.h"
 #include "opengl_command_list.h"
 #include "opengl_upload_context.h"
-#include "renderable_light.h"
-#include "renderable_object.h"
-
-#include <glm/glm.hpp>
-
-#include <vector>
 
 namespace ProtonEngine::Renderer::OpenGL
 {
 
-class OpenGLRenderer : public IRendererBackend
+class OpenGLRenderer : public IRenderer
 {
 public:
     ~OpenGLRenderer() override = default;
 
     void setWindowContext(ContextLoadFunction func) override;
+    void setViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height) override;
 
-    void addToRenderQueue(const Transform & transform, const Mesh & mesh, const Material & material) override;
-    void addLight(const Transform & transform, const Light & light) override;
-    void renderAllInQueue() override;
-    void setCamera(const Transform & transform, const Camera & camera) override;
-
+    [[nodiscard]] auto createCommandList() -> std::unique_ptr<ICommandList> override;
     [[nodiscard]] auto createBuffer(const BufferDescriptor & descriptor) -> std::unique_ptr<IBuffer> override;
     [[nodiscard]] auto createTexture(const TextureDescriptor & descriptor) -> std::unique_ptr<ITexture> override;
     [[nodiscard]] auto createDescriptorSet(const DescriptorSetDescriptor & descriptor) -> std::unique_ptr<IDescriptorSet> override;
@@ -41,15 +31,7 @@ public:
     [[nodiscard]] auto getUploadContext() -> IUploadContext & override;
 
 private:
-    glm::mat4 projection{};
-    glm::mat4 view{};
-
-    std::vector<RenderableObject> m_renderableObjects;
-    std::vector<RenderableLight> m_lights;
-
     OpenGLUploadContext m_uploadContext;
-    std::unique_ptr<OpenGLCommandList> m_commandList;
-    Pipeline m_pipeline;
 };
 
 } // namespace ProtonEngine::Renderer::OpenGL

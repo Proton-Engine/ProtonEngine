@@ -33,11 +33,6 @@ public:
     IBuffer & operator=(const IBuffer &) = delete;
     IBuffer(IBuffer &&) = default;
     IBuffer & operator=(IBuffer &&) = default;
-
-    virtual void bind() const noexcept = 0;
-    virtual void unbind() const noexcept = 0;
-    // [[nodiscard]] virtual int32_t verticesCount() const noexcept = 0;
-    // [[nodiscard]] virtual int32_t indicesCount() const noexcept = 0;
 };
 
 } // namespace ProtonEngine::Renderer

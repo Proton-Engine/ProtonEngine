@@ -18,7 +18,7 @@
 namespace ProtonEngine::Core
 {
 
-Window::Window(int32_t width, int32_t height, std::string_view title, Renderer::IRenderer & renderer)
+Window::Window(int32_t width, int32_t height, std::string_view title, Renderer::Renderer & renderer)
 {
     PROTON_LOG_INFO(std::format("Creating window of size {}x{} with title {}", width, height, title));
     if (!glfwInit())
