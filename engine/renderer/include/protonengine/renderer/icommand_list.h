@@ -7,7 +7,7 @@
 
 #include "protonengine/renderer/ibuffer.h"
 #include "protonengine/renderer/idescriptor_set.h"
-#include "protonengine/renderer/pipeline.h"
+#include "protonengine/renderer/ipipeline.h"
 
 namespace ProtonEngine::Renderer
 {
@@ -25,9 +25,8 @@ public:
     virtual void begin() = 0;
     virtual void end() = 0;
 
-    // TODO: Change with pipeline abstraction
-    virtual void setPipeline(const Pipeline & pipeline) = 0;
-    virtual void setVertexBuffer(const IBuffer & buffer) = 0;
+    virtual void setPipeline(const IPipeline & pipeline) = 0;
+    virtual void setVertexBuffer(const IBuffer & buffer, uint32_t slot = 0, uint32_t offset = 0) = 0;
     virtual void setIndexBuffer(const IBuffer & buffer) = 0;
     virtual void bindUniformBuffer(uint32_t slot, const IBuffer & buffer) = 0;
     virtual void drawIndexed(uint32_t indexCount) = 0;

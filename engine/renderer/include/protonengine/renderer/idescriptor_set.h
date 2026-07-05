@@ -1,5 +1,7 @@
-// Copyright © 2026. Proton Engine
-// Licensed using the MIT license
+/*
+ * Copyright © 2026. Proton Engine
+ * Licensed using the MIT license
+ */
 
 #pragma once
 
@@ -17,9 +19,6 @@ struct BufferBinding
 {
     uint32_t binding;
     IBuffer & buffer;
-
-    // uint64_t offset;
-    // uint64_t size;
 };
 
 struct TextureBinding

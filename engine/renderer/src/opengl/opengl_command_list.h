@@ -13,13 +13,13 @@ namespace ProtonEngine::Renderer::OpenGL
 class OpenGLCommandList : public ICommandList
 {
 public:
-    OpenGLCommandList();
-    ~OpenGLCommandList() override;
+    OpenGLCommandList() = default;
+    ~OpenGLCommandList() override = default;
 
     void begin() override;
     void end() override;
-    void setPipeline(const Pipeline & pipeline) override;
-    void setVertexBuffer(const IBuffer & buffer) override;
+    void setPipeline(const IPipeline & pipeline) override;
+    void setVertexBuffer(const IBuffer & buffer, uint32_t slot, uint32_t offset) override;
     void setIndexBuffer(const IBuffer & buffer) override;
     void bindUniformBuffer(uint32_t slot, const IBuffer & buffer) override;
     void drawIndexed(uint32_t indexCount) override;
@@ -27,7 +27,7 @@ public:
 
 private:
     uint32_t m_shaderProgram{};
-    uint32_t m_vao{};
+    uint32_t vertexStride{};
 };
 
 } // namespace ProtonEngine::Renderer::OpenGL
