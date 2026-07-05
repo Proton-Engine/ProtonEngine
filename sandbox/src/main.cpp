@@ -1,5 +1,5 @@
 /*
- * Copyright © 2022-2025. Proton Engine
+ * Copyright © 2022-2026. Proton Engine
  * Licensed using the MIT license
  */
 
@@ -73,16 +73,16 @@ public:
         addLayer(std::make_unique<Ui::DebugLayer>());
 
         static const auto cubeModel = Assets::AssetManager::loadModel("assets/models/cube.obj");
-        static Renderer::Mesh cubeMesh = Renderer::createMeshFromModel(cubeModel);
+        static Renderer::Mesh cubeMesh = renderer().createMeshFromModel(cubeModel);
 
         static auto image = Assets::AssetManager::readImageFromFile("assets/textures/box.png");
-        static auto texture = Renderer::createTextureFromImage(image);
+        static auto texture = renderer().createTextureFromImage(image);
 
         static auto imageSpecular = Assets::AssetManager::readImageFromFile("assets/textures/box-specular.png");
-        static auto textureSpecular = Renderer::createTextureFromImage(imageSpecular);
+        static auto textureSpecular = renderer().createTextureFromImage(imageSpecular);
 
-        static Renderer::Material materialLight{};
-        static Renderer::Material materialCube{.baseTexture = *texture, .specularColor = glm::vec3(1.0f), .specularMap = *textureSpecular, .shininess = 32};
+        static Renderer::Material materialLight = renderer().getDefaultMaterial();
+        static Renderer::Material materialCube{glm::vec3(1.0f), *texture, glm::vec3(1.0f), *textureSpecular, 32};
 
         auto camera = getScene().addEntity("MainCamera", Core::Components::TransformComponent{{0, 0, 10}, {0, 0, 0}, {1, 1, 1}});
         camera.addComponent(Core::Components::CameraComponent{Core::Components::CameraComponent::Projection::PERSPECTIVE, 0.1f, 100.0f, 60, true});

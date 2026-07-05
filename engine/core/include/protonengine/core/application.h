@@ -1,5 +1,5 @@
 /*
- * Copyright © 2022-2025. Proton Engine
+ * Copyright © 2022-2026. Proton Engine
  * Licensed using the MIT license
  */
 
@@ -7,6 +7,7 @@
 
 #include "protonengine/core/export.h"
 #include "protonengine/core/scene.h"
+#include "protonengine/renderer/renderer.h"
 #include "protonengine/ui/frame.h"
 #include "protonengine/ui/ilayer.h"
 
@@ -32,6 +33,7 @@ public:
     void setVSync(bool enabled) noexcept;
 
     [[nodiscard]] auto getScene() noexcept -> Scene &;
+    [[nodiscard]] auto renderer() noexcept -> Renderer::Renderer &;
 
 protected:
     virtual void initialize() = 0;
@@ -39,6 +41,8 @@ protected:
 
 private:
     std::unique_ptr<Window> m_window;
+    std::unique_ptr<Renderer::Renderer> m_renderer;
+
     Ui::Frame m_uiFrame;
     Scene m_scene;
 };

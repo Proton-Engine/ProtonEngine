@@ -1,5 +1,5 @@
 /*
- * Copyright © 2022-2025. Proton Engine
+ * Copyright © 2022-2026. Proton Engine
  * Licensed using the MIT license
  */
 
@@ -15,6 +15,7 @@
 #include "protonengine/core/components/light_component.h"
 #include "protonengine/core/input.h"
 #include "protonengine/renderer/irenderer.h"
+#include "protonengine/renderer/renderer.h"
 #include "protonengine/ui/debug_layer.h"
 #include "window.h"
 
@@ -27,8 +28,8 @@ Application::~Application() = default;
 void Application::run()
 {
     PROTON_LOG_DEBUG("Initializing Proton Engine systems");
-    auto & renderer = Renderer::initializeRenderer(Renderer::RendererBackend::OPENGL);
-    m_window = std::make_unique<Window>(1280, 720, "Test title", renderer);
+    m_renderer = std::make_unique<Renderer::Renderer>(Renderer::Renderer::RendererBackend::OPENGL);
+    m_window = std::make_unique<Window>(1280, 720, "Test title", *m_renderer);
     Input::connectToEventBus();
 
     PROTON_LOG_INFO("Initializing user application");
@@ -46,14 +47,14 @@ void Application::run()
             component.nativeScript->onUpdate(deltaTimeSeconds);
         });
 
-        registry.view<Components::TransformComponent, Components::CameraComponent>().each([&renderer](auto & transform, auto & camera) { renderer.setCamera(transform.transform, camera.camera); });
-        registry.view<Components::TransformComponent, Components::MeshRenderer>().each([&renderer](auto & transform, auto & meshRenderer) {
-            renderer.addToRenderQueue(transform.transform, meshRenderer.mesh, meshRenderer.material);
+        registry.view<Components::TransformComponent, Components::CameraComponent>().each([&](auto & transform, auto & camera) { m_renderer->setCamera(transform.transform, camera.camera); });
+        registry.view<Components::TransformComponent, Components::MeshRenderer>().each([&](auto & transform, auto & meshRenderer) {
+            m_renderer->addToRenderQueue(transform.transform, meshRenderer.mesh, meshRenderer.material);
         });
-        registry.view<Components::TransformComponent, Components::LightComponent>().each([&renderer](auto & transform, auto & light) {
-            renderer.addLight(transform.transform, light.light);
+        registry.view<Components::TransformComponent, Components::LightComponent>().each([&](auto & transform, auto & light) {
+            m_renderer->addLight(transform.transform, light.light);
         });
-        renderer.renderAllInQueue();
+        m_renderer->renderAllInQueue();
 
         m_uiFrame.onUpdate(deltaTimeSeconds);
         m_uiFrame.render();
@@ -63,6 +64,11 @@ void Application::run()
 auto Application::getScene() noexcept -> Scene &
 {
     return m_scene;
+}
+
+auto Application::renderer() noexcept -> Renderer::Renderer &
+{
+    return *m_renderer;
 }
 
 void Application::setVSync(bool enabled) noexcept

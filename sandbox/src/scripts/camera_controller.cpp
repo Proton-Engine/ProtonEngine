@@ -1,5 +1,5 @@
 /*
- * Copyright © 2022-2025. Proton Engine
+ * Copyright © 2022-2026. Proton Engine
  * Licensed using the MIT license
  */
 
@@ -10,7 +10,6 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include "glm/gtx/transform.hpp"
 #include "glm/vec4.hpp"
-#include "protonengine/core/components/mesh_renderer.h"
 
 #include <protonengine/core/components/transform_component.h>
 

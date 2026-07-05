@@ -1,29 +1,27 @@
-// Copyright © 2025. Proton Engine
-// Licensed using the MIT license
+/*
+ * Copyright © 2025-2026. Proton Engine
+ * Licensed using the MIT license
+ */
 
 #pragma once
 
-#include "isampler.h"
-#include "itexture.h"
-
 #include "protonengine/renderer/export.h"
+#include "protonengine/renderer/itexture.h"
 
 #include <glm/vec3.hpp>
 
 namespace ProtonEngine::Renderer
 {
 
-// TODO: Why is this here?
-[[nodiscard]] PROTONENGINE_RENDERER_EXPORT auto getDefaultTexture() -> ITexture &;
-
-struct Material
+struct PROTONENGINE_RENDERER_EXPORT Material
 {
-    glm::vec3 baseColor = glm::vec3(1.0f);
-    // TODO: Remove dependency to the irenderer.h from this file
-    ITexture & baseTexture = getDefaultTexture();
-    glm::vec3 specularColor = glm::vec3(0.5f);
-    ITexture & specularMap = getDefaultTexture();
-    float shininess = 32.0f;
+    Material(glm::vec3 baseColor, ITexture & baseTexture, glm::vec3 specularColor, ITexture & specularMap, float shininess);
+
+    glm::vec3 baseColor;
+    ITexture & baseTexture;
+    glm::vec3 specularColor;
+    ITexture & specularMap;
+    float shininess;
 };
 
 } // namespace ProtonEngine::Renderer

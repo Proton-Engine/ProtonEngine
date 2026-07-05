@@ -35,6 +35,11 @@ OpenGLCommandList::OpenGLCommandList()
     glGenVertexArrays(1, &m_vao);
 }
 
+OpenGLCommandList::~OpenGLCommandList()
+{
+    glDeleteVertexArrays(1, &m_vao);
+}
+
 void OpenGLCommandList::begin()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -74,17 +79,18 @@ void OpenGLCommandList::setVertexBuffer(const IBuffer & buffer)
 
 void OpenGLCommandList::setIndexBuffer(const IBuffer & buffer)
 {
-    buffer.bind();
+    static_cast<const OpenGL::Buffer *>(&buffer)->bind();
 }
 
 void OpenGLCommandList::bindUniformBuffer(uint32_t slot, const IBuffer & buffer)
 {
     const auto bufferId = static_cast<const OpenGL::Buffer *>(&buffer)->id();
-    const auto blockIndex = glGetUniformBlockIndex(m_shaderProgram, g_uniformBufferNames[slot]);
+    const auto blockIndex = glGetUniformBlockIndex(m_shaderProgram, g_uniformBufferNames.at(slot));
 
     if (blockIndex == GL_INVALID_INDEX)
     {
         PROTON_LOG_ERROR(std::format("Failed to get block index for name {}", g_uniformBufferNames[slot]));
+        throw std::runtime_error(std::format("Failed to get block index for name {}", g_uniformBufferNames[slot]));
     }
 
     glUniformBlockBinding(m_shaderProgram, blockIndex, slot);

@@ -14,7 +14,7 @@ class OpenGLCommandList : public ICommandList
 {
 public:
     OpenGLCommandList();
-    ~OpenGLCommandList() override = default;
+    ~OpenGLCommandList() override;
 
     void begin() override;
     void end() override;
