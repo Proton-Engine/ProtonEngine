@@ -5,12 +5,13 @@
 
 #pragma once
 
-#include "material.h"
 #include "protonengine/renderer/export.h"
 #include "protonengine/renderer/icommand_list.h"
 #include "protonengine/renderer/idescriptor_set.h"
+#include "protonengine/renderer/ipipeline.h"
 #include "protonengine/renderer/ishader.h"
 #include "protonengine/renderer/iupload_context.h"
+#include "protonengine/renderer/material.h"
 #include "protonengine/renderer/mesh.h"
 
 namespace ProtonEngine::Renderer
@@ -31,6 +32,7 @@ public:
     virtual void setViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height) = 0;
 
     [[nodiscard]] virtual auto createCommandList() -> std::unique_ptr<ICommandList> = 0;
+    [[nodiscard]] virtual auto createPipeline(PipelineDescriptor && descriptor) -> std::unique_ptr<IPipeline> = 0;
     [[nodiscard]] virtual auto createBuffer(const BufferDescriptor & descriptor) -> std::unique_ptr<IBuffer> = 0;
     [[nodiscard]] virtual auto createTexture(const TextureDescriptor & descriptor) -> std::unique_ptr<ITexture> = 0;
     [[nodiscard]] virtual auto createDescriptorSet(const DescriptorSetDescriptor & descriptor) -> std::unique_ptr<IDescriptorSet> = 0;

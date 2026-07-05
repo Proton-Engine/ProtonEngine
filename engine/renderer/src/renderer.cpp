@@ -139,17 +139,55 @@ Renderer::Renderer(RendererBackend rendererBackend) : m_renderer(initializeRende
 {
 }
 
+/*
+*    glEnableVertexAttribArray(0);
+    glVertexAttribFormat(0, 3, GL_FLOAT, GL_FALSE, offsetof(Vertex, position));
+    glVertexAttribBinding(0, 0);
+
+    glEnableVertexAttribArray(1);
+    glVertexAttribFormat(1, 3, GL_FLOAT, GL_FALSE, offsetof(Vertex, normal));
+    glVertexAttribBinding(1, 0);
+
+    glEnableVertexAttribArray(2);
+    glVertexAttribFormat(2, 2, GL_FLOAT, GL_FALSE, offsetof(Vertex, texture));
+    glVertexAttribBinding(2, 0);
+ */
+
 void Renderer::setWindowContext(ContextLoadFunction func)
 {
     m_renderer->setWindowContext(func);
 
     const auto vertexSource = loadShaderSourceFromDisk("./assets/shaders/shader.vert");
     const auto fragmentSource = loadShaderSourceFromDisk("./assets/shaders/shader.frag");
-    m_pipeline = Pipeline{m_renderer->createShader({"shader", {
-                                                                  {ShaderType::Vertex, vertexSource},
-                                                                  {ShaderType::Fragment, fragmentSource},
-                                                              }})};
 
+    PipelineDescriptor pipelineDescriptor{VertexLayoutDescriptor{
+                                              sizeof(Vertex),
+                                              {VertexAttributeDescriptor{
+                                                   .location = 0,
+                                                   .format = VertexFormat::Float3,
+                                                   .offset = offsetof(Vertex, position),
+                                                   .binding = 0,
+
+                                               },
+                                               VertexAttributeDescriptor{
+                                                   .location = 1,
+                                                   .format = VertexFormat::Float3,
+                                                   .offset = offsetof(Vertex, normal),
+                                                   .binding = 0,
+                                               },
+                                               VertexAttributeDescriptor{
+                                                   .location = 2,
+                                                   .format = VertexFormat::Float2,
+                                                   .offset = offsetof(Vertex, texture),
+                                                   .binding = 0,
+
+                                               }}},
+                                          m_renderer->createShader({"shader", {
+                                                                                  {ShaderType::Vertex, vertexSource},
+                                                                                  {ShaderType::Fragment, fragmentSource},
+                                                                              }})};
+
+    m_pipeline = m_renderer->createPipeline(std::move(pipelineDescriptor));
     m_commandList = m_renderer->createCommandList();
 
     Common::EventBus::subscribeToEvent(Common::Event::WINDOW_RESIZE_EVENT, std::function([&](Common::Event, Common::WindowResizeEventContext context) {
@@ -172,7 +210,7 @@ void Renderer::addLight(const Transform & transform, const Light & light)
 void Renderer::renderAllInQueue()
 {
     m_commandList->begin();
-    m_commandList->setPipeline(m_pipeline);
+    m_commandList->setPipeline(*m_pipeline);
 
     Lights lights{
         getPointLight(m_lights, m_view),

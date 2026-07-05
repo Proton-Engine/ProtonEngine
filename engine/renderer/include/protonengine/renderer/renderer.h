@@ -57,8 +57,8 @@ public:
 private:
     std::unique_ptr<IRenderer> m_renderer;
     std::unique_ptr<ICommandList> m_commandList;
+    std::unique_ptr<IPipeline> m_pipeline;
     IUploadContext & m_uploadContext;
-    Pipeline m_pipeline;
 
     glm::mat4 m_projection{};
     glm::mat4 m_view{};

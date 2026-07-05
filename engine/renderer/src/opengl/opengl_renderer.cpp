@@ -7,6 +7,7 @@
 
 #include "opengl_buffer.h"
 #include "opengl_descriptor_set.h"
+#include "opengl_pipeline.h"
 #include "opengl_sampler.h"
 #include "opengl_shader.h"
 #include "opengl_texture.h"
@@ -69,6 +70,11 @@ void OpenGLRenderer::setWindowContext(ContextLoadFunction func)
 void OpenGLRenderer::setViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height)
 {
     glViewport(x, y, width, height);
+}
+
+auto OpenGLRenderer::createPipeline(PipelineDescriptor && descriptor) -> std::unique_ptr<IPipeline>
+{
+    return std::make_unique<OpenGLPipeline>(std::move(descriptor));
 }
 
 auto OpenGLRenderer::createCommandList() -> std::unique_ptr<ICommandList>

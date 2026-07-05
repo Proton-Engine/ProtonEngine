@@ -7,6 +7,7 @@
 
 #include "opengl_buffer.h"
 #include "opengl_descriptor_set.h"
+#include "opengl_pipeline.h"
 #include "opengl_sampler.h"
 #include "opengl_shader.h"
 #include "protonengine/common/logger.h"
@@ -15,6 +16,7 @@
 
 #include <array>
 #include <format>
+#include <stdexcept>
 
 namespace ProtonEngine::Renderer::OpenGL
 {
@@ -30,16 +32,6 @@ constexpr std::array g_uniformBufferNames = {
 
 } // namespace
 
-OpenGLCommandList::OpenGLCommandList()
-{
-    glGenVertexArrays(1, &m_vao);
-}
-
-OpenGLCommandList::~OpenGLCommandList()
-{
-    glDeleteVertexArrays(1, &m_vao);
-}
-
 void OpenGLCommandList::begin()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -51,30 +43,25 @@ void OpenGLCommandList::end()
     // Handle state?
 }
 
-void OpenGLCommandList::setPipeline(const Pipeline & pipeline)
+void OpenGLCommandList::setPipeline(const IPipeline & pipeline)
 {
-    const auto openglShader = static_cast<const OpenGLShader *>(pipeline.shader.get());
-    openglShader->enable();
-    m_shaderProgram = openglShader->programId();
+    const auto & openglPipeline = static_cast<const OpenGLPipeline &>(pipeline);
+    openglPipeline.shader().enable();
+    m_shaderProgram = openglPipeline.shader().programId();
+    vertexStride = openglPipeline.stride();
 
-    glBindVertexArray(m_vao);
-    glEnableVertexAttribArray(0);
-    glVertexAttribFormat(0, 3, GL_FLOAT, GL_FALSE, offsetof(Vertex, position));
-    glVertexAttribBinding(0, 0);
-
-    glEnableVertexAttribArray(1);
-    glVertexAttribFormat(1, 3, GL_FLOAT, GL_FALSE, offsetof(Vertex, normal));
-    glVertexAttribBinding(1, 0);
-
-    glEnableVertexAttribArray(2);
-    glVertexAttribFormat(2, 2, GL_FLOAT, GL_FALSE, offsetof(Vertex, texture));
-    glVertexAttribBinding(2, 0);
+    glBindVertexArray(openglPipeline.vao());
 }
 
-void OpenGLCommandList::setVertexBuffer(const IBuffer & buffer)
+void OpenGLCommandList::setVertexBuffer(const IBuffer & buffer, uint32_t slot, uint32_t offset)
 {
+    if (slot != 0) [[unlikely]]
+    {
+        throw std::runtime_error("Only vertex attribute binding 0 is supported");
+    }
+
     const auto bufferHandle = static_cast<const OpenGL::Buffer *>(&buffer)->id();
-    glBindVertexBuffer(0, bufferHandle, 0, sizeof(Vertex));
+    glBindVertexBuffer(slot, bufferHandle, offset, vertexStride);
 }
 
 void OpenGLCommandList::setIndexBuffer(const IBuffer & buffer)

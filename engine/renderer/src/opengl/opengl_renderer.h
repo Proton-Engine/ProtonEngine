@@ -21,6 +21,7 @@ public:
     void setWindowContext(ContextLoadFunction func) override;
     void setViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height) override;
 
+    [[nodiscard]] auto createPipeline(PipelineDescriptor && descriptor) -> std::unique_ptr<IPipeline> override;
     [[nodiscard]] auto createCommandList() -> std::unique_ptr<ICommandList> override;
     [[nodiscard]] auto createBuffer(const BufferDescriptor & descriptor) -> std::unique_ptr<IBuffer> override;
     [[nodiscard]] auto createTexture(const TextureDescriptor & descriptor) -> std::unique_ptr<ITexture> override;
