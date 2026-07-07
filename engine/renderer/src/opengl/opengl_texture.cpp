@@ -48,7 +48,7 @@ auto OpenGLTexture::getDescriptor() const -> TextureDescriptor
 
 void OpenGLTexture::bind(uint32_t slot) const noexcept
 {
-    assert(GL_TEXTURE0 + slot < m_maxTextureUnits);
+    assert(slot < m_maxTextureUnits);
 
     glActiveTexture(GL_TEXTURE0 + slot);
     glBindTexture(GL_TEXTURE_2D, m_textureID);
@@ -56,7 +56,7 @@ void OpenGLTexture::bind(uint32_t slot) const noexcept
 
 void OpenGLTexture::unbind(uint32_t slot) const noexcept
 {
-    assert(GL_TEXTURE0 + slot < m_maxTextureUnits);
+    assert(slot < m_maxTextureUnits);
 
     glActiveTexture(GL_TEXTURE0 + slot);
     glBindTexture(GL_TEXTURE_2D, 0);

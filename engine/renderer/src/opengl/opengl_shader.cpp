@@ -65,6 +65,7 @@ namespace
     {
         const auto error = getErrorFromShaderCompilation(shaderId);
         PROTON_LOG_ERROR(error);
+        glDeleteShader(shaderId);
         throw std::runtime_error("Failed to compile shader");
     }
 
@@ -93,6 +94,12 @@ OpenGLShader::OpenGLShader(const ShaderDescriptor & descriptor)
     {
         const auto error = getErrorFromProgramLinking(m_programId);
         PROTON_LOG_ERROR(std::format("Linking shader {} gave the following error: {}", m_descriptor.name, error));
+        for (const auto shaderId : m_shaderIds)
+        {
+            glDetachShader(m_programId, shaderId);
+            glDeleteShader(shaderId);
+        }
+        glDeleteProgram(m_programId);
         throw std::runtime_error("Failed to link shader");
     }
 
