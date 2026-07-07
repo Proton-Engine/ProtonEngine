@@ -15,8 +15,15 @@ namespace ProtonEngine::Renderer
 
 struct PROTONENGINE_RENDERER_EXPORT Material
 {
-    Material(glm::vec3 baseColor, ITexture & baseTexture, glm::vec3 specularColor, ITexture & specularMap, float shininess);
-
+    Material(glm::vec3 baseColor, ITexture & baseTexture, glm::vec3 specularColor, ITexture & specularMap, float shininess)
+        : baseColor(baseColor)
+        , baseTexture(baseTexture)
+        , specularColor(specularColor)
+        , specularMap(specularMap)
+        , shininess(shininess)
+    {
+    }
+    
     glm::vec3 baseColor;
     ITexture & baseTexture;
     glm::vec3 specularColor;

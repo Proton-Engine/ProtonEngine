@@ -68,15 +68,14 @@ auto Application::getScene() noexcept -> Scene &
 
 auto Application::renderer() noexcept -> Renderer::Renderer &
 {
+    assert(m_renderer);
     return *m_renderer;
 }
 
 void Application::setVSync(bool enabled) noexcept
 {
-    if (m_window)
-    {
-        m_window->setVSync(enabled);
-    }
+    assert(m_window);
+    m_window->setVSync(enabled);
 }
 
 void Application::addLayer(std::unique_ptr<Ui::Layer> layer)

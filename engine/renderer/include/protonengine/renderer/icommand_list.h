@@ -31,8 +31,6 @@ public:
     virtual void bindUniformBuffer(uint32_t slot, const IBuffer & buffer) = 0;
     virtual void drawIndexed(uint32_t indexCount) = 0;
     virtual void bindDescriptorSet(const IDescriptorSet & descriptorSet) = 0;
-
-    // virtual void Draw(uint32_t vertexCount, uint32_t firstVertex = 0) = 0;
 };
 
 } // namespace ProtonEngine::Renderer

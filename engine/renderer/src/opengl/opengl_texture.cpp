@@ -1,5 +1,7 @@
-// Copyright © 2026. Proton Engine
-// Licensed using the MIT license
+/*
+ * Copyright © 2026. Proton Engine
+ * Licensed using the MIT license
+ */
 
 #include "opengl_texture.h"
 
@@ -13,9 +15,10 @@
 namespace ProtonEngine::Renderer::OpenGL
 {
 
-OpenGLTexture::OpenGLTexture(const TextureDescriptor & descriptor) : m_descriptor{descriptor}
+OpenGLTexture::OpenGLTexture(const TextureDescriptor & descriptor)
+    : m_descriptor{descriptor}
 {
-    PROTON_LOG_DEBUG(std::format("Loading image {} into texture buffers", "__insert_image_name__"));
+    PROTON_LOG_DEBUG(std::format("Loading image into texture buffers"));
 
     switch (descriptor.format)
     {
@@ -30,6 +33,7 @@ OpenGLTexture::OpenGLTexture(const TextureDescriptor & descriptor) : m_descripto
     }
 
     glGenTextures(1, &m_textureID);
+    glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &m_maxTextureUnits);
 }
 
 OpenGLTexture::~OpenGLTexture()
@@ -44,7 +48,7 @@ auto OpenGLTexture::getDescriptor() const -> TextureDescriptor
 
 void OpenGLTexture::bind(uint32_t slot) const noexcept
 {
-    assert(GL_TEXTURE0 + slot < GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS);
+    assert(GL_TEXTURE0 + slot < m_maxTextureUnits);
 
     glActiveTexture(GL_TEXTURE0 + slot);
     glBindTexture(GL_TEXTURE_2D, m_textureID);
@@ -52,7 +56,7 @@ void OpenGLTexture::bind(uint32_t slot) const noexcept
 
 void OpenGLTexture::unbind(uint32_t slot) const noexcept
 {
-    assert(GL_TEXTURE0 + slot < GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS);
+    assert(GL_TEXTURE0 + slot < m_maxTextureUnits);
 
     glActiveTexture(GL_TEXTURE0 + slot);
     glBindTexture(GL_TEXTURE_2D, 0);

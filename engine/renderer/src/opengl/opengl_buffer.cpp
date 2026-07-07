@@ -1,5 +1,5 @@
 /*
- * Copyright © 2025-2026. Proton Engine
+ * Copyright © 2026. Proton Engine
  * Licensed using the MIT license
  */
 
