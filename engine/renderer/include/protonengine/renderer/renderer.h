@@ -25,7 +25,6 @@
 namespace ProtonEngine::Renderer
 {
 
-
 class PROTONENGINE_RENDERER_EXPORT Renderer
 {
 public:

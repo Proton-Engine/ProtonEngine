@@ -22,6 +22,7 @@ using ContextLoadFunction = void (*(*)(const char *))(void);
 class PROTONENGINE_RENDERER_EXPORT IRenderBackend
 {
 public:
+    IRenderBackend() = default;
     virtual ~IRenderBackend() = default;
     IRenderBackend(IRenderBackend &) = delete;
     IRenderBackend(IRenderBackend &&) = delete;
@@ -40,9 +41,6 @@ public:
     [[nodiscard]] virtual auto createShader(const ShaderDescriptor & descriptor) -> std::unique_ptr<IShader> = 0;
 
     [[nodiscard]] virtual auto getUploadContext() -> IUploadContext & = 0;
-
-protected:
-    IRenderBackend() = default;
 };
 
 } // namespace ProtonEngine::Renderer

@@ -62,6 +62,11 @@ namespace
     std::stringstream shaderSource;
     std::string line;
 
+    if (!fileStream.is_open())
+    {
+        throw std::runtime_error(std::format("Failed to open shader file with path {}", fileName));
+    }
+
     while (std::getline(fileStream, line))
     {
         shaderSource << line << "\n";
@@ -138,7 +143,9 @@ Assets::Image g_defaultTexture{g_data, 1, 1, 3};
 
 } // namespace
 
-Renderer::Renderer(RendererBackend rendererBackend) : m_renderer(initializeRenderer(rendererBackend)), m_uploadContext(m_renderer->getUploadContext())
+Renderer::Renderer(RendererBackend rendererBackend)
+    : m_renderer(initializeRenderer(rendererBackend))
+    , m_uploadContext(m_renderer->getUploadContext())
 {
 }
 
@@ -291,6 +298,8 @@ void Renderer::setCamera(const Transform & transform, const Camera & camera)
 
 std::unique_ptr<ITexture> Renderer::createTextureFromImage(const Assets::Image & image)
 {
+    assert(image.getChannels() == 3 || image.getChannels() == 4);
+
     // TODO: Remove this hacky way of loading textures
     const TextureDescriptor descriptor{
         .width = static_cast<uint32_t>(image.getWidth()),

@@ -34,7 +34,7 @@ namespace
     int InfoLogLength;
 
     glGetShaderiv(shaderId, GL_INFO_LOG_LENGTH, &InfoLogLength);
-    std::string error(InfoLogLength + 1, ' ');
+    std::string error(InfoLogLength, ' ');
     glGetShaderInfoLog(shaderId, InfoLogLength, nullptr, error.data());
 
     return error;
@@ -45,7 +45,7 @@ namespace
     int InfoLogLength;
 
     glGetProgramiv(programId, GL_INFO_LOG_LENGTH, &InfoLogLength);
-    std::string error(InfoLogLength + 1, ' ');
+    std::string error(InfoLogLength, ' ');
     glGetProgramInfoLog(programId, InfoLogLength, nullptr, error.data());
 
     return error;
@@ -65,6 +65,7 @@ namespace
     {
         const auto error = getErrorFromShaderCompilation(shaderId);
         PROTON_LOG_ERROR(error);
+        throw std::runtime_error("Failed to compile shader");
     }
 
     return shaderId;
@@ -72,7 +73,8 @@ namespace
 
 } // namespace
 
-OpenGLShader::OpenGLShader(const ShaderDescriptor & descriptor) : m_descriptor(descriptor)
+OpenGLShader::OpenGLShader(const ShaderDescriptor & descriptor)
+    : m_descriptor(descriptor)
 {
     m_programId = glCreateProgram();
 
@@ -91,7 +93,7 @@ OpenGLShader::OpenGLShader(const ShaderDescriptor & descriptor) : m_descriptor(d
     {
         const auto error = getErrorFromProgramLinking(m_programId);
         PROTON_LOG_ERROR(std::format("Linking shader {} gave the following error: {}", m_descriptor.name, error));
-        exit(-1);
+        throw std::runtime_error("Failed to link shader");
     }
 
     PROTON_LOG_INFO(std::format("Succesfully compiled shader: {}", m_descriptor.name));

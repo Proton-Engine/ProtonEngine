@@ -28,6 +28,8 @@ private:
     uint32_t m_dataFormat{};
     uint32_t m_internalDataFormat{};
     TextureDescriptor m_descriptor{};
+
+    int m_maxTextureUnits{};
 };
 
 } // namespace ProtonEngine::Renderer::OpenGL
