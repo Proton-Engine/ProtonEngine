@@ -13,9 +13,11 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include "opengl/opengl_buffer.h"
 
+#include <algorithm>
 #include <format>
 #include <fstream>
 #include <glm/gtx/hash.hpp>
+#include <numbers>
 #include <sstream>
 
 #include <stdexcept>
