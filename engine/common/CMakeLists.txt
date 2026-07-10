@@ -4,7 +4,7 @@ file(GLOB_RECURSE COMMON_HEADERS CONFIGURE_DEPENDS RELATIVE_PATH ${CMAKE_CURRENT
 source_group(src FILES ${COMMON_SOURCES})
 source_group(include FILES ${COMMON_HEADERS})
 
-add_library(ProtonEngineCommon SHARED)
+add_library(ProtonEngineCommon OBJECT)
 add_library(ProtonEngine::Common ALIAS ProtonEngineCommon)
 generate_export_header(ProtonEngineCommon BASE_NAME PROTONENGINE_COMMON EXPORT_FILE_NAME protonengine/common/export.h)
 
