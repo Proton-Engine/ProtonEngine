@@ -17,9 +17,9 @@ struct MeshRenderer
     Renderer::Mesh & mesh;
     Renderer::Material & material;
 
-    MeshRenderer(Renderer::Mesh & mesh, Renderer::Material & material) :
-        mesh(mesh),
-        material(material)
+    MeshRenderer(Renderer::Mesh & mesh, Renderer::Material & material)
+        : mesh(mesh)
+        , material(material)
     {
     }
 };

@@ -5,8 +5,8 @@
 
 #pragma once
 
-#include "ilayer.h"
 #include "protonengine/export.h"
+#include "protonengine/ui/ilayer.h"
 
 #include <chrono>
 
@@ -21,9 +21,9 @@ public:
     void onUpdate(float timeStep) override;
 
 private:
-    int m_totalFrames;
-    int m_fps;
-    std::chrono::microseconds m_frametime;
+    int m_totalFrames{};
+    int m_fps{};
+    std::chrono::microseconds m_frametime{};
     std::chrono::time_point<std::chrono::high_resolution_clock> m_lastTimePoint;
     std::chrono::time_point<std::chrono::high_resolution_clock> m_nextTimePoint;
 };

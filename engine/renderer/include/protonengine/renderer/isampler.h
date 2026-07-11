@@ -3,7 +3,6 @@
 
 #pragma once
 
-// #include "protonengine/renderer/ibuffer.h"
 #include "protonengine/renderer/itexture.h"
 
 #include <cinttypes>

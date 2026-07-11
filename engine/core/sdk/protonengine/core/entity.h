@@ -6,8 +6,8 @@
 #pragma once
 
 #include "protonengine/core/components/script_component.h"
-#include "protonengine/export.h"
 #include "protonengine/core/scene.h"
+#include "protonengine/export.h"
 
 #include <entt/entity/entity.hpp>
 

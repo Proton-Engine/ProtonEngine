@@ -6,10 +6,10 @@
 #pragma once
 
 #include "protonengine/export.h"
-#include "protonengine/core/scene.h"
 #include "protonengine/renderer/renderer.h"
 #include "protonengine/ui/frame.h"
 #include "protonengine/ui/ilayer.h"
+#include "scene.h"
 
 #include <memory>
 #include <vector>

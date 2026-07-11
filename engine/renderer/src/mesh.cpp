@@ -11,10 +11,10 @@
 namespace ProtonEngine::Renderer
 {
 
-Mesh::Mesh(std::unique_ptr<IBuffer> vertexBuffer, std::unique_ptr<IBuffer> indexBuffer, size_t indicesCount) :
-    m_vertexBuffer(std::move(vertexBuffer)),
-    m_indexBuffer(std::move(indexBuffer)),
-    m_indicesCount(indicesCount)
+Mesh::Mesh(std::unique_ptr<IBuffer> vertexBuffer, std::unique_ptr<IBuffer> indexBuffer, size_t indicesCount)
+    : m_vertexBuffer(std::move(vertexBuffer))
+    , m_indexBuffer(std::move(indexBuffer))
+    , m_indicesCount(indicesCount)
 {
 }
 

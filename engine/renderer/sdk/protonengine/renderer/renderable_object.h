@@ -5,9 +5,9 @@
 
 #pragma once
 
-#include "protonengine/renderer/material.h"
-#include "protonengine/renderer/mesh.h"
-#include "protonengine/renderer/transform.h"
+#include "material.h"
+#include "mesh.h"
+#include "transform.h"
 
 namespace ProtonEngine::Renderer
 {

@@ -1,31 +1,42 @@
-file(GLOB_RECURSE ASSET_SOURCES CONFIGURE_DEPENDS src/*.h src/*.cpp)
-file(GLOB_RECURSE ASSET_HEADERS CONFIGURE_DEPENDS RELATIVE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/include include/*.h)
+set(MODULE_NAME Assets)
+set(FULL_MODULE_NAME ProtonEngine${MODULE_NAME})
+set(ALIAS_MODULE_NAME ProtonEngine::${MODULE_NAME})
 
-source_group(src FILES ${ASSET_SOURCES})
-source_group(include FILES ${ASSET_HEADERS})
+file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS src/*.h src/*.cpp)
+file(GLOB_RECURSE HEADERS CONFIGURE_DEPENDS RELATIVE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/include include/*.h)
+file(GLOB_RECURSE INSTALL_HEADERS CONFIGURE_DEPENDS RELATIVE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/sdk sdk/*.h)
 
-add_library(ProtonEngineAssets OBJECT)
-add_library(ProtonEngine::Assets ALIAS ProtonEngineAssets)
+source_group(src FILES ${SOURCES})
+source_group(include FILES ${HEADERS})
+source_group(sdk FILES ${INSTALL_HEADERS})
+
+add_library(${FULL_MODULE_NAME} OBJECT)
+add_library(${ALIAS_MODULE_NAME} ALIAS ${FULL_MODULE_NAME})
 
 target_sources(
-        ProtonEngineAssets
-        PRIVATE ${ASSET_SOURCES}
-        PUBLIC
+    ${FULL_MODULE_NAME}
+    PRIVATE
+        ${SOURCES}
+    PUBLIC
         FILE_SET HEADERS
         BASE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/include
-        FILES ${ASSET_HEADERS}
-        FILE_SET generated_headers
-        TYPE HEADERS
-        BASE_DIRS $<TARGET_PROPERTY:ProtonEngineAssets,BINARY_DIR>
-#        FILES ${CMAKE_CURRENT_BINARY_DIR}/protonengine/assets/export.h
+        FILES ${HEADERS}
+    PUBLIC
+        FILE_SET installed_headers
+            TYPE HEADERS
+            BASE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/sdk
+            FILES ${INSTALL_HEADERS}
 )
 
-target_include_directories(ProtonEngineAssets
-        PUBLIC include
-        PRIVATE src ${CMAKE_CURRENT_BINARY_DIR}
+target_include_directories(${FULL_MODULE_NAME}
+        PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/sdk>
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+        PRIVATE src
 )
 
-target_link_libraries(ProtonEngineAssets
+target_link_libraries(${FULL_MODULE_NAME}
         PUBLIC
         ProtonEngine::Export
         PRIVATE
@@ -34,16 +45,6 @@ target_link_libraries(ProtonEngineAssets
 )
 
 install(
-        TARGETS ProtonEngineAssets
-        FILE_SET HEADERS
-        FILE_SET generated_headers
+        TARGETS ${FULL_MODULE_NAME}
+        FILE_SET installed_headers
 )
-
-# TODO: Use these functions at some point to generate the config cmake files :)
-#include(CMakePackageConfigHelpers)
-#write_basic_package_version_file(
-#        "${CMAKE_INSTALL_PREFIX}/cmake/ProtonEngineAssetsConfig.cmake"
-#        COMPATIBILITY AnyNewerVersion
-#)
-#
-#configure_package_config_file()
