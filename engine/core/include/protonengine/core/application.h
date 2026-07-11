@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "protonengine/core/export.h"
+#include "protonengine/export.h"
 #include "protonengine/core/scene.h"
 #include "protonengine/renderer/renderer.h"
 #include "protonengine/ui/frame.h"
@@ -19,7 +19,7 @@ namespace ProtonEngine::Core
 
 class Window;
 
-class PROTONENGINE_CORE_EXPORT Application
+class PROTONENGINE_EXPORT Application
 {
 public:
     Application();

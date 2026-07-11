@@ -5,7 +5,6 @@
 
 #pragma once
 
-#include "protonengine/renderer/export.h"
 #include "protonengine/renderer/itexture.h"
 
 #include <glm/vec3.hpp>
@@ -13,7 +12,7 @@
 namespace ProtonEngine::Renderer
 {
 
-struct PROTONENGINE_RENDERER_EXPORT Material
+struct Material
 {
     Material(glm::vec3 baseColor, ITexture & baseTexture, glm::vec3 specularColor, ITexture & specularMap, float shininess)
         : baseColor(baseColor)

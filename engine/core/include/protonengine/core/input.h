@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "protonengine/core/export.h"
+#include "protonengine/export.h"
 
 #include "protonengine/common/event_bus.h"
 #include "protonengine/common/key_codes.h"
@@ -19,7 +19,7 @@
 namespace ProtonEngine::Core
 {
 
-class PROTONENGINE_CORE_EXPORT Input
+class PROTONENGINE_EXPORT Input
 {
 public:
     Input() = delete;
@@ -31,9 +31,6 @@ public:
     static void onWindowResize(Common::Event event, Common::WindowResizeEventContext eventContext) noexcept;
 
     [[nodiscard]] static Common::KeyState getKeyState(Common::Key key) noexcept;
-
-private:
-    static std::array<Common::KeyState, GLFW_KEY_LAST> m_keyStates;
 };
 
 } // namespace ProtonEngine::Core

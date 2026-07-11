@@ -6,7 +6,8 @@ source_group(include FILES ${RENDERER_HEADERS})
 
 add_library(ProtonEngineRenderer OBJECT)
 add_library(ProtonEngine::Renderer ALIAS ProtonEngineRenderer)
-generate_export_header(ProtonEngineRenderer BASE_NAME PROTONENGINE_RENDERER EXPORT_FILE_NAME protonengine/renderer/export.h)
+
+target_link_libraries(ProtonEngineRenderer PUBLIC ProtonEngine::Export)
 
 target_sources(
         ProtonEngineRenderer
@@ -18,7 +19,6 @@ target_sources(
         FILE_SET generated_headers
         TYPE HEADERS
         BASE_DIRS $<TARGET_PROPERTY:ProtonEngineRenderer,BINARY_DIR>
-        FILES ${CMAKE_CURRENT_BINARY_DIR}/protonengine/renderer/export.h
 )
 
 target_include_directories(ProtonEngineRenderer
@@ -29,6 +29,7 @@ target_include_directories(ProtonEngineRenderer
 target_link_libraries(ProtonEngineRenderer
         PUBLIC
         ProtonEngine::Assets
+        ProtonEngine::Export
         PRIVATE
         glad::glad
         ProtonEngine::Common

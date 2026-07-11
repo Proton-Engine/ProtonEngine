@@ -13,7 +13,7 @@
 namespace ProtonEngine::Core
 {
 
-std::array<Common::KeyState, GLFW_KEY_LAST> Input::m_keyStates;
+static std::array<Common::KeyState, GLFW_KEY_LAST> g_keyStates;
 
 void Input::connectToEventBus()
 {
@@ -25,7 +25,7 @@ void Input::connectToEventBus()
 
 void Input::onKeyBoardEvent(Common::Event /*event*/, Common::KeyEventEventContext eventContext) noexcept
 {
-    m_keyStates[eventContext.key] = eventContext.state;
+    g_keyStates[eventContext.key] = eventContext.state;
 }
 
 void Input::onMouseMoveEvent(Common::Event /*event*/, Common::MouseMoveEventContext /*eventContext*/) noexcept
@@ -38,7 +38,7 @@ void Input::onWindowResize(Common::Event /*event*/, Common::WindowResizeEventCon
 
 Common::KeyState Input::getKeyState(Common::Key key) noexcept
 {
-    return m_keyStates[key];
+    return g_keyStates[key];
 }
 
 } // namespace ProtonEngine::Core

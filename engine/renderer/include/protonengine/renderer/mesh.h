@@ -5,16 +5,15 @@
 
 #pragma once
 
-#include "protonengine/renderer/export.h"
+#include "protonengine/export.h"
 #include "protonengine/renderer/ibuffer.h"
 
-#include <cinttypes>
 #include <memory>
 
 namespace ProtonEngine::Renderer
 {
 
-class PROTONENGINE_RENDERER_EXPORT Mesh
+class PROTONENGINE_EXPORT Mesh
 {
 public:
     explicit Mesh(std::unique_ptr<IBuffer> vertexBuffer, std::unique_ptr<IBuffer> indexBuffer, size_t indicesCount);

@@ -5,12 +5,12 @@
 
 #pragma once
 
-#include "protonengine/ui/export.h"
+#include "protonengine/export.h"
 
 namespace ProtonEngine::Ui
 {
 
-class PROTONENGINE_UI_EXPORT Layer
+class PROTONENGINE_EXPORT Layer
 {
 public:
     Layer() = default;

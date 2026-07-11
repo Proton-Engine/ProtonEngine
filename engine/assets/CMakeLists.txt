@@ -6,7 +6,6 @@ source_group(include FILES ${ASSET_HEADERS})
 
 add_library(ProtonEngineAssets OBJECT)
 add_library(ProtonEngine::Assets ALIAS ProtonEngineAssets)
-generate_export_header(ProtonEngineAssets BASE_NAME PROTONENGINE_ASSETS EXPORT_FILE_NAME protonengine/assets/export.h)
 
 target_sources(
         ProtonEngineAssets
@@ -18,7 +17,7 @@ target_sources(
         FILE_SET generated_headers
         TYPE HEADERS
         BASE_DIRS $<TARGET_PROPERTY:ProtonEngineAssets,BINARY_DIR>
-        FILES ${CMAKE_CURRENT_BINARY_DIR}/protonengine/assets/export.h
+#        FILES ${CMAKE_CURRENT_BINARY_DIR}/protonengine/assets/export.h
 )
 
 target_include_directories(ProtonEngineAssets
@@ -27,6 +26,8 @@ target_include_directories(ProtonEngineAssets
 )
 
 target_link_libraries(ProtonEngineAssets
+        PUBLIC
+        ProtonEngine::Export
         PRIVATE
         ProtonEngine::Common
         stb::stb

@@ -8,7 +8,7 @@
 #include "protonengine/assets/image.h"
 #include "protonengine/assets/model.h"
 #include "protonengine/renderer/camera.h"
-#include "protonengine/renderer/export.h"
+#include "protonengine/export.h"
 #include "protonengine/renderer/icommand_list.h"
 #include "protonengine/renderer/irender_backend.h"
 #include "protonengine/renderer/itexture.h"
@@ -25,7 +25,7 @@
 namespace ProtonEngine::Renderer
 {
 
-class PROTONENGINE_RENDERER_EXPORT Renderer
+class PROTONENGINE_EXPORT Renderer
 {
 public:
     enum class RendererBackend
