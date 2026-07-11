@@ -25,12 +25,9 @@ target_sources(
 
 target_include_directories(ProtonEngine
         PUBLIC
-#                $<INSTALL_INTERFACE:$<TARGET_PROPERTY:ProtonEngineExport,INTERFACE_INCLUDE_DIRECTORIES>>
-#                $<INSTALL_INTERFACE:$<TARGET_PROPERTY:ProtonEngineAssets,INTERFACE_INCLUDE_DIRECTORIES>>
-#        $<INSTALL_INTERFACE:$<TARGET_PROPERTY:ProtonEngineCore,INTERFACE_INCLUDE_DIRECTORIES>>
-#        $<INSTALL_INTERFACE:$<TARGET_PROPERTY:ProtonEngineRenderer,INTERFACE_INCLUDE_DIRECTORIES>>
-#        $<INSTALL_INTERFACE:$<TARGET_PROPERTY:ProtonEngineUi,INTERFACE_INCLUDE_DIRECTORIES>>
+        $<TARGET_PROPERTY:ProtonEngineExport,INTERFACE_INCLUDE_DIRECTORIES>
         $<TARGET_PROPERTY:ProtonEngineAssets,INTERFACE_INCLUDE_DIRECTORIES>
+        $<TARGET_PROPERTY:ProtonEngineCommon,INTERFACE_INCLUDE_DIRECTORIES>
         $<TARGET_PROPERTY:ProtonEngineCore,INTERFACE_INCLUDE_DIRECTORIES>
         $<TARGET_PROPERTY:ProtonEngineRenderer,INTERFACE_INCLUDE_DIRECTORIES>
         $<TARGET_PROPERTY:ProtonEngineUi,INTERFACE_INCLUDE_DIRECTORIES>
@@ -39,6 +36,7 @@ target_include_directories(ProtonEngine
 target_link_libraries(ProtonEngine
         PRIVATE
         ProtonEngine::Assets
+        ProtonEngine::Common
         ProtonEngine::Core
         ProtonEngine::Renderer
         ProtonEngine::Ui

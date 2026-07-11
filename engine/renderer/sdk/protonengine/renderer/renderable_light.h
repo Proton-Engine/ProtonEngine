@@ -4,7 +4,7 @@
 #pragma once
 
 #include "protonengine/renderer/light.h"
-#include "protonengine/renderer/transform.h"
+#include "transform.h"
 
 namespace ProtonEngine::Renderer
 {

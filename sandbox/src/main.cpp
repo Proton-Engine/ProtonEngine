@@ -21,8 +21,11 @@
 class Mover final : public ProtonEngine::Core::Components::NativeScript
 {
 public:
-    explicit Mover(const ProtonEngine::Core::Entity & entity, float speed) :
-        NativeScript(entity), m_speed(speed) {}
+    explicit Mover(const ProtonEngine::Core::Entity & entity, float speed)
+        : NativeScript(entity)
+        , m_speed(speed)
+    {
+    }
 
 
 protected:
@@ -45,8 +48,11 @@ private:
 class DirectionalLightMover final : public ProtonEngine::Core::Components::NativeScript
 {
 public:
-    explicit DirectionalLightMover(const ProtonEngine::Core::Entity & entity, float speed) :
-        NativeScript(entity), m_speed(speed) {}
+    explicit DirectionalLightMover(const ProtonEngine::Core::Entity & entity, float speed)
+        : NativeScript(entity)
+        , m_speed(speed)
+    {
+    }
 
 
 protected:

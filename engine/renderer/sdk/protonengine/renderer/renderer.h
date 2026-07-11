@@ -5,19 +5,19 @@
 
 #pragma once
 
+#include "material.h"
 #include "protonengine/assets/image.h"
 #include "protonengine/assets/model.h"
-#include "protonengine/renderer/camera.h"
 #include "protonengine/export.h"
+#include "protonengine/renderer/camera.h"
 #include "protonengine/renderer/icommand_list.h"
 #include "protonengine/renderer/irender_backend.h"
 #include "protonengine/renderer/itexture.h"
 #include "protonengine/renderer/light.h"
-#include "protonengine/renderer/material.h"
 #include "protonengine/renderer/mesh.h"
-#include "protonengine/renderer/renderable_light.h"
 #include "protonengine/renderer/renderable_object.h"
 #include "protonengine/renderer/transform.h"
+#include "renderable_light.h"
 
 #include <glm/mat4x4.hpp>
 #include <memory>

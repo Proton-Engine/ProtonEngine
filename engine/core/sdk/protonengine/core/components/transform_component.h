@@ -14,13 +14,13 @@ namespace ProtonEngine::Core::Components
 
 struct TransformComponent
 {
-    TransformComponent() :
-        TransformComponent(glm::vec3(0), glm::vec3(0), glm::vec3(1))
+    TransformComponent()
+        : TransformComponent(glm::vec3(0), glm::vec3(0), glm::vec3(1))
     {
     }
 
-    TransformComponent(const glm::vec3 & position, const glm::vec3 & rotation, const glm::vec3 & scale) :
-        transform(position, rotation, scale)
+    TransformComponent(const glm::vec3 & position, const glm::vec3 & rotation, const glm::vec3 & scale)
+        : transform(position, rotation, scale)
     {
     }
 

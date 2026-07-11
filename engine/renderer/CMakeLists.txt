@@ -1,32 +1,42 @@
-file(GLOB_RECURSE RENDERER_SOURCES CONFIGURE_DEPENDS src/*.h src/*.cpp)
-file(GLOB_RECURSE RENDERER_HEADERS CONFIGURE_DEPENDS RELATIVE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/include include/*.h)
+set(MODULE_NAME Renderer)
+set(FULL_MODULE_NAME ProtonEngine${MODULE_NAME})
+set(ALIAS_MODULE_NAME ProtonEngine::${MODULE_NAME})
 
-source_group(src FILES ${RENDERER_SOURCES})
-source_group(include FILES ${RENDERER_HEADERS})
+file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS src/*.h src/*.cpp)
+file(GLOB_RECURSE HEADERS CONFIGURE_DEPENDS RELATIVE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/include include/*.h)
+file(GLOB_RECURSE INSTALL_HEADERS CONFIGURE_DEPENDS RELATIVE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/sdk sdk/*.h)
 
-add_library(ProtonEngineRenderer OBJECT)
-add_library(ProtonEngine::Renderer ALIAS ProtonEngineRenderer)
+source_group(src FILES ${SOURCES})
+source_group(include FILES ${HEADERS})
+source_group(sdk FILES ${INSTALL_HEADERS})
 
-target_link_libraries(ProtonEngineRenderer PUBLIC ProtonEngine::Export)
+add_library(${FULL_MODULE_NAME} OBJECT)
+add_library(${ALIAS_MODULE_NAME} ALIAS ${FULL_MODULE_NAME})
 
 target_sources(
-        ProtonEngineRenderer
-        PRIVATE ${RENDERER_SOURCES}
+        ${FULL_MODULE_NAME}
+        PRIVATE
+        ${SOURCES}
         PUBLIC
         FILE_SET HEADERS
         BASE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/include
-        FILES ${RENDERER_HEADERS}
-        FILE_SET generated_headers
+        FILES ${HEADERS}
+        PUBLIC
+        FILE_SET installed_headers
         TYPE HEADERS
-        BASE_DIRS $<TARGET_PROPERTY:ProtonEngineRenderer,BINARY_DIR>
+        BASE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/sdk
+        FILES ${INSTALL_HEADERS}
 )
 
-target_include_directories(ProtonEngineRenderer
-        PUBLIC include
-        PRIVATE src ${CMAKE_CURRENT_BINARY_DIR}
+target_include_directories(${FULL_MODULE_NAME}
+        PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/sdk>
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+        PRIVATE src
 )
 
-target_link_libraries(ProtonEngineRenderer
+target_link_libraries(${FULL_MODULE_NAME}
         PUBLIC
         ProtonEngine::Assets
         ProtonEngine::Export
@@ -36,15 +46,15 @@ target_link_libraries(ProtonEngineRenderer
 )
 
 if (WIN32)
-    target_link_libraries(ProtonEngineRenderer PRIVATE opengl32)
+    target_link_libraries(${FULL_MODULE_NAME} PRIVATE opengl32)
 endif ()
 
 if (APPLE)
-    target_link_libraries(ProtonEngineRenderer PRIVATE "-framework OpenGL")
+    target_link_libraries(${FULL_MODULE_NAME} PRIVATE "-framework OpenGL")
 endif ()
 
+
 install(
-        TARGETS ProtonEngineRenderer
-        FILE_SET HEADERS
-        FILE_SET generated_headers
+        TARGETS ${FULL_MODULE_NAME}
+        FILE_SET installed_headers
 )

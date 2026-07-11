@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "vertex.h"
+#include "protonengine/renderer/vertex.h"
 
 #include <vector>
 

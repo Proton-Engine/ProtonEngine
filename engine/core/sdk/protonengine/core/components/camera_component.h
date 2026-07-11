@@ -16,8 +16,8 @@ struct CameraComponent
 
     CameraComponent() = default;
 
-    CameraComponent(Projection projection, float clippingPlaneNear, float clippingPlaneFar, float fieldOfView, bool isMainCamera) :
-        camera(projection, clippingPlaneNear, clippingPlaneFar, fieldOfView, isMainCamera)
+    CameraComponent(Projection projection, float clippingPlaneNear, float clippingPlaneFar, float fieldOfView, bool isMainCamera)
+        : camera(projection, clippingPlaneNear, clippingPlaneFar, fieldOfView, isMainCamera)
     {
     }
 
