@@ -7,5 +7,6 @@ foreach (asset ${ASSETS})
 
     if (NOT ${assetName} STREQUAL "CMakeLists.txt")
         configure_file(${asset} ${BINARY_DIRECTORY}/assets/${assetTypeDirectory}/${assetName} COPYONLY)
+        install(FILES ${asset} DESTINATION ${CMAKE_INSTALL_BINDIR}/assets/${assetTypeDirectory})
     endif ()
 endforeach ()
