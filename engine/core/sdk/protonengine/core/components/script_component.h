@@ -1,5 +1,5 @@
 /*
- * Copyright © 2022-2025. Proton Engine
+ * Copyright © 2022-2026. Proton Engine
  * Licensed using the MIT license
  */
 
@@ -16,9 +16,9 @@ struct ScriptComponent
 {
     std::unique_ptr<NativeScript> nativeScript;
 
-    template <std::derived_from<NativeScript> T, typename... Args>
-    explicit ScriptComponent(std::unique_ptr<T> && script) :
-        nativeScript(std::forward<std::unique_ptr<T>>(script))
+    template <std::derived_from<NativeScript> T>
+    explicit ScriptComponent(std::unique_ptr<T> && script)
+        : nativeScript(std::forward<std::unique_ptr<T>>(script))
     {
     }
 };

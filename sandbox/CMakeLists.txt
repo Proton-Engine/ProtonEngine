@@ -12,3 +12,7 @@ add_dependencies(Sandbox ProtonEngine)
 add_subdirectory(assets)
 
 set_property(TARGET Sandbox PROPERTY VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
+
+configure_rpath(Sandbox)
+
+install(TARGETS Sandbox)

@@ -15,6 +15,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${BINARY_DIRECTORY})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${BINARY_DIRECTORY})
 
 include(GenerateExportHeader)
+include(cmake/configure_rpath.cmake)
 
 # Third-party libraries
 find_package(glad REQUIRED)
