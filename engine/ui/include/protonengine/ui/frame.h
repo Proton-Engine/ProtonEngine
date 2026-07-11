@@ -11,7 +11,7 @@
 namespace ProtonEngine::Ui
 {
 
-class PROTONENGINE_UI_EXPORT Frame
+class PROTONENGINE_EXPORT Frame
 {
 public:
     Frame() = default;

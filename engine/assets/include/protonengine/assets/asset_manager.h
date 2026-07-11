@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "protonengine/assets/export.h"
+#include "protonengine/export.h"
 #include "protonengine/assets/image.h"
 #include "protonengine/assets/model.h"
 
@@ -14,7 +14,7 @@
 namespace ProtonEngine::Assets
 {
 
-class PROTONENGINE_ASSETS_EXPORT AssetManager
+class PROTONENGINE_EXPORT AssetManager
 {
 public:
     [[nodiscard]] static Image readImageFromFile(std::string_view path);

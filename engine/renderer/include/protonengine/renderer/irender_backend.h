@@ -5,13 +5,11 @@
 
 #pragma once
 
-#include "protonengine/renderer/export.h"
 #include "protonengine/renderer/icommand_list.h"
 #include "protonengine/renderer/idescriptor_set.h"
 #include "protonengine/renderer/ipipeline.h"
 #include "protonengine/renderer/ishader.h"
 #include "protonengine/renderer/iupload_context.h"
-#include "protonengine/renderer/material.h"
 #include "protonengine/renderer/mesh.h"
 
 namespace ProtonEngine::Renderer
@@ -19,7 +17,7 @@ namespace ProtonEngine::Renderer
 
 using ContextLoadFunction = void (*(*)(const char *))(void);
 
-class PROTONENGINE_RENDERER_EXPORT IRenderBackend
+class IRenderBackend
 {
 public:
     IRenderBackend() = default;

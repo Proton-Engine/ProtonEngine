@@ -6,14 +6,14 @@
 #pragma once
 
 #include "ilayer.h"
-#include "protonengine/ui/export.h"
+#include "protonengine/export.h"
 
 #include <chrono>
 
 namespace ProtonEngine::Ui
 {
 
-class PROTONENGINE_UI_EXPORT DebugLayer final : public Layer
+class PROTONENGINE_EXPORT DebugLayer final : public Layer
 {
 public:
     void onAttach() override;

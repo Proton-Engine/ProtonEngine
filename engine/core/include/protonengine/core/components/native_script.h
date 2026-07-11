@@ -8,12 +8,12 @@
 #include "protonengine/common/key_codes.h"
 #include "protonengine/common/key_state.h"
 #include "protonengine/core/entity.h"
-#include "protonengine/core/export.h"
+#include "protonengine/export.h"
 
 namespace ProtonEngine::Core::Components
 {
 
-class PROTONENGINE_CORE_EXPORT NativeScript
+class PROTONENGINE_EXPORT NativeScript
 {
 public:
     explicit NativeScript(const Entity & entity);

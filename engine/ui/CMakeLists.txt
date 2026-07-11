@@ -6,7 +6,6 @@ source_group(include FILES ${UI_HEADERS})
 
 add_library(ProtonEngineUi OBJECT)
 add_library(ProtonEngine::Ui ALIAS ProtonEngineUi)
-generate_export_header(ProtonEngineUi BASE_NAME PROTONENGINE_UI EXPORT_FILE_NAME protonengine/ui/export.h)
 
 target_sources(
         ProtonEngineUi
@@ -18,7 +17,6 @@ target_sources(
         FILE_SET generated_headers
         TYPE HEADERS
         BASE_DIRS $<TARGET_PROPERTY:ProtonEngineUi,BINARY_DIR>
-        FILES ${CMAKE_CURRENT_BINARY_DIR}/protonengine/ui/export.h
 )
 
 target_include_directories(ProtonEngineUi
@@ -27,6 +25,8 @@ target_include_directories(ProtonEngineUi
 )
 
 target_link_libraries(ProtonEngineUi
+        PUBLIC
+        ProtonEngine::Export
         PRIVATE
         imgui::imgui
         imgui_backends

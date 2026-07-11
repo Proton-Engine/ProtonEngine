@@ -5,14 +5,14 @@
 
 #pragma once
 
-#include "protonengine/ui/export.h"
+#include "protonengine/export.h"
 
 #include "GLFW/glfw3.h"
 
 namespace ProtonEngine::Ui
 {
 
-class PROTONENGINE_UI_EXPORT UiContext
+class PROTONENGINE_EXPORT UiContext
 {
 public:
     explicit UiContext(GLFWwindow * window);

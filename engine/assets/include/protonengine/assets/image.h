@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "protonengine/assets/export.h"
+#include "protonengine/export.h"
 
 #include <cinttypes>
 #include <vector>
@@ -13,7 +13,7 @@
 namespace ProtonEngine::Assets
 {
 
-class PROTONENGINE_ASSETS_EXPORT Image
+class PROTONENGINE_EXPORT Image
 {
 public:
     Image(const uint8_t * data, int width, int height, int channels);

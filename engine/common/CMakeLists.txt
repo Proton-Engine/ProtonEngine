@@ -6,7 +6,6 @@ source_group(include FILES ${COMMON_HEADERS})
 
 add_library(ProtonEngineCommon OBJECT)
 add_library(ProtonEngine::Common ALIAS ProtonEngineCommon)
-generate_export_header(ProtonEngineCommon BASE_NAME PROTONENGINE_COMMON EXPORT_FILE_NAME protonengine/common/export.h)
 
 target_sources(
         ProtonEngineCommon
@@ -18,7 +17,6 @@ target_sources(
         FILE_SET generated_headers
         TYPE HEADERS
         BASE_DIRS $<TARGET_PROPERTY:ProtonEngineCommon,BINARY_DIR>
-        FILES ${CMAKE_CURRENT_BINARY_DIR}/protonengine/common/export.h
 )
 
 target_include_directories(ProtonEngineCommon
@@ -31,6 +29,7 @@ target_link_libraries(ProtonEngineCommon
         # TODO: Add local wrappers around the glm objects we use. This can temporary be something like: using ProtonEngine::Math::Vec2 = glm::vec2
         # This will allow us to hide glm in the future
         glm::glm
+        ProtonEngine::Export
 )
 
 install(

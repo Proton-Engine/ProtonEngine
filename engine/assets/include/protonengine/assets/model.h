@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "protonengine/assets/export.h"
+#include "protonengine/export.h"
 
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
@@ -23,7 +23,7 @@ struct Face
     std::array<int32_t, 3> textureIndex;
 };
 
-class PROTONENGINE_ASSETS_EXPORT Model
+class PROTONENGINE_EXPORT Model
 {
 public:
     Model(std::vector<Face> && indices, std::vector<glm::vec3> && vertices,

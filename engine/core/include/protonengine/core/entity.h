@@ -6,7 +6,7 @@
 #pragma once
 
 #include "protonengine/core/components/script_component.h"
-#include "protonengine/core/export.h"
+#include "protonengine/export.h"
 #include "protonengine/core/scene.h"
 
 #include <entt/entity/entity.hpp>
@@ -19,7 +19,7 @@ class NativeScript;
 namespace ProtonEngine::Core
 {
 
-class PROTONENGINE_CORE_EXPORT Entity
+class PROTONENGINE_EXPORT Entity
 {
 public:
     explicit Entity(entt::entity handle, Scene & scene);

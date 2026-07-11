@@ -6,7 +6,7 @@
 #pragma once
 
 #include "protonengine/core/components/transform_component.h"
-#include "protonengine/core/export.h"
+#include "protonengine/export.h"
 
 #include <entt/entt.hpp>
 
@@ -17,7 +17,7 @@ namespace ProtonEngine::Core
 
 class Entity;
 
-class PROTONENGINE_CORE_EXPORT Scene
+class PROTONENGINE_EXPORT Scene
 {
 public:
     Scene() = default;
