@@ -1,12 +1,15 @@
-// Copyright © 2026. Proton Engine
-// Licensed using the MIT license
+/*
+ * Copyright © 2026. Proton Engine
+ * Licensed using the MIT license
+ */
 
-#include "protonengine/ui/layer.h"
+#include "protonengine/ui/ilayer.h"
 
 namespace ProtonEngine::Ui
 {
 
-Layer::Layer(const std::string & layerName) : m_layerName(layerName)
+Layer::Layer(const std::string & layerName)
+    : m_layerName(layerName)
 {
 }
 

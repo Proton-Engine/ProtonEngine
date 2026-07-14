@@ -361,6 +361,13 @@ void Renderer::setCamera(const Transform & transform, const Camera & camera)
     }
 }
 
+auto Renderer::getFrameBufferTexture() const -> const ITexture &
+{
+    assert(m_defaultFrameBuffer);
+
+    return m_defaultFrameBuffer->colorTexture();
+}
+
 std::unique_ptr<ITexture> Renderer::createTextureFromImage(const Assets::Image & image)
 {
     assert(image.getChannels() == 3 || image.getChannels() == 4);

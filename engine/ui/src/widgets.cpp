@@ -1,7 +1,9 @@
-// Copyright © 2026. Proton Engine
-// Licensed using the MIT license
+/*
+ * Copyright © 2026. Proton Engine
+ * Licensed using the MIT license
+ */
 
-#include "protonengine/ui/widgets.h"
+#include "../sdk/protonengine/ui/widgets.h"
 
 #include <imgui.h>
 
@@ -11,9 +13,20 @@ namespace ProtonEngine::Ui
 namespace Widgets
 {
 
+auto getWindowSize() -> glm::i32vec2
+{
+    const auto [x, y] = ImGui::GetContentRegionAvail();
+    return glm::i32vec2(x, y);
+}
+
 void Text(const std::string & text)
 {
     ImGui::TextUnformatted(text.data());
+}
+
+void Image(const Renderer::ITexture & texture, glm::i32vec2 size)
+{
+    ImGui::Image((ImTextureID)(intptr_t)texture.id(), ImVec2(size.x, size.y));
 }
 
 [[nodiscard]] auto BeginMenuBar() -> bool

@@ -10,17 +10,19 @@
 namespace ProtonEditor::Layers
 {
 
-EditorView::EditorView() : Layer("Editor View")
+EditorView::EditorView(const ProtonEngine::Renderer::Renderer & renderer)
+    : Layer("Editor View")
+    , m_renderer(renderer)
 {
 }
-
 void EditorView::onAttach()
 {
 }
 
 void EditorView::onImGuiRender()
 {
-    ProtonEngine::Ui::Widgets::Text("No project loaded");
+    const auto size = ProtonEngine::Ui::Widgets::getWindowSize();
+    ProtonEngine::Ui::Widgets::Image(m_renderer.getFrameBufferTexture(), size);
 }
 
 void EditorView::onUpdate(float timeStep)

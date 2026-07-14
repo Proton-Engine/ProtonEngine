@@ -48,6 +48,8 @@ public:
     void renderAllInQueue();
     void setCamera(const Transform & transform, const Camera & camera);
 
+    [[nodiscard]] auto getFrameBufferTexture() const -> const ITexture &;
+
     [[nodiscard]] auto createTextureFromImage(const Assets::Image & image) -> std::unique_ptr<ITexture>;
     [[nodiscard]] auto createMeshFromModel(const Assets::Model & model) -> Mesh;
     [[nodiscard]] auto getDefaultTexture() -> ITexture &;

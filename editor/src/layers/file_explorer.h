@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "protonengine/ui/layer.h"
+#include "protonengine/ui/ilayer.h"
 
 namespace ProtonEditor::Layers
 {

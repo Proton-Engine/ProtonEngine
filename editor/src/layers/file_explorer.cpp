@@ -5,7 +5,7 @@
 
 #include "file_explorer.h"
 
-#include "protonengine/ui/widgets.h"
+#include "../../../engine/ui/sdk/protonengine/ui/widgets.h"
 
 namespace ProtonEditor::Layers
 {

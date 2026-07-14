@@ -1,9 +1,11 @@
-// Copyright © 2026. Proton Engine
-// Licensed using the MIT license
+/*
+ * Copyright © 2026. Proton Engine
+ * Licensed using the MIT license
+ */
 
 #pragma once
 
-#include "protonengine/ui/layer.h"
+#include "protonengine/ui/ilayer.h"
 
 namespace ProtonEditor::Layers
 {

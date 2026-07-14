@@ -36,6 +36,8 @@ public:
     ITexture & operator=(ITexture &&) = delete;
 
     [[nodiscard]] virtual auto getDescriptor() const -> TextureDescriptor = 0;
+    // TODO: This shouldn't be here!
+    [[nodiscard]] virtual auto id() const noexcept -> uint32_t = 0;
 };
 
 } // namespace ProtonEngine::Renderer

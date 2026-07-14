@@ -39,6 +39,8 @@ target_include_directories(${FULL_MODULE_NAME}
 target_link_libraries(${FULL_MODULE_NAME}
         PUBLIC
         ProtonEngine::Export
+        ProtonEngine::Renderer
+        glm::glm
         PRIVATE
         imgui::imgui
         imgui_backends

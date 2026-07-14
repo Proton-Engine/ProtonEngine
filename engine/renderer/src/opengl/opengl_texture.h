@@ -16,7 +16,7 @@ public:
     explicit OpenGLTexture(const TextureDescriptor & descriptor);
     ~OpenGLTexture() override;
 
-    [[nodiscard]] auto id() const noexcept -> uint32_t;
+    [[nodiscard]] auto id() const noexcept -> uint32_t override;
     [[nodiscard]] auto getDescriptor() const -> TextureDescriptor override;
     void bind(uint32_t slot) const noexcept;
     void unbind(uint32_t slot) const noexcept;

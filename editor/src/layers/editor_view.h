@@ -5,7 +5,8 @@
 
 #pragma once
 
-#include "protonengine/ui/layer.h"
+#include "protonengine/renderer/renderer.h"
+#include "protonengine/ui/ilayer.h"
 
 namespace ProtonEditor::Layers
 {
@@ -13,10 +14,13 @@ namespace ProtonEditor::Layers
 class EditorView : public ProtonEngine::Ui::Layer
 {
 public:
-    EditorView();
+    explicit EditorView(const ProtonEngine::Renderer::Renderer & renderer);
     void onAttach() override;
     void onImGuiRender() override;
     void onUpdate(float timeStep) override;
+
+private:
+    const ProtonEngine::Renderer::Renderer & m_renderer;
 };
 
 
