@@ -7,6 +7,7 @@
 
 #include "opengl_buffer.h"
 #include "opengl_descriptor_set.h"
+#include "opengl_frame_buffer.h"
 #include "opengl_pipeline.h"
 #include "opengl_sampler.h"
 #include "opengl_shader.h"
@@ -112,6 +113,15 @@ void OpenGLCommandList::bindDescriptorSet(const IDescriptorSet & descriptorSet)
         const auto & openGlSampler = static_cast<const OpenGLSampler &>(sampler.sampler);
         openGlSampler.bind(sampler.binding);
     }
+}
+
+void OpenGLCommandList::attachFrameBuffer(const IFrameBuffer & frameBuffer)
+{
+    glBindFramebuffer(GL_FRAMEBUFFER, static_cast<const OpenGLFrameBuffer &>(frameBuffer).id());
+    // TODO: Remove these here:
+    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glEnable(GL_DEPTH_TEST);
 }
 
 } // namespace ProtonEngine::Renderer::OpenGL

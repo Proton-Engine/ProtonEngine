@@ -30,6 +30,10 @@ OpenGLTexture::OpenGLTexture(const TextureDescriptor & descriptor)
         m_internalDataFormat = GL_RGBA8;
         m_dataFormat = GL_RGBA;
         break;
+    case TextureFormat::DEPTH_STENCIL:
+        m_internalDataFormat = GL_DEPTH24_STENCIL8;
+        m_dataFormat = GL_DEPTH_STENCIL;
+        break;
     }
 
     glGenTextures(1, &m_textureID);
@@ -39,6 +43,11 @@ OpenGLTexture::OpenGLTexture(const TextureDescriptor & descriptor)
 OpenGLTexture::~OpenGLTexture()
 {
     glDeleteTextures(1, &m_textureID);
+}
+
+auto OpenGLTexture::id() const noexcept -> uint32_t
+{
+    return m_textureID;
 }
 
 auto OpenGLTexture::getDescriptor() const -> TextureDescriptor

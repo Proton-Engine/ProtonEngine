@@ -7,6 +7,7 @@
 
 #include "protonengine/renderer/ibuffer.h"
 #include "protonengine/renderer/idescriptor_set.h"
+#include "protonengine/renderer/iframe_buffer.h"
 #include "protonengine/renderer/ipipeline.h"
 
 namespace ProtonEngine::Renderer
@@ -31,6 +32,7 @@ public:
     virtual void bindUniformBuffer(uint32_t slot, const IBuffer & buffer) = 0;
     virtual void drawIndexed(uint32_t indexCount) = 0;
     virtual void bindDescriptorSet(const IDescriptorSet & descriptorSet) = 0;
+    virtual void attachFrameBuffer(const IFrameBuffer & frameBuffer) = 0;
 };
 
 } // namespace ProtonEngine::Renderer

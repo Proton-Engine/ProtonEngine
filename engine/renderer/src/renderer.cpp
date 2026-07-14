@@ -192,6 +192,7 @@ void Renderer::setWindowContext(ContextLoadFunction func)
     Common::EventBus::subscribeToEvent(Common::Event::WINDOW_RESIZE_EVENT, std::function([&](Common::Event, Common::WindowResizeEventContext context) {
                                            m_windowWidth = static_cast<float>(context.width);
                                            m_windowHeight = static_cast<float>(context.height);
+                                           m_defaultFrameBuffer = m_renderer->createFrameBuffer({static_cast<uint32_t>(context.width), static_cast<uint32_t>(context.height)});
                                            m_renderer->setViewport(0, 0, context.width, context.height);
                                        }));
 }
@@ -209,6 +210,7 @@ void Renderer::addLight(const Transform & transform, const Light & light)
 void Renderer::renderAllInQueue()
 {
     m_commandList->begin();
+    m_commandList->attachFrameBuffer(*m_defaultFrameBuffer);
     m_commandList->setPipeline(*m_pipeline);
 
     Lights lights{

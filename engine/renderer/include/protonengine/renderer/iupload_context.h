@@ -24,8 +24,8 @@ public:
     IUploadContext & operator=(IUploadContext &) = delete;
     IUploadContext & operator=(IUploadContext &&) = delete;
 
-    virtual void uploadBuffer(const IBuffer & destination, std::span<const std::byte> data, int32_t offset) = 0;
-    virtual void uploadTexture(const ITexture & texture, const Assets::Image & image) = 0;
+    virtual void uploadBuffer(const IBuffer & destination, std::span<const std::byte> data, int32_t offset) const = 0;
+    virtual void uploadTexture(const ITexture & texture, const Assets::Image & image) const = 0;
 };
 
 } // namespace ProtonEngine::Renderer

@@ -58,7 +58,8 @@ private:
     std::unique_ptr<ICommandList> m_commandList;
     std::unique_ptr<IPipeline> m_pipeline;
     std::unique_ptr<ITexture> m_defaultTexture;
-    IUploadContext & m_uploadContext;
+    std::unique_ptr<IFrameBuffer> m_defaultFrameBuffer;
+    const IUploadContext & m_uploadContext;
 
     glm::mat4 m_projection{};
     glm::mat4 m_view{};

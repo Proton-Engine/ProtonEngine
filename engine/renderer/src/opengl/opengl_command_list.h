@@ -24,6 +24,7 @@ public:
     void bindUniformBuffer(uint32_t slot, const IBuffer & buffer) override;
     void drawIndexed(uint32_t indexCount) override;
     void bindDescriptorSet(const IDescriptorSet & descriptorSet) override;
+    void attachFrameBuffer(const IFrameBuffer & frameBuffer) override;
 
 private:
     uint32_t m_shaderProgram{};
