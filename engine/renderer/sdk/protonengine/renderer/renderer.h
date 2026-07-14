@@ -57,6 +57,9 @@ private:
     std::unique_ptr<IRenderBackend> m_renderer;
     std::unique_ptr<ICommandList> m_commandList;
     std::unique_ptr<IPipeline> m_pipeline;
+    std::unique_ptr<IPipeline> m_framebufferPipeline;
+    std::unique_ptr<IBuffer> m_framebufferPipelineVertexBuffer;
+    std::unique_ptr<IBuffer> m_framebufferPipelineIndexBuffer;
     std::unique_ptr<ITexture> m_defaultTexture;
     std::unique_ptr<IFrameBuffer> m_defaultFrameBuffer;
     const IUploadContext & m_uploadContext;

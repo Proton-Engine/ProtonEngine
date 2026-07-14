@@ -186,6 +186,54 @@ void Renderer::setWindowContext(ContextLoadFunction func)
                                                                               }})};
 
     m_pipeline = m_renderer->createPipeline(std::move(pipelineDescriptor));
+
+    const auto framebufferVertexSource = loadShaderSourceFromDisk("./assets/shaders/framebuffer_shader.vert");
+    const auto framebufferFragmentSource = loadShaderSourceFromDisk("./assets/shaders/framebuffer_shader.frag");
+
+    PipelineDescriptor framebufferPipelineDescriptor{VertexLayoutDescriptor{
+                                                         sizeof(Vertex),
+                                                         {VertexAttributeDescriptor{
+                                                              .location = 0,
+                                                              .format = VertexFormat::Float3,
+                                                              .offset = offsetof(Vertex, position),
+                                                              .binding = 0,
+
+                                                          },
+                                                          VertexAttributeDescriptor{
+                                                              .location = 1,
+                                                              .format = VertexFormat::Float2,
+                                                              .offset = offsetof(Vertex, texture),
+                                                              .binding = 0,
+
+                                                          }}},
+                                                     m_renderer->createShader({"framebuffer_shader", {
+                                                                                                         {ShaderType::Vertex, framebufferVertexSource},
+                                                                                                         {ShaderType::Fragment, framebufferFragmentSource},
+                                                                                                     }})};
+
+
+    m_framebufferPipeline = m_renderer->createPipeline(std::move(framebufferPipelineDescriptor));
+    m_framebufferPipelineVertexBuffer = m_renderer->createBuffer({BufferType::VERTEX});
+    m_framebufferPipelineIndexBuffer = m_renderer->createBuffer({BufferType::INDEX});
+
+    std::vector<Vertex> framebufferVertices{
+        Vertex{{-1.0f, -1.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f}},
+        Vertex{{1.0f, -1.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 0.0f}},
+        Vertex{{1.0f, 1.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f}},
+        Vertex{{-1.0f, 1.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 1.0f}},
+    };
+    std::vector<uint32_t> framebufferIndices{
+        0,
+        1,
+        2,
+        2,
+        3,
+        0,
+    };
+
+    m_renderer->getUploadContext().uploadBuffer(*m_framebufferPipelineVertexBuffer, std::as_bytes(std::span(framebufferVertices)), 0);
+    m_renderer->getUploadContext().uploadBuffer(*m_framebufferPipelineIndexBuffer, std::as_bytes(std::span(framebufferIndices)), 0);
+
     m_commandList = m_renderer->createCommandList();
     m_defaultTexture = createTextureFromImage(g_defaultTexture);
 
@@ -210,8 +258,8 @@ void Renderer::addLight(const Transform & transform, const Light & light)
 void Renderer::renderAllInQueue()
 {
     m_commandList->begin();
-    m_commandList->attachFrameBuffer(*m_defaultFrameBuffer);
     m_commandList->setPipeline(*m_pipeline);
+    m_commandList->attachFrameBuffer(*m_defaultFrameBuffer);
 
     Lights lights{
         getPointLight(m_lights, m_view),
@@ -260,6 +308,19 @@ void Renderer::renderAllInQueue()
         m_commandList->setIndexBuffer(renderableObject.mesh.indexBuffer());
         m_commandList->drawIndexed(renderableObject.mesh.indicesCount());
     }
+
+    m_commandList->setPipeline(*m_framebufferPipeline);
+
+    const auto sampler = m_renderer->createSampler({ScalingMode::LINEAR, WrappingMode::REPEAT});
+    const auto frameBufferDescriptorset = m_renderer->createDescriptorSet(
+        {.buffers = std::vector<BufferBinding>{},
+         .textures = std::vector<TextureBinding>{TextureBinding{0, m_defaultFrameBuffer->colorTexture()}},
+         .samplers = {{0, *sampler}}});
+
+    m_commandList->bindDescriptorSet(*frameBufferDescriptorset);
+    m_commandList->setVertexBuffer(*m_framebufferPipelineVertexBuffer);
+    m_commandList->setIndexBuffer(*m_framebufferPipelineIndexBuffer);
+    m_commandList->drawIndexed(6);
 
     m_commandList->end();
 

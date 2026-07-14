@@ -53,6 +53,8 @@ void OpenGLCommandList::setPipeline(const IPipeline & pipeline)
     vertexStride = openglPipeline.stride();
 
     glBindVertexArray(openglPipeline.vao());
+    // TODO: remove here
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 void OpenGLCommandList::setVertexBuffer(const IBuffer & buffer, uint32_t slot, uint32_t offset)
@@ -119,7 +121,6 @@ void OpenGLCommandList::attachFrameBuffer(const IFrameBuffer & frameBuffer)
 {
     glBindFramebuffer(GL_FRAMEBUFFER, static_cast<const OpenGLFrameBuffer &>(frameBuffer).id());
     // TODO: Remove these here:
-    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
 }
