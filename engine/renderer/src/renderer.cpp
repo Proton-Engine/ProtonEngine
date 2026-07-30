@@ -12,6 +12,7 @@
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include "opengl/opengl_buffer.h"
+#include "protonengine/assets/asset_manager.h"
 
 #include <algorithm>
 #include <format>
@@ -140,24 +141,8 @@ struct alignas(16) OpenGlMaterial
     return {};
 }
 
-constexpr uint8_t g_data[3] = {255, 255, 255};
-Assets::Image g_defaultTexture{g_data, 1, 1, 3};
-
-} // namespace
-
-Renderer::Renderer(RendererBackend rendererBackend)
-    : m_renderer(initializeRenderer(rendererBackend))
-    , m_uploadContext(m_renderer->getUploadContext())
+[[nodiscard]] auto createMainRenderingPipeline(const IRenderBackend & renderer, std::unique_ptr<IShader> shader) -> std::unique_ptr<IPipeline>
 {
-}
-
-void Renderer::setWindowContext(ContextLoadFunction func)
-{
-    m_renderer->setWindowContext(func);
-
-    const auto vertexSource = loadShaderSourceFromDisk("./assets/shaders/shader.vert");
-    const auto fragmentSource = loadShaderSourceFromDisk("./assets/shaders/shader.frag");
-
     PipelineDescriptor pipelineDescriptor{VertexLayoutDescriptor{
                                               sizeof(Vertex),
                                               {VertexAttributeDescriptor{
@@ -180,62 +165,77 @@ void Renderer::setWindowContext(ContextLoadFunction func)
                                                    .binding = 0,
 
                                                }}},
-                                          m_renderer->createShader({"shader", {
-                                                                                  {ShaderType::Vertex, vertexSource},
-                                                                                  {ShaderType::Fragment, fragmentSource},
-                                                                              }})};
+                                          std::move(shader)};
 
-    m_pipeline = m_renderer->createPipeline(std::move(pipelineDescriptor));
+    return renderer.createPipeline(std::move(pipelineDescriptor));
+}
+
+[[nodiscard]] auto createFrameBufferPipeline(const IRenderBackend & renderer, std::unique_ptr<IShader> shader) -> std::unique_ptr<IPipeline>
+{
+    PipelineDescriptor pipelineDescriptor{VertexLayoutDescriptor{
+                                              sizeof(Vertex),
+                                              {VertexAttributeDescriptor{
+                                                   .location = 0,
+                                                   .format = VertexFormat::Float3,
+                                                   .offset = offsetof(Vertex, position),
+                                                   .binding = 0,
+
+                                               },
+                                               VertexAttributeDescriptor{
+                                                   .location = 1,
+                                                   .format = VertexFormat::Float2,
+                                                   .offset = offsetof(Vertex, texture),
+                                                   .binding = 0,
+
+                                               }}},
+                                          std::move(shader)};
+
+    return renderer.createPipeline(std::move(pipelineDescriptor));
+}
+
+constexpr uint8_t g_data[3] = {255, 255, 255};
+Assets::Image g_defaultTexture{g_data, 1, 1, 3};
+
+} // namespace
+
+Renderer::Renderer(RendererBackend rendererBackend)
+    : m_renderer(initializeRenderer(rendererBackend))
+    , m_uploadContext(m_renderer->getUploadContext())
+    , m_frameBufferQuad(Assets::AssetManager::loadModel("./assets/models/quad.obj"))
+{
+}
+
+void Renderer::setWindowContext(ContextLoadFunction func)
+{
+    m_renderer->setWindowContext(func);
+
+    const auto vertexSource = loadShaderSourceFromDisk("./assets/shaders/shader.vert");
+    const auto fragmentSource = loadShaderSourceFromDisk("./assets/shaders/shader.frag");
+
+    auto mainShader = m_renderer->createShader({"shader", {
+                                                              {ShaderType::Vertex, vertexSource},
+                                                              {ShaderType::Fragment, fragmentSource},
+                                                          }});
+    m_pipeline = createMainRenderingPipeline(*m_renderer, std::move(mainShader));
 
     const auto framebufferVertexSource = loadShaderSourceFromDisk("./assets/shaders/framebuffer_shader.vert");
     const auto framebufferFragmentSource = loadShaderSourceFromDisk("./assets/shaders/framebuffer_shader.frag");
+    auto framebufferShader = m_renderer->createShader({"framebuffer_shader", {
+                                                                                 {ShaderType::Vertex, framebufferVertexSource},
+                                                                                 {ShaderType::Fragment, framebufferFragmentSource},
+                                                                             }});
 
-    PipelineDescriptor framebufferPipelineDescriptor{VertexLayoutDescriptor{
-                                                         sizeof(Vertex),
-                                                         {VertexAttributeDescriptor{
-                                                              .location = 0,
-                                                              .format = VertexFormat::Float3,
-                                                              .offset = offsetof(Vertex, position),
-                                                              .binding = 0,
-
-                                                          },
-                                                          VertexAttributeDescriptor{
-                                                              .location = 1,
-                                                              .format = VertexFormat::Float2,
-                                                              .offset = offsetof(Vertex, texture),
-                                                              .binding = 0,
-
-                                                          }}},
-                                                     m_renderer->createShader({"framebuffer_shader", {
-                                                                                                         {ShaderType::Vertex, framebufferVertexSource},
-                                                                                                         {ShaderType::Fragment, framebufferFragmentSource},
-                                                                                                     }})};
-
-
-    m_framebufferPipeline = m_renderer->createPipeline(std::move(framebufferPipelineDescriptor));
-    m_framebufferPipelineVertexBuffer = m_renderer->createBuffer({BufferType::VERTEX});
-    m_framebufferPipelineIndexBuffer = m_renderer->createBuffer({BufferType::INDEX});
-
-    std::vector<Vertex> framebufferVertices{
-        Vertex{{-1.0f, -1.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f}},
-        Vertex{{1.0f, -1.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 0.0f}},
-        Vertex{{1.0f, 1.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f}},
-        Vertex{{-1.0f, 1.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 1.0f}},
-    };
-    std::vector<uint32_t> framebufferIndices{
-        0,
-        1,
-        2,
-        2,
-        3,
-        0,
-    };
-
-    m_renderer->getUploadContext().uploadBuffer(*m_framebufferPipelineVertexBuffer, std::as_bytes(std::span(framebufferVertices)), 0);
-    m_renderer->getUploadContext().uploadBuffer(*m_framebufferPipelineIndexBuffer, std::as_bytes(std::span(framebufferIndices)), 0);
+    m_framebufferPipeline = createFrameBufferPipeline(*m_renderer, std::move(framebufferShader));
+    m_frameBufferQuadMesh = createMeshFromModel(m_frameBufferQuad);
 
     m_commandList = m_renderer->createCommandList();
     m_defaultTexture = createTextureFromImage(g_defaultTexture);
+
+    m_lightsBuffer = m_renderer->createBuffer({BufferType::UNIFORM});
+    m_viewBuffer = m_renderer->createBuffer({BufferType::UNIFORM});
+    m_materialBuffer = m_renderer->createBuffer({BufferType::UNIFORM});
+    m_modelBuffer = m_renderer->createBuffer({BufferType::UNIFORM});
+    m_sampler = m_renderer->createSampler({ScalingMode::LINEAR, WrappingMode::REPEAT});
 
     Common::EventBus::subscribeToEvent(Common::Event::WINDOW_RESIZE_EVENT, std::function([&](Common::Event, Common::WindowResizeEventContext context) {
                                            m_windowWidth = static_cast<float>(context.width);
@@ -265,15 +265,13 @@ void Renderer::renderAllInQueue()
         getPointLight(m_lights, m_view),
         getDirectionalLight(m_lights, m_view)};
 
-    const auto lightsBuffer = m_renderer->createBuffer({BufferType::UNIFORM});
-    m_uploadContext.uploadBuffer(*lightsBuffer, std::as_bytes(std::span{&lights, 1}), 0);
+    m_uploadContext.uploadBuffer(*m_lightsBuffer, std::as_bytes(std::span{&lights, 1}), 0);
 
-    const auto viewBuffer = m_renderer->createBuffer({BufferType::UNIFORM});
     UniformViewData viewData{m_view, m_projection};
-    m_uploadContext.uploadBuffer(*viewBuffer, std::as_bytes(std::span{&viewData, 1}), 0);
+    m_uploadContext.uploadBuffer(*m_viewBuffer, std::as_bytes(std::span{&viewData, 1}), 0);
 
     const auto frameDescriptorSet = m_renderer->createDescriptorSet(
-        {.buffers = {{1, *viewBuffer}, {3, *lightsBuffer}},
+        {.buffers = {{1, *m_viewBuffer}, {3, *m_lightsBuffer}},
          .textures = {},
          .samplers = {}});
     m_commandList->bindDescriptorSet(*frameDescriptorSet);
@@ -290,18 +288,14 @@ void Renderer::renderAllInQueue()
             .baseColor = glm::vec4(renderableObject.material.baseColor, 1.0f),
             .specularColor = glm::vec4(renderableObject.material.specularColor, renderableObject.material.shininess)};
 
-        const auto materialBuffer = m_renderer->createBuffer({BufferType::UNIFORM});
-        m_uploadContext.uploadBuffer(*materialBuffer, std::as_bytes(std::span{&material, 1}), 0);
+        m_uploadContext.uploadBuffer(*m_materialBuffer, std::as_bytes(std::span{&material, 1}), 0);
 
-        const auto sampler = m_renderer->createSampler({ScalingMode::LINEAR, WrappingMode::REPEAT});
-
-        const auto modelBuffer = m_renderer->createBuffer({BufferType::UNIFORM});
-        m_uploadContext.uploadBuffer(*modelBuffer, std::as_bytes(std::span{&model, 1}), 0);
+        m_uploadContext.uploadBuffer(*m_modelBuffer, std::as_bytes(std::span{&model, 1}), 0);
 
         const auto descriptorSet = m_renderer->createDescriptorSet(
-            {.buffers = {{0, *modelBuffer}, {2, *materialBuffer}},
+            {.buffers = {{0, *m_modelBuffer}, {2, *m_materialBuffer}},
              .textures = {{0, renderableObject.material.baseTexture}, {1, renderableObject.material.specularMap}},
-             .samplers = {{0, *sampler}, {1, *sampler}}});
+             .samplers = {{0, *m_sampler}, {1, *m_sampler}}});
 
         m_commandList->bindDescriptorSet(*descriptorSet);
         m_commandList->setVertexBuffer(renderableObject.mesh.vertexBuffer());
@@ -311,16 +305,15 @@ void Renderer::renderAllInQueue()
 
     m_commandList->setPipeline(*m_framebufferPipeline);
 
-    const auto sampler = m_renderer->createSampler({ScalingMode::LINEAR, WrappingMode::REPEAT});
     const auto frameBufferDescriptorset = m_renderer->createDescriptorSet(
         {.buffers = std::vector<BufferBinding>{},
          .textures = std::vector<TextureBinding>{TextureBinding{0, m_defaultFrameBuffer->colorTexture()}},
-         .samplers = {{0, *sampler}}});
+         .samplers = {{0, *m_sampler}}});
 
     m_commandList->bindDescriptorSet(*frameBufferDescriptorset);
-    m_commandList->setVertexBuffer(*m_framebufferPipelineVertexBuffer);
-    m_commandList->setIndexBuffer(*m_framebufferPipelineIndexBuffer);
-    m_commandList->drawIndexed(6);
+    m_commandList->setVertexBuffer(m_frameBufferQuadMesh->vertexBuffer());
+    m_commandList->setIndexBuffer(m_frameBufferQuadMesh->indexBuffer());
+    m_commandList->drawIndexed(m_frameBufferQuadMesh->indicesCount());
 
     m_commandList->end();
 
@@ -330,7 +323,8 @@ void Renderer::renderAllInQueue()
 
 void Renderer::setCamera(const Transform & transform, const Camera & camera)
 {
-    if (!camera.isMainCamera)
+    // TODO: Implement non-main camera rendering
+    if (!camera.isMainCamera())
     {
         return;
     }

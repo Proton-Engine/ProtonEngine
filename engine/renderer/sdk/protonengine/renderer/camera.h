@@ -4,6 +4,7 @@
  */
 
 #pragma once
+#include "protonengine/renderer/iframe_buffer.h"
 
 namespace ProtonEngine::Renderer
 {
@@ -23,15 +24,20 @@ struct Camera
         , clippingPlaneNear(clippingPlaneNear)
         , clippingPlaneFar(clippingPlaneFar)
         , fieldOfView(fieldOfView)
-        , isMainCamera(isMainCamera)
+        , renderBuffer(nullptr)
     {
+    }
+
+    [[nodiscard]] auto isMainCamera() const noexcept
+    {
+        return renderBuffer == nullptr;
     }
 
     Projection projection = Projection::PERSPECTIVE;
     float clippingPlaneNear = 0.1f;
     float clippingPlaneFar = 100.0f;
     float fieldOfView = 60;
-    bool isMainCamera = false;
+    std::unique_ptr<Renderer::IFrameBuffer> renderBuffer;
 };
 
 } // namespace ProtonEngine::Renderer

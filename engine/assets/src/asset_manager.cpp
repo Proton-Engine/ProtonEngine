@@ -97,6 +97,9 @@ Model AssetManager::loadObjModel(std::string_view path)
 
     while (std::getline(inputFile, line))
     {
+        if (line.empty())
+            continue;
+
         switch (line[0])
         {
         case '#':

@@ -21,6 +21,7 @@
 
 #include <glm/mat4x4.hpp>
 #include <memory>
+#include <optional>
 
 namespace ProtonEngine::Renderer
 {
@@ -54,14 +55,22 @@ public:
     [[nodiscard]] auto getDefaultMaterial() -> Material;
 
 private:
+    Assets::Model m_frameBufferQuad;
+    std::optional<Mesh> m_frameBufferQuadMesh = std::nullopt;
+
     std::unique_ptr<IRenderBackend> m_renderer;
     std::unique_ptr<ICommandList> m_commandList;
     std::unique_ptr<IPipeline> m_pipeline;
     std::unique_ptr<IPipeline> m_framebufferPipeline;
-    std::unique_ptr<IBuffer> m_framebufferPipelineVertexBuffer;
-    std::unique_ptr<IBuffer> m_framebufferPipelineIndexBuffer;
     std::unique_ptr<ITexture> m_defaultTexture;
     std::unique_ptr<IFrameBuffer> m_defaultFrameBuffer;
+
+    std::unique_ptr<IBuffer> m_lightsBuffer;
+    std::unique_ptr<IBuffer> m_viewBuffer;
+    std::unique_ptr<IBuffer> m_materialBuffer;
+    std::unique_ptr<IBuffer> m_modelBuffer;
+    std::unique_ptr<ISampler> m_sampler;
+
     const IUploadContext & m_uploadContext;
 
     glm::mat4 m_projection{};
