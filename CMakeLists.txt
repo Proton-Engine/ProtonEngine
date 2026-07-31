@@ -5,7 +5,7 @@ project(ProtonEngine VERSION 0.0.1)
 set(CMAKE_CXX_STANDARD 23)
 
 #add_compile_options(-fPIC -Wall -Wextra -Wpedantic)
-add_compile_options(-fPIC)
+#add_compile_options(-fPIC)
 
 set(BINARY_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 

@@ -104,6 +104,7 @@ public:
         static Renderer::Mesh quadMesh = renderer().createMeshFromModel(quadModel);
         static Renderer::Material materialRenderTarget{glm::vec3(1.0f), (Renderer::ITexture &)secondCameraComponent.camera.renderBuffer->colorTexture(),
                                                        glm::vec3(1.0f), renderer().getDefaultTexture(), 32};
+        materialRenderTarget.ambientIntensity = 1.0f;
 
         auto secondCameraRenderTarget = getScene().addEntity("SecondCameraRenderTarget", Core::Components::TransformComponent{{-1, 0, 5}, {0, 0, 0}, {1, 1 * (9.f / 16.f), 1}});
         secondCameraRenderTarget.emplaceComponent<Core::Components::MeshRenderer>(quadMesh, materialRenderTarget);

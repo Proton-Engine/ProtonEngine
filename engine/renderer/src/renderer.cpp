@@ -102,6 +102,7 @@ struct alignas(16) OpenGlMaterial
 {
     glm::vec4 baseColor;
     glm::vec4 specularColor;
+    float ambientIntensity;
 };
 
 [[nodiscard]] auto getDirectionalLight(const std::vector<RenderableLight> & lights, const glm::mat4 & view) -> OpenGlLight
@@ -305,7 +306,8 @@ void Renderer::renderAllInQueue()
 
             OpenGlMaterial material{
                 .baseColor = glm::vec4(renderableObject.material.baseColor, 1.0f),
-                .specularColor = glm::vec4(renderableObject.material.specularColor, renderableObject.material.shininess)};
+                .specularColor = glm::vec4(renderableObject.material.specularColor, renderableObject.material.shininess),
+                .ambientIntensity = renderableObject.material.ambientIntensity};
 
             m_uploadContext.uploadBuffer(*m_materialBuffer, std::as_bytes(std::span{&material, 1}), 0);
 

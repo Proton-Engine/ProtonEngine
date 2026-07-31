@@ -14,12 +14,18 @@ namespace ProtonEngine::Renderer
 
 struct Material
 {
-    Material(glm::vec3 baseColor, ITexture & baseTexture, glm::vec3 specularColor, ITexture & specularMap, float shininess)
+    Material(glm::vec3 baseColor,
+             ITexture & baseTexture,
+             glm::vec3 specularColor,
+             ITexture & specularMap,
+             float shininess,
+             float ambientIntensity = 0.1f)
         : baseColor(baseColor)
         , baseTexture(baseTexture)
         , specularColor(specularColor)
         , specularMap(specularMap)
         , shininess(shininess)
+        , ambientIntensity(ambientIntensity)
     {
     }
     
@@ -28,6 +34,7 @@ struct Material
     glm::vec3 specularColor;
     ITexture & specularMap;
     float shininess;
+    float ambientIntensity;
 };
 
 } // namespace ProtonEngine::Renderer
