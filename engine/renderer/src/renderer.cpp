@@ -19,6 +19,7 @@
 #include <fstream>
 #include <glm/gtx/hash.hpp>
 #include <numbers>
+#include <ranges>
 #include <sstream>
 
 #include <stdexcept>
@@ -241,7 +242,6 @@ void Renderer::setWindowContext(ContextLoadFunction func)
                                            m_windowWidth = static_cast<float>(context.width);
                                            m_windowHeight = static_cast<float>(context.height);
                                            m_defaultFrameBuffer = m_renderer->createFrameBuffer({static_cast<uint32_t>(context.width), static_cast<uint32_t>(context.height)});
-                                           m_renderer->setViewport(0, 0, context.width, context.height);
                                        }));
 }
 
@@ -257,51 +257,73 @@ void Renderer::addLight(const Transform & transform, const Light & light)
 
 void Renderer::renderAllInQueue()
 {
+    std::ranges::sort(m_cameras, [](const auto & lhs, const auto & rhs) { return lhs.camera->renderPriority < rhs.camera->renderPriority; });
+
     m_commandList->begin();
-    m_commandList->setPipeline(*m_pipeline);
-    m_commandList->attachFrameBuffer(*m_defaultFrameBuffer);
 
-    Lights lights{
-        getPointLight(m_lights, m_view),
-        getDirectionalLight(m_lights, m_view)};
-
-    m_uploadContext.uploadBuffer(*m_lightsBuffer, std::as_bytes(std::span{&lights, 1}), 0);
-
-    UniformViewData viewData{m_view, m_projection};
-    m_uploadContext.uploadBuffer(*m_viewBuffer, std::as_bytes(std::span{&viewData, 1}), 0);
-
-    const auto frameDescriptorSet = m_renderer->createDescriptorSet(
-        {.buffers = {{1, *m_viewBuffer}, {3, *m_lightsBuffer}},
-         .textures = {},
-         .samplers = {}});
-    m_commandList->bindDescriptorSet(*frameDescriptorSet);
-
-    for (const auto & renderableObject : m_renderableObjects)
+    for (const auto & camera : m_cameras)
     {
-        glm::mat4 model = glm::translate(glm::mat4(1.0f), renderableObject.transform.position);
-        model = glm::rotate(model, renderableObject.transform.rotation.y * std::numbers::pi_v<float> / 180.0f, glm::vec3{0, 1, 0});
-        model = glm::rotate(model, renderableObject.transform.rotation.x * std::numbers::pi_v<float> / 180.0f, glm::vec3{1, 0, 0});
-        model = glm::rotate(model, renderableObject.transform.rotation.z * std::numbers::pi_v<float> / 180.0f, glm::vec3{0, 0, 1});
-        model = glm::scale(model, renderableObject.transform.scale);
+        setCamera(*camera.transform, *camera.camera);
+        if (camera.camera->isMainCamera())
+        {
+            m_renderer->setViewport(0, 0, m_windowWidth, m_windowHeight);
+        }
+        else
+        {
+            // TODO: Remove hardcoded size
+            m_renderer->setViewport(0, 0, 480, 360);
+        }
 
-        OpenGlMaterial material{
-            .baseColor = glm::vec4(renderableObject.material.baseColor, 1.0f),
-            .specularColor = glm::vec4(renderableObject.material.specularColor, renderableObject.material.shininess)};
+        m_commandList->setPipeline(*m_pipeline);
+        m_commandList->attachFrameBuffer(camera.camera->isMainCamera() ? *m_defaultFrameBuffer : *camera.camera->renderBuffer);
 
-        m_uploadContext.uploadBuffer(*m_materialBuffer, std::as_bytes(std::span{&material, 1}), 0);
+        Lights lights{
+            getPointLight(m_lights, m_view),
+            getDirectionalLight(m_lights, m_view)};
 
-        m_uploadContext.uploadBuffer(*m_modelBuffer, std::as_bytes(std::span{&model, 1}), 0);
+        m_uploadContext.uploadBuffer(*m_lightsBuffer, std::as_bytes(std::span{&lights, 1}), 0);
 
-        const auto descriptorSet = m_renderer->createDescriptorSet(
-            {.buffers = {{0, *m_modelBuffer}, {2, *m_materialBuffer}},
-             .textures = {{0, renderableObject.material.baseTexture}, {1, renderableObject.material.specularMap}},
-             .samplers = {{0, *m_sampler}, {1, *m_sampler}}});
+        UniformViewData viewData{m_view, m_projection};
+        m_uploadContext.uploadBuffer(*m_viewBuffer, std::as_bytes(std::span{&viewData, 1}), 0);
 
-        m_commandList->bindDescriptorSet(*descriptorSet);
-        m_commandList->setVertexBuffer(renderableObject.mesh.vertexBuffer());
-        m_commandList->setIndexBuffer(renderableObject.mesh.indexBuffer());
-        m_commandList->drawIndexed(renderableObject.mesh.indicesCount());
+        const auto frameDescriptorSet = m_renderer->createDescriptorSet(
+            {.buffers = {{1, *m_viewBuffer}, {3, *m_lightsBuffer}},
+             .textures = {},
+             .samplers = {}});
+        m_commandList->bindDescriptorSet(*frameDescriptorSet);
+
+        for (const auto & renderableObject : m_renderableObjects)
+        {
+            if (!camera.camera->isMainCamera() && &renderableObject.material.baseTexture == &camera.camera->renderBuffer->colorTexture())
+                continue;
+
+            glm::mat4 model = glm::translate(glm::mat4(1.0f), renderableObject.transform.position);
+            model = glm::rotate(model, renderableObject.transform.rotation.y * std::numbers::pi_v<float> / 180.0f, glm::vec3{0, 1, 0});
+            model = glm::rotate(model, renderableObject.transform.rotation.x * std::numbers::pi_v<float> / 180.0f, glm::vec3{1, 0, 0});
+            model = glm::rotate(model, renderableObject.transform.rotation.z * std::numbers::pi_v<float> / 180.0f, glm::vec3{0, 0, 1});
+            model = glm::scale(model, renderableObject.transform.scale);
+
+            OpenGlMaterial material{
+                .baseColor = glm::vec4(renderableObject.material.baseColor, 1.0f),
+                .specularColor = glm::vec4(renderableObject.material.specularColor, renderableObject.material.shininess)};
+
+            m_uploadContext.uploadBuffer(*m_materialBuffer, std::as_bytes(std::span{&material, 1}), 0);
+
+            m_uploadContext.uploadBuffer(*m_modelBuffer, std::as_bytes(std::span{&model, 1}), 0);
+
+            const auto descriptorSet = m_renderer->createDescriptorSet(
+                {.buffers = {{0, *m_modelBuffer}, {2, *m_materialBuffer}},
+                 .textures = {{0, renderableObject.material.baseTexture}, {1, renderableObject.material.specularMap}},
+                 .samplers = {{0, *m_sampler}, {1, *m_sampler}}});
+
+            m_commandList->bindDescriptorSet(*descriptorSet);
+            m_commandList->setVertexBuffer(renderableObject.mesh.vertexBuffer());
+            m_commandList->setIndexBuffer(renderableObject.mesh.indexBuffer());
+            m_commandList->drawIndexed(renderableObject.mesh.indicesCount());
+        }
     }
+
+    m_renderer->setViewport(0, 0, m_windowWidth, m_windowHeight);
 
     m_commandList->setPipeline(*m_framebufferPipeline);
 
@@ -319,16 +341,11 @@ void Renderer::renderAllInQueue()
 
     m_renderableObjects.clear();
     m_lights.clear();
+    m_cameras.clear();
 }
 
 void Renderer::setCamera(const Transform & transform, const Camera & camera)
 {
-    // TODO: Implement non-main camera rendering
-    if (!camera.isMainCamera())
-    {
-        return;
-    }
-
     const auto yaw = transform.rotation.y - 90;
     const auto pitch = transform.rotation.x;
 
@@ -344,6 +361,7 @@ void Renderer::setCamera(const Transform & transform, const Camera & camera)
 
     if (camera.projection == Camera::Projection::PERSPECTIVE)
     {
+        // TODO: Calculate aspect ratio of non main camera's
         m_projection = glm::perspective(glm::radians(camera.fieldOfView), m_windowWidth / m_windowHeight, camera.clippingPlaneNear,
                                         camera.clippingPlaneFar);
     }
@@ -353,6 +371,16 @@ void Renderer::setCamera(const Transform & transform, const Camera & camera)
         PROTON_LOG_ERROR("Orthographic projection not supported yet");
         throw std::runtime_error("Orthographic projection not supported yet");
     }
+}
+
+void Renderer::addCamera(const Transform & transform, const Camera & camera)
+{
+    m_cameras.emplace_back(&transform, &camera);
+}
+
+auto Renderer::createFrameBuffer(uint32_t width, uint32_t height) -> std::unique_ptr<IFrameBuffer>
+{
+    return m_renderer->createFrameBuffer(FrameBufferDescriptor{.width = width, .height = height});
 }
 
 std::unique_ptr<ITexture> Renderer::createTextureFromImage(const Assets::Image & image)

@@ -1,13 +1,13 @@
 /*
- * Copyright © 2022-2025. Proton Engine
+ * Copyright © 2022-2026. Proton Engine
  * Licensed using the MIT license
  */
 
 #pragma once
 
-#include "material.h"
-#include "mesh.h"
-#include "transform.h"
+#include "protonengine/renderer/material.h"
+#include "protonengine/renderer/mesh.h"
+#include "protonengine/renderer/transform.h"
 
 namespace ProtonEngine::Renderer
 {

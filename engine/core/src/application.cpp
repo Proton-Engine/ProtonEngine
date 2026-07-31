@@ -47,7 +47,7 @@ void Application::run()
             component.nativeScript->onUpdate(deltaTimeSeconds);
         });
 
-        registry.view<Components::TransformComponent, Components::CameraComponent>().each([&](auto & transform, auto & camera) { m_renderer->setCamera(transform.transform, camera.camera); });
+        registry.view<Components::TransformComponent, Components::CameraComponent>().each([&](auto & transform, auto & camera) { m_renderer->addCamera(transform.transform, camera.camera); });
         registry.view<Components::TransformComponent, Components::MeshRenderer>().each([&](auto & transform, auto & meshRenderer) {
             m_renderer->addToRenderQueue(transform.transform, meshRenderer.mesh, meshRenderer.material);
         });

@@ -29,6 +29,11 @@ OpenGLFrameBuffer::OpenGLFrameBuffer(const FrameBufferDescriptor & descriptor, c
 
     glBindTexture(GL_TEXTURE_2D, openglColorTexture->id());
     glTexImage2D(GL_TEXTURE_2D, 0, openglColorTexture->getInternalDataFormat(), descriptor.width, descriptor.height, 0, openglColorTexture->getDataFormat(), GL_UNSIGNED_BYTE, nullptr);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
     glBindTexture(GL_TEXTURE_2D, 0);
 
     glGenRenderbuffers(1, &m_renderBufferId);
@@ -36,7 +41,7 @@ OpenGLFrameBuffer::OpenGLFrameBuffer(const FrameBufferDescriptor & descriptor, c
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, openglColorTexture->id(), 0);
 
     glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, descriptor.width, descriptor.height);
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_frameBufferId);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_renderBufferId);
 
     // TODO: Do we need to access this?
     // TextureDescriptor depthStencilAttachmentDescriptor{

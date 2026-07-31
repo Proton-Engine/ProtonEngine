@@ -17,6 +17,7 @@
 #include "protonengine/renderer/mesh.h"
 #include "protonengine/renderer/renderable_object.h"
 #include "protonengine/renderer/transform.h"
+#include "renderable_camera.h"
 #include "renderable_light.h"
 
 #include <glm/mat4x4.hpp>
@@ -47,14 +48,17 @@ public:
     void addToRenderQueue(const Transform & transform, const Mesh & mesh, const Material & material);
     void addLight(const Transform & transform, const Light & light);
     void renderAllInQueue();
-    void setCamera(const Transform & transform, const Camera & camera);
+    void addCamera(const Transform & transform, const Camera & camera);
 
+    [[nodiscard]] auto createFrameBuffer(uint32_t width, uint32_t height) -> std::unique_ptr<IFrameBuffer>;
     [[nodiscard]] auto createTextureFromImage(const Assets::Image & image) -> std::unique_ptr<ITexture>;
     [[nodiscard]] auto createMeshFromModel(const Assets::Model & model) -> Mesh;
     [[nodiscard]] auto getDefaultTexture() -> ITexture &;
     [[nodiscard]] auto getDefaultMaterial() -> Material;
 
 private:
+    void setCamera(const Transform & transform, const Camera & camera);
+
     Assets::Model m_frameBufferQuad;
     std::optional<Mesh> m_frameBufferQuadMesh = std::nullopt;
 
@@ -79,6 +83,7 @@ private:
     float m_windowWidth{};
     float m_windowHeight{};
 
+    std::vector<RenderableCamera> m_cameras;
     std::vector<RenderableObject> m_renderableObjects;
     std::vector<RenderableLight> m_lights;
 };

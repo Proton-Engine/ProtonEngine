@@ -35,8 +35,8 @@ public:
     virtual ~IFrameBuffer() = default;
     IFrameBuffer(const IFrameBuffer &) = delete;
     IFrameBuffer & operator=(const IFrameBuffer &) = delete;
-    IFrameBuffer(IFrameBuffer &&) = delete;
-    IFrameBuffer & operator=(IFrameBuffer &&) = delete;
+    IFrameBuffer(IFrameBuffer &&) = default;
+    IFrameBuffer & operator=(IFrameBuffer &&) = default;
 
     virtual auto colorTexture() -> const ITexture & = 0;
 };
