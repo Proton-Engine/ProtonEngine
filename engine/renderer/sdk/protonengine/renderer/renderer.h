@@ -15,10 +15,10 @@
 #include "protonengine/renderer/itexture.h"
 #include "protonengine/renderer/light.h"
 #include "protonengine/renderer/mesh.h"
+#include "protonengine/renderer/renderable_camera.h"
+#include "protonengine/renderer/renderable_light.h"
 #include "protonengine/renderer/renderable_object.h"
 #include "protonengine/renderer/transform.h"
-#include "renderable_camera.h"
-#include "renderable_light.h"
 
 #include <glm/mat4x4.hpp>
 #include <memory>

@@ -95,9 +95,10 @@ public:
         mainCameraComponent.camera.renderPriority = 1;
         camera.emplaceScript<CameraController>();
 
-        auto camera2 = getScene().addEntity("SecondCamera", Core::Components::TransformComponent{{10, 0, 10}, {0, -30, 0}, {1, 1, 1}});
+        auto camera2 = getScene().addEntity("SecondCamera", Core::Components::TransformComponent{{15, 0, -10}, {0, -90, 0}, {1, 1, 1}});
         auto & secondCameraComponent = camera2.addComponent(Core::Components::CameraComponent{Core::Components::CameraComponent::Projection::PERSPECTIVE, 0.1f, 100.0f, 60,
                                                                                               renderer().createFrameBuffer(1920, 1080)});
+        secondCameraComponent.camera.clearColor = glm::vec4{0.1f, 0.1f, 0.1f, 1.f};
         secondCameraComponent.camera.renderPriority = 0;
 
         static const auto quadModel = Assets::AssetManager::loadModel("assets/models/quad.obj");

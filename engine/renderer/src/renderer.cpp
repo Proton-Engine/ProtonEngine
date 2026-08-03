@@ -265,6 +265,7 @@ void Renderer::renderAllInQueue()
     for (const auto & camera : m_cameras)
     {
         setCamera(*camera.transform, *camera.camera);
+
         if (camera.camera->isMainCamera())
         {
             m_renderer->setViewport(0, 0, m_windowWidth, m_windowHeight);
@@ -278,6 +279,9 @@ void Renderer::renderAllInQueue()
 
         m_commandList->setPipeline(*m_pipeline);
         m_commandList->attachFrameBuffer(camera.camera->isMainCamera() ? *m_defaultFrameBuffer : *camera.camera->renderBuffer);
+
+        m_commandList->setClearColour(camera.camera->clearColor);
+        m_commandList->clear(camera.camera->clearMode);
 
         Lights lights{
             getPointLight(m_lights, m_view),
@@ -329,6 +333,7 @@ void Renderer::renderAllInQueue()
     m_renderer->setViewport(0, 0, m_windowWidth, m_windowHeight);
 
     m_commandList->setPipeline(*m_framebufferPipeline);
+    m_commandList->clear(ClearMode::ColorAndDepth);
 
     const auto frameBufferDescriptorset = m_renderer->createDescriptorSet(
         {.buffers = std::vector<BufferBinding>{},

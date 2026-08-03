@@ -21,7 +21,6 @@
 #include <glad/gl.h>
 
 #include <format>
-#include <functional>
 #include <stdexcept>
 
 namespace ProtonEngine::Renderer::OpenGL

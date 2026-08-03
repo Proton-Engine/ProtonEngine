@@ -5,10 +5,13 @@
 
 #pragma once
 
+#include "protonengine/renderer/clear_mode.h"
 #include "protonengine/renderer/ibuffer.h"
 #include "protonengine/renderer/idescriptor_set.h"
 #include "protonengine/renderer/iframe_buffer.h"
 #include "protonengine/renderer/ipipeline.h"
+
+#include "glm/vec4.hpp"
 
 namespace ProtonEngine::Renderer
 {
@@ -27,6 +30,8 @@ public:
     virtual void end() = 0;
 
     virtual void setPipeline(const IPipeline & pipeline) = 0;
+    virtual void setClearColour(glm::vec4 colour) = 0;
+    virtual void clear(ClearMode clearMode) = 0;
     virtual void setVertexBuffer(const IBuffer & buffer, uint32_t slot = 0, uint32_t offset = 0) = 0;
     virtual void setIndexBuffer(const IBuffer & buffer) = 0;
     virtual void bindUniformBuffer(uint32_t slot, const IBuffer & buffer) = 0;
