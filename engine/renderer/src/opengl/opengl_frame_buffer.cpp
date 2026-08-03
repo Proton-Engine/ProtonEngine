@@ -16,6 +16,7 @@ namespace ProtonEngine::Renderer::OpenGL
 {
 
 OpenGLFrameBuffer::OpenGLFrameBuffer(const FrameBufferDescriptor & descriptor, const OpenGLRenderer & renderBackend)
+    : m_descriptor(descriptor)
 {
     glGenFramebuffers(1, &m_frameBufferId);
     glBindFramebuffer(GL_FRAMEBUFFER, m_frameBufferId);
@@ -70,8 +71,12 @@ OpenGLFrameBuffer::~OpenGLFrameBuffer()
 {
     glDeleteFramebuffers(1, &m_frameBufferId);
 }
+auto OpenGLFrameBuffer::bufferSize() const noexcept -> glm::u32vec2
+{
+    return glm::u32vec2{m_descriptor.width, m_descriptor.height};
+}
 
-auto OpenGLFrameBuffer::colorTexture() -> const ITexture &
+auto OpenGLFrameBuffer::colorTexture() const noexcept -> const ITexture &
 {
     return *m_colorTexture;
 }

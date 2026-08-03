@@ -80,8 +80,8 @@ private:
     glm::mat4 m_projection{};
     glm::mat4 m_view{};
 
-    float m_windowWidth{};
-    float m_windowHeight{};
+    uint32_t m_windowWidth{};
+    uint32_t m_windowHeight{};
 
     std::vector<RenderableCamera> m_cameras;
     std::vector<RenderableObject> m_renderableObjects;

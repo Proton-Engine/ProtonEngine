@@ -7,9 +7,9 @@
 
 #include "itexture.h"
 
+#include <glm/vec2.hpp>
+
 #include <cstdint>
-#include <memory>
-#include <unordered_set>
 
 namespace ProtonEngine::Renderer
 {
@@ -38,7 +38,8 @@ public:
     IFrameBuffer(IFrameBuffer &&) = default;
     IFrameBuffer & operator=(IFrameBuffer &&) = default;
 
-    virtual auto colorTexture() -> const ITexture & = 0;
+    [[nodiscard]] virtual auto bufferSize() const noexcept -> glm::u32vec2 = 0;
+    [[nodiscard]] virtual auto colorTexture() const noexcept -> const ITexture & = 0;
 };
 
 } // namespace ProtonEngine::Renderer

@@ -7,6 +7,8 @@
 
 #include "protonengine/renderer/iframe_buffer.h"
 
+#include <memory>
+
 namespace ProtonEngine::Renderer
 {
 

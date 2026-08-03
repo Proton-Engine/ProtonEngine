@@ -18,11 +18,15 @@ public:
     explicit OpenGLFrameBuffer(const FrameBufferDescriptor & descriptor, const OpenGLRenderer & renderBackend);
     ~OpenGLFrameBuffer() override;
 
-    auto colorTexture() -> const ITexture & override;
+
+    [[nodiscard]] auto bufferSize() const noexcept -> glm::u32vec2 override;
+    [[nodiscard]] auto colorTexture() const noexcept -> const ITexture & override;
 
     [[nodiscard]] auto id() const -> uint32_t;
 
 private:
+    FrameBufferDescriptor m_descriptor;
+
     uint32_t m_frameBufferId{};
     uint32_t m_renderBufferId{};
 

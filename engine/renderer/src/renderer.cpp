@@ -240,8 +240,8 @@ void Renderer::setWindowContext(ContextLoadFunction func)
     m_sampler = m_renderer->createSampler({ScalingMode::LINEAR, WrappingMode::REPEAT});
 
     Common::EventBus::subscribeToEvent(Common::Event::WINDOW_RESIZE_EVENT, std::function([&](Common::Event, Common::WindowResizeEventContext context) {
-                                           m_windowWidth = static_cast<float>(context.width);
-                                           m_windowHeight = static_cast<float>(context.height);
+                                           m_windowWidth = context.width;
+                                           m_windowHeight = context.height;
                                            m_defaultFrameBuffer = m_renderer->createFrameBuffer({static_cast<uint32_t>(context.width), static_cast<uint32_t>(context.height)});
                                        }));
 }
@@ -271,8 +271,9 @@ void Renderer::renderAllInQueue()
         }
         else
         {
-            // TODO: Remove hardcoded size
-            m_renderer->setViewport(0, 0, 480, 360);
+            // TODO: Move to render buffer descriptor instead of texture descriptor
+            const auto bufferSize = camera.camera->renderBuffer->bufferSize();
+            m_renderer->setViewport(0, 0, bufferSize.x, bufferSize.y);
         }
 
         m_commandList->setPipeline(*m_pipeline);
@@ -363,8 +364,17 @@ void Renderer::setCamera(const Transform & transform, const Camera & camera)
 
     if (camera.projection == Camera::Projection::PERSPECTIVE)
     {
-        // TODO: Calculate aspect ratio of non main camera's
-        m_projection = glm::perspective(glm::radians(camera.fieldOfView), m_windowWidth / m_windowHeight, camera.clippingPlaneNear,
+        const auto aspectRatio = [&] -> float {
+            if (camera.isMainCamera())
+            {
+                return static_cast<float>(m_windowWidth) / static_cast<float>(m_windowHeight);
+            }
+
+            const auto bufferSize = camera.renderBuffer->bufferSize();
+            return static_cast<float>(bufferSize.x) / static_cast<float>(bufferSize.y);
+        }();
+
+        m_projection = glm::perspective(glm::radians(camera.fieldOfView), aspectRatio, camera.clippingPlaneNear,
                                         camera.clippingPlaneFar);
     }
 
