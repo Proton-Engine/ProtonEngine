@@ -52,8 +52,6 @@ void OpenGLCommandList::setPipeline(const IPipeline & pipeline)
     vertexStride = openglPipeline.stride();
 
     glBindVertexArray(openglPipeline.vao());
-    // TODO: remove here
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 void OpenGLCommandList::setClearColour(glm::vec4 colour)
@@ -139,8 +137,11 @@ void OpenGLCommandList::bindDescriptorSet(const IDescriptorSet & descriptorSet)
 void OpenGLCommandList::attachFrameBuffer(const IFrameBuffer & frameBuffer)
 {
     glBindFramebuffer(GL_FRAMEBUFFER, static_cast<const OpenGLFrameBuffer &>(frameBuffer).id());
-    // TODO: Remove these here:
-    glEnable(GL_DEPTH_TEST);
+}
+
+void OpenGLCommandList::attachDefaultRenderTarget()
+{
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 } // namespace ProtonEngine::Renderer::OpenGL

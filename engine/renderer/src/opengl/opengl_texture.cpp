@@ -37,6 +37,8 @@ OpenGLTexture::OpenGLTexture(const TextureDescriptor & descriptor)
     }
 
     glGenTextures(1, &m_textureID);
+    // TODO: Remove this call from this class and create a renderer capabilities API to get these limits
+    // Resolved by https://github.com/Proton-Engine/ProtonEngine/issues/21
     glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &m_maxTextureUnits);
 }
 

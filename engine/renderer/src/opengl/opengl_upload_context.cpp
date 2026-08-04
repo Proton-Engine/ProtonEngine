@@ -15,7 +15,6 @@ namespace ProtonEngine::Renderer::OpenGL
 
 void OpenGLUploadContext::uploadBuffer(const IBuffer & destination, std::span<const std::byte> source, int32_t offset) const
 {
-    // TODO: Load into buffer with opengl here
     const auto & openglBuffer = static_cast<const Buffer &>(destination);
     glBindBuffer(openglBuffer.bindType(), openglBuffer.id());
     glBufferData(openglBuffer.bindType(), source.size() + offset, nullptr, GL_STATIC_DRAW);

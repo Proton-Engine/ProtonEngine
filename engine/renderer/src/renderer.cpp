@@ -239,6 +239,11 @@ void Renderer::setWindowContext(ContextLoadFunction func)
     m_modelBuffer = m_renderer->createBuffer({BufferType::UNIFORM});
     m_sampler = m_renderer->createSampler({ScalingMode::LINEAR, WrappingMode::REPEAT});
 
+    m_frameBufferDescriptorSet = m_renderer->createDescriptorSet(
+        {.buffers = {{1, *m_viewBuffer}, {3, *m_lightsBuffer}},
+         .textures = {},
+         .samplers = {}});
+
     Common::EventBus::subscribeToEvent(Common::Event::WINDOW_RESIZE_EVENT, std::function([&](Common::Event, Common::WindowResizeEventContext context) {
                                            m_windowWidth = context.width;
                                            m_windowHeight = context.height;
@@ -272,7 +277,6 @@ void Renderer::renderAllInQueue()
         }
         else
         {
-            // TODO: Move to render buffer descriptor instead of texture descriptor
             const auto bufferSize = camera.camera->renderBuffer->bufferSize();
             m_renderer->setViewport(0, 0, bufferSize.x, bufferSize.y);
         }
@@ -292,14 +296,12 @@ void Renderer::renderAllInQueue()
         UniformViewData viewData{m_view, m_projection};
         m_uploadContext.uploadBuffer(*m_viewBuffer, std::as_bytes(std::span{&viewData, 1}), 0);
 
-        const auto frameDescriptorSet = m_renderer->createDescriptorSet(
-            {.buffers = {{1, *m_viewBuffer}, {3, *m_lightsBuffer}},
-             .textures = {},
-             .samplers = {}});
-        m_commandList->bindDescriptorSet(*frameDescriptorSet);
+        m_commandList->bindDescriptorSet(*m_frameBufferDescriptorSet);
 
         for (const auto & renderableObject : m_renderableObjects)
         {
+            // TODO: Add support for some sort of Camera mask to define which things should be rendered to each camera instead of this
+            // hacky temporary solution. Resolved by https://github.com/Proton-Engine/ProtonEngine/issues/20
             if (!camera.camera->isMainCamera() && &renderableObject.material.baseTexture == &camera.camera->renderBuffer->colorTexture())
                 continue;
 
@@ -331,13 +333,13 @@ void Renderer::renderAllInQueue()
     }
 
     m_renderer->setViewport(0, 0, m_windowWidth, m_windowHeight);
-
+    m_commandList->attachDefaultRenderTarget();
     m_commandList->setPipeline(*m_framebufferPipeline);
     m_commandList->clear(ClearMode::ColorAndDepth);
 
     const auto frameBufferDescriptorset = m_renderer->createDescriptorSet(
         {.buffers = std::vector<BufferBinding>{},
-         .textures = std::vector<TextureBinding>{TextureBinding{0, m_defaultFrameBuffer->colorTexture()}},
+         .textures = std::vector{TextureBinding{0, m_defaultFrameBuffer->colorTexture()}},
          .samplers = {{0, *m_sampler}}});
 
     m_commandList->bindDescriptorSet(*frameBufferDescriptorset);

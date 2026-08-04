@@ -11,6 +11,7 @@
 #include "protonengine/renderer/irender_backend.h"
 
 #include <glad/gl.h>
+#include <stdexcept>
 
 namespace ProtonEngine::Renderer::OpenGL
 {
@@ -44,23 +45,13 @@ OpenGLFrameBuffer::OpenGLFrameBuffer(const FrameBufferDescriptor & descriptor, c
     glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, descriptor.width, descriptor.height);
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_renderBufferId);
 
-    // TODO: Do we need to access this?
-    // TextureDescriptor depthStencilAttachmentDescriptor{
-    //     descriptor.width,
-    //     descriptor.height, TextureFormat::DEPTH_STENCIL};
-    //
-    // m_depthStencilTexture = renderBackend.createTexture(depthStencilAttachmentDescriptor);
-    // const auto openglDepthStencilTexture = static_cast<OpenGLTexture *>(m_depthStencilTexture.get());
-    //
-    // glBindTexture(GL_TEXTURE_2D, openglDepthStencilTexture->id());
-    // glTexImage2D(GL_TEXTURE_2D, 0, openglDepthStencilTexture->getInternalDataFormat(), descriptor.width, descriptor.height, 0, openglDepthStencilTexture->getDataFormat(), GL_UNSIGNED_BYTE, nullptr);
-    // glBindTexture(GL_TEXTURE_2D, 0);
-    //
-    // glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, openglDepthStencilTexture->id(), 0);
-
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
     {
-        PROTON_LOG_ERROR("ERROR::FRAMEBUFFER:: Framebuffer is not complete!");
+        PROTON_LOG_ERROR("Framebuffer is not complete!");
+
+        glDeleteFramebuffers(1, &m_frameBufferId);
+        glDeleteRenderbuffers(1, &m_renderBufferId);
+        throw std::runtime_error("Framebuffer is not complete!");
     }
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -70,6 +61,7 @@ OpenGLFrameBuffer::OpenGLFrameBuffer(const FrameBufferDescriptor & descriptor, c
 OpenGLFrameBuffer::~OpenGLFrameBuffer()
 {
     glDeleteFramebuffers(1, &m_frameBufferId);
+    glDeleteRenderbuffers(1, &m_renderBufferId);
 }
 auto OpenGLFrameBuffer::bufferSize() const noexcept -> glm::u32vec2
 {

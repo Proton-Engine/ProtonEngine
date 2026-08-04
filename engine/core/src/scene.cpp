@@ -42,8 +42,13 @@ auto Scene::getEntityWithName(std::string_view name) -> Entity
         return view.get<Components::Tag>(entity).tag == name;
     });
 
-    return found != view.end() ? Entity{*found, *this} :
-                                 throw std::runtime_error(std::format("Entity with name {} not found in the registry", name));
+    if (found == view.end())
+    {
+        PROTON_LOG_ERROR(std::format("Entity with name {} not found in the registry", name));
+        throw std::runtime_error(std::format("Entity with name {} not found in the registry", name));
+    };
+
+    return Entity{*found, *this};
 }
 
 auto Scene::getEntityRegistry() noexcept -> entt::registry &

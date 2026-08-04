@@ -74,6 +74,7 @@ private:
     std::unique_ptr<IBuffer> m_materialBuffer;
     std::unique_ptr<IBuffer> m_modelBuffer;
     std::unique_ptr<ISampler> m_sampler;
+    std::unique_ptr<IDescriptorSet> m_frameBufferDescriptorSet;
 
     const IUploadContext & m_uploadContext;
 

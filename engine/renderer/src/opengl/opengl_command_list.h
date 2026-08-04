@@ -27,6 +27,7 @@ public:
     void drawIndexed(uint32_t indexCount) override;
     void bindDescriptorSet(const IDescriptorSet & descriptorSet) override;
     void attachFrameBuffer(const IFrameBuffer & frameBuffer) override;
+    void attachDefaultRenderTarget() override;
 
 private:
     uint32_t m_shaderProgram{};

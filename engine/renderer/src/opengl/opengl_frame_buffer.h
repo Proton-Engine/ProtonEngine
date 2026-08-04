@@ -15,6 +15,7 @@ namespace ProtonEngine::Renderer::OpenGL
 class OpenGLFrameBuffer : public IFrameBuffer
 {
 public:
+    OpenGLFrameBuffer() = default;
     explicit OpenGLFrameBuffer(const FrameBufferDescriptor & descriptor, const OpenGLRenderer & renderBackend);
     ~OpenGLFrameBuffer() override;
 
@@ -25,13 +26,12 @@ public:
     [[nodiscard]] auto id() const -> uint32_t;
 
 private:
-    FrameBufferDescriptor m_descriptor;
+    FrameBufferDescriptor m_descriptor{};
 
     uint32_t m_frameBufferId{};
     uint32_t m_renderBufferId{};
 
     std::unique_ptr<ITexture> m_colorTexture;
-    std::unique_ptr<ITexture> m_depthStencilTexture;
 };
 
 } // namespace ProtonEngine::Renderer::OpenGL

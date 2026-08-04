@@ -38,6 +38,7 @@ public:
     virtual void drawIndexed(uint32_t indexCount) = 0;
     virtual void bindDescriptorSet(const IDescriptorSet & descriptorSet) = 0;
     virtual void attachFrameBuffer(const IFrameBuffer & frameBuffer) = 0;
+    virtual void attachDefaultRenderTarget() = 0;
 };
 
 } // namespace ProtonEngine::Renderer
