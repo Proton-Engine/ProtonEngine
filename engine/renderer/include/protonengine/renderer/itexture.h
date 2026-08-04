@@ -14,6 +14,7 @@ enum class TextureFormat
 {
     RGB8,
     RGBA8,
+    DEPTH_STENCIL
 };
 
 struct TextureDescriptor

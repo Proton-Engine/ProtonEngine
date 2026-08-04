@@ -7,6 +7,7 @@
 
 #include "opengl_buffer.h"
 #include "opengl_descriptor_set.h"
+#include "opengl_frame_buffer.h"
 #include "opengl_pipeline.h"
 #include "opengl_sampler.h"
 #include "opengl_shader.h"
@@ -35,7 +36,6 @@ constexpr std::array g_uniformBufferNames = {
 
 void OpenGLCommandList::begin()
 {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     // Handle state?
 }
 
@@ -52,6 +52,26 @@ void OpenGLCommandList::setPipeline(const IPipeline & pipeline)
     vertexStride = openglPipeline.stride();
 
     glBindVertexArray(openglPipeline.vao());
+}
+
+void OpenGLCommandList::setClearColour(glm::vec4 colour)
+{
+    glClearColor(colour.r, colour.g, colour.b, colour.a);
+}
+
+void OpenGLCommandList::clear(ClearMode clearMode)
+{
+    const auto clearMask = [&] {
+        switch (clearMode)
+        {
+        case ClearMode::Color: return GL_COLOR_BUFFER_BIT;
+        case ClearMode::Depth: return GL_DEPTH_BUFFER_BIT;
+        case ClearMode::ColorAndDepth: return GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT;
+        }
+        throw std::runtime_error("This should never be able to be reached!");
+    }();
+
+    glClear(clearMask);
 }
 
 void OpenGLCommandList::setVertexBuffer(const IBuffer & buffer, uint32_t slot, uint32_t offset)
@@ -112,6 +132,16 @@ void OpenGLCommandList::bindDescriptorSet(const IDescriptorSet & descriptorSet)
         const auto & openGlSampler = static_cast<const OpenGLSampler &>(sampler.sampler);
         openGlSampler.bind(sampler.binding);
     }
+}
+
+void OpenGLCommandList::attachFrameBuffer(const IFrameBuffer & frameBuffer)
+{
+    glBindFramebuffer(GL_FRAMEBUFFER, static_cast<const OpenGLFrameBuffer &>(frameBuffer).id());
+}
+
+void OpenGLCommandList::attachDefaultRenderTarget()
+{
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 } // namespace ProtonEngine::Renderer::OpenGL

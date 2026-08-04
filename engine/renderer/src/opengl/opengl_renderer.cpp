@@ -7,6 +7,7 @@
 
 #include "opengl_buffer.h"
 #include "opengl_descriptor_set.h"
+#include "opengl_frame_buffer.h"
 #include "opengl_pipeline.h"
 #include "opengl_sampler.h"
 #include "opengl_shader.h"
@@ -20,7 +21,6 @@
 #include <glad/gl.h>
 
 #include <format>
-#include <functional>
 #include <stdexcept>
 
 namespace ProtonEngine::Renderer::OpenGL
@@ -72,42 +72,47 @@ void OpenGLRenderer::setViewport(uint32_t x, uint32_t y, uint32_t width, uint32_
     glViewport(x, y, width, height);
 }
 
-auto OpenGLRenderer::createPipeline(PipelineDescriptor && descriptor) -> std::unique_ptr<IPipeline>
+auto OpenGLRenderer::createPipeline(PipelineDescriptor && descriptor) const -> std::unique_ptr<IPipeline>
 {
     return std::make_unique<OpenGLPipeline>(std::move(descriptor));
 }
 
-auto OpenGLRenderer::createCommandList() -> std::unique_ptr<ICommandList>
+auto OpenGLRenderer::createCommandList() const -> std::unique_ptr<ICommandList>
 {
     return std::make_unique<OpenGLCommandList>();
 }
 
-auto OpenGLRenderer::createBuffer(const BufferDescriptor & descriptor) -> std::unique_ptr<IBuffer>
+auto OpenGLRenderer::createBuffer(const BufferDescriptor & descriptor) const -> std::unique_ptr<IBuffer>
 {
     return std::make_unique<Buffer>(descriptor);
 }
 
-auto OpenGLRenderer::createTexture(const TextureDescriptor & descriptor) -> std::unique_ptr<ITexture>
+auto OpenGLRenderer::createFrameBuffer(const FrameBufferDescriptor & descriptor) const -> std::unique_ptr<IFrameBuffer>
+{
+    return std::make_unique<OpenGLFrameBuffer>(descriptor, *this);
+}
+
+auto OpenGLRenderer::createTexture(const TextureDescriptor & descriptor) const -> std::unique_ptr<ITexture>
 {
     return std::make_unique<OpenGLTexture>(descriptor);
 }
 
-auto OpenGLRenderer::createDescriptorSet(const DescriptorSetDescriptor & descriptor) -> std::unique_ptr<IDescriptorSet>
+auto OpenGLRenderer::createDescriptorSet(const DescriptorSetDescriptor & descriptor) const -> std::unique_ptr<IDescriptorSet>
 {
     return std::make_unique<OpenGLDescriptorSet>(descriptor);
 }
 
-auto OpenGLRenderer::createSampler(const SamplerDescriptor & descriptor) -> std::unique_ptr<ISampler>
+auto OpenGLRenderer::createSampler(const SamplerDescriptor & descriptor) const -> std::unique_ptr<ISampler>
 {
     return std::make_unique<OpenGLSampler>(descriptor);
 }
 
-auto OpenGLRenderer::createShader(const ShaderDescriptor & descriptor) -> std::unique_ptr<IShader>
+auto OpenGLRenderer::createShader(const ShaderDescriptor & descriptor) const -> std::unique_ptr<IShader>
 {
     return std::make_unique<OpenGLShader>(descriptor);
 }
 
-auto OpenGLRenderer::getUploadContext() -> IUploadContext &
+auto OpenGLRenderer::getUploadContext() const -> const IUploadContext &
 {
     return m_uploadContext;
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright © 2022-2025. Proton Engine
+ * Copyright © 2022-2026. Proton Engine
  * Licensed using the MIT license
  */
 
@@ -16,8 +16,13 @@ struct CameraComponent
 
     CameraComponent() = default;
 
-    CameraComponent(Projection projection, float clippingPlaneNear, float clippingPlaneFar, float fieldOfView, bool isMainCamera)
-        : camera(projection, clippingPlaneNear, clippingPlaneFar, fieldOfView, isMainCamera)
+    CameraComponent(Projection projection, float clippingPlaneNear, float clippingPlaneFar, float fieldOfView)
+        : camera(projection, clippingPlaneNear, clippingPlaneFar, fieldOfView)
+    {
+    }
+
+    CameraComponent(Projection projection, float clippingPlaneNear, float clippingPlaneFar, float fieldOfView, std::unique_ptr<Renderer::IFrameBuffer> && renderBuffer)
+        : camera(projection, clippingPlaneNear, clippingPlaneFar, fieldOfView, std::move(renderBuffer))
     {
     }
 

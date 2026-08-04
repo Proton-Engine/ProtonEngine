@@ -18,19 +18,19 @@ namespace ProtonEngine::Renderer
 struct BufferBinding
 {
     uint32_t binding;
-    IBuffer & buffer;
+    const IBuffer & buffer;
 };
 
 struct TextureBinding
 {
     uint32_t binding;
-    ITexture & texture;
+    const ITexture & texture;
 };
 
 struct SamplerBinding
 {
     uint32_t binding;
-    ISampler & sampler;
+    const ISampler & sampler;
 };
 
 struct DescriptorSetDescriptor

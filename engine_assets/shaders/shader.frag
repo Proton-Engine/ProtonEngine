@@ -4,9 +4,9 @@ uniform sampler2D baseTexture;
 uniform sampler2D specularMap;
 
 struct Material {
-    vec3 baseColor;
-    vec3 specularColor;
-    float shininess;
+    vec4 baseColor;
+    vec4 specularColor;
+    float ambientIntensity;
 };
 
 struct Light {
@@ -41,12 +41,14 @@ vec3 calculatePhongLightingSpecularComponent(vec3 lightDirection, vec3 lightColo
 float attenuatateCusp(float distance, float radius, float max_intensity, float falloff);
 
 void main() {
-    color = texture(baseTexture, textureCoordinate).rgb * calculatePhongLighting();
+    vec3 albedo = texture(baseTexture, textureCoordinate).rgb * material.baseColor.rgb;
+
+    color = albedo * calculatePhongLighting();
 }
 
 vec3 calculatePhongLighting()
 {
-    vec3 ambient = 0.1f * material.baseColor;
+    vec3 ambient = material.ambientIntensity * material.baseColor.rgb;
 
     vec3 diffuse = calculatePhongLightingDiffuseComponent(-directionalLight.direction, directionalLight.color, 1);
     vec3 specular = calculatePhongLightingSpecularComponent(-directionalLight.direction, directionalLight.color, 1);
@@ -67,7 +69,7 @@ vec3 calculatePhongLightingDiffuseComponent(vec3 lightDirection, vec3 lightColor
     // The closer the direction to the light is to the normal, the more effect diffuse lighting has
     float diffuseMultiplier = max(dot(normalize(fragNormal), directionToLight), 0.0);
 
-    return diffuseMultiplier * lightColor * material.baseColor * attenuation;
+    return diffuseMultiplier * lightColor * material.baseColor.rgb * attenuation;
 }
 
 vec3 calculatePhongLightingSpecularComponent(vec3 lightDirection, vec3 lightColor, float attenuation)
@@ -77,9 +79,9 @@ vec3 calculatePhongLightingSpecularComponent(vec3 lightDirection, vec3 lightColo
     vec3 viewDir = normalize(-worldPosition);
     vec3 reflectDir = reflect(-directionToLight, normalize(fragNormal));
 
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.specularColor.w);
 
-    return spec * lightColor * material.specularColor * texture(specularMap, textureCoordinate).rgb * attenuation;
+    return spec * lightColor * material.specularColor.rgb * texture(specularMap, textureCoordinate).rgb * attenuation;
 }
 
 // Attenuation function from here: https://lisyarus.github.io/blog/posts/point-light-attenuation.html

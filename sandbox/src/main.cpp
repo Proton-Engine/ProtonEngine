@@ -91,8 +91,24 @@ public:
         static Renderer::Material materialCube{glm::vec3(1.0f), *texture, glm::vec3(1.0f), *textureSpecular, 32};
 
         auto camera = getScene().addEntity("MainCamera", Core::Components::TransformComponent{{0, 0, 10}, {0, 0, 0}, {1, 1, 1}});
-        camera.addComponent(Core::Components::CameraComponent{Core::Components::CameraComponent::Projection::PERSPECTIVE, 0.1f, 100.0f, 60, true});
+        auto & mainCameraComponent = camera.addComponent(Core::Components::CameraComponent{Core::Components::CameraComponent::Projection::PERSPECTIVE, 0.1f, 100.0f, 60});
+        mainCameraComponent.camera.renderPriority = 1;
         camera.emplaceScript<CameraController>();
+
+        auto camera2 = getScene().addEntity("SecondCamera", Core::Components::TransformComponent{{15, 0, -10}, {0, -90, 0}, {1, 1, 1}});
+        auto & secondCameraComponent = camera2.addComponent(Core::Components::CameraComponent{Core::Components::CameraComponent::Projection::PERSPECTIVE, 0.1f, 100.0f, 60,
+                                                                                              renderer().createFrameBuffer(1920, 1080)});
+        secondCameraComponent.camera.clearColor = glm::vec4{0.1f, 0.1f, 0.1f, 1.f};
+        secondCameraComponent.camera.renderPriority = 0;
+
+        static const auto quadModel = Assets::AssetManager::loadModel("assets/models/quad.obj");
+        static Renderer::Mesh quadMesh = renderer().createMeshFromModel(quadModel);
+        static Renderer::Material materialRenderTarget{glm::vec3(1.0f), (Renderer::ITexture &)secondCameraComponent.camera.renderBuffer->colorTexture(),
+                                                       glm::vec3(1.0f), renderer().getDefaultTexture(), 32};
+        materialRenderTarget.ambientIntensity = 1.0f;
+
+        auto secondCameraRenderTarget = getScene().addEntity("SecondCameraRenderTarget", Core::Components::TransformComponent{{-1, 0, 5}, {0, 0, 0}, {1920.f / 1080.f, 1, 1}});
+        secondCameraRenderTarget.emplaceComponent<Core::Components::MeshRenderer>(quadMesh, materialRenderTarget);
 
         static constexpr auto distance = 4;
 

@@ -20,9 +20,9 @@ public:
     ~Mesh() = default;
 
     Mesh(Mesh &) = delete;
-    Mesh(Mesh &&) = delete;
+    Mesh(Mesh &&) = default;
     Mesh operator=(Mesh &) = delete;
-    Mesh operator=(Mesh &&) = delete;
+    Mesh & operator=(Mesh &&) = default;
 
     [[nodiscard]] auto vertexBuffer() const noexcept -> const IBuffer &;
     [[nodiscard]] auto indexBuffer() const noexcept -> const IBuffer &;
